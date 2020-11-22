@@ -8,7 +8,10 @@ import {
   Paragraph,
   List,
 } from 'react-native-paper';
-import BottomNav from './BottomNav';
+import TopNavigator from './TopNavigator';
+
+
+
 const Stack = createStackNavigator();
 
 
@@ -63,9 +66,8 @@ const DetailsScreen = (props) => {
 
 const AppStackNav = () => {
     return(
-        <Stack.Navigator initialRouteName="Home">
-           <Stack.Screen name="Tabs" component={BottomNav} />
-            <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Navigator initialRouteName="Home2">
+            <Stack.Screen name="Home2" component={TopNavigator} />
             <Stack.Screen name="Details" component={DetailsScreen} />   
         </Stack.Navigator>
     );

@@ -29,7 +29,7 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
      <ContainerNav />
-   </PaperProvider>
+    </PaperProvider>
   );
 };
 
