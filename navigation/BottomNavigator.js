@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import AppStackNav from './AppStackNav';
 import StoreStackNav from './StoreStackNav';
-import ChatStackNave from './ChatStackNav';
+import ChatStackNav from './ChatStackNav';
 import CreateStackNav from './CreateStackNav';
 import ProfileStackNav from './ProfileStackNav';
 
@@ -45,7 +45,7 @@ const BottomNav = () =>{
         //   activeBackgroundColor: '#222831',
           showLabel:false,
           style:{
-              backgroundColor:'#F4F4f2'
+            backgroundColor:'#F4F4F2'
           }
         }}
       >
@@ -85,7 +85,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Chats"
         //   Chat Stack all screens 
-          component={ChatStackNave}
+          component={ChatStackNav}
           options={{
             tabBarLabel: 'Chats',
             tabBarIcon: ({ color, size }) => (

@@ -3,13 +3,55 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import TabNavigatorStyle from '../styles/TabNavigatorStyle';
+import ProjectCard from '../components/ProjectCard';
+import Posts from './PostsScreen';
 const Tab = createMaterialTopTabNavigator();
 
-const Projects = () =>{
-   return( 
-   <View>
-        <Text>Projects</Text>
-    </View>
-   )}
+const title = "Hi, Boss";
+const content = "This is attempt at working with react native paper and react native core";
 
-export default Projects;
+const Projects = ({navigation}) =>{
+return(
+   <View>
+      <ProjectCard 
+       title = "House Renovation"
+       name = "Abdul karim"
+       profileImage = "../styles/p1.jpg"
+       onPress = {()=>navigation?.push('ProjectDetails',
+         title,
+         content,
+         )}
+      />
+   </View>
+);
+}
+
+
+// const Posts = () =>{
+//    return(
+//       <View>
+//          <Text> Hi, I'm the Posts Section</Text>
+//       </View>
+//    );
+// }
+
+
+const ProjectsScreen = () =>{
+   return( 
+      <Tab.Navigator
+      initialRouteName = {Projects}
+      tabBarOptions = {TabNavigatorStyle.subTabBarStyle}>
+         <Tab.Screen 
+            name = "Projects"
+            component = {Projects}
+         />
+         <Tab.Screen 
+            name = "Posts"
+            component = {Posts}
+         />
+      </Tab.Navigator>
+   );
+}
+
+export default ProjectsScreen;

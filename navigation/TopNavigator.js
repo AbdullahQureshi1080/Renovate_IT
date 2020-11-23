@@ -3,33 +3,20 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProjectsScreen from '../screens/ProjectsScreen';
+import ProfessionalsScreen from '../screens/ProfessionalsScreen';
+
+import TabNavigatorStyle from '../styles/TabNavigatorStyle';
+
 const Tab = createMaterialTopTabNavigator();
 
-const Projects = () =>{
-   return( 
-   <View>
-        <Text>Projects</Text>
-    </View>
-   )}
 
-   const Professionals = () =>{
-    return( 
-    <View>
-         <Text style = {{justifyContent: 'center',}}>Professionals</Text>
-     </View>
-    )} 
 
 const TopNavigator = () =>{
 return(
     <Tab.Navigator
-        initialRouteName = {Projects}
-        tabBarOptions = {{
-            showIcon: true,
-            showLabel: false,
-            style : {
-                height:60,
-            }
-        }}
+        initialRouteName = {ProjectsScreen}
+        tabBarOptions = {TabNavigatorStyle.mainTabBarStyle}
     >
         {/* Screens for the tab  top  navigations 
         1.Projects
@@ -39,19 +26,21 @@ return(
         */}
       <Tab.Screen 
         name="Projects" 
-        component={Projects} 
+        component={ProjectsScreen} 
+        
         options={{
+         tabBarColor:"#495465",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="newspaper-variant-multiple" color={color} size={35} />
+            <MaterialCommunityIcons name="newspaper-variant-multiple-outline" color={color} size={25} />
            ),
       }} 
-      />
+      /> 
       <Tab.Screen 
         name="Professionals" 
-        component={Professionals} 
+        component={ProfessionalsScreen} 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-group" color={color} size={35} />
+            <MaterialCommunityIcons name="account-group" color={color} size={25} />
            ),
       }} 
       />

@@ -85,7 +85,7 @@ apply from: "../../node_modules/react-native/react.gradle"
 
 
 project.ext.vectoricons = [
-	iconFontNames: ['MaterialCommunityIcons.ttf', 'Entypo.ttf'] // Add fonts needed
+	iconFontNames: ['MaterialCommunityIcons.ttf', 'Entypo.ttf', 'MaterialIcons'] // Add fonts needed
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
