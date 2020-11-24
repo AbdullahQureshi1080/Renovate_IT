@@ -1,10 +1,7 @@
 import * as React from 'react';
-// import { Component } from 'react';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Avatar, Button, Card, Title, Paragraph,Image } from 'react-native-paper';
+import { Avatar, Card, } from 'react-native-paper';
 import ComponentsStyle from '../styles/ComponentsStyle';
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const ProjectCard = (props) => (
 <Card style = {ComponentsStyle.projectCardStyle}
@@ -13,7 +10,7 @@ const ProjectCard = (props) => (
     <Card.Title 
         title={props.title} 
         subtitle={props.name} 
-       left={LeftContent}
+        left={()=><Avatar.Image size={50} source={require("../assets/p1.jpg")} />}
         titleStyle = {ComponentsStyle.projectCardStyle.titleStyle}
         subtitleStyle = {ComponentsStyle.projectCardStyle.subtitleStyle}
     />

@@ -5,7 +5,7 @@ import ComponentsStyle from '../styles/ComponentsStyle'
 
 const ProfessionalAvatar = (props) => {
  return(
-     <TouchableOpacity>
+     <TouchableOpacity >
         <View style={ComponentsStyle.professionalAvatar}>
              <Avatar.Image size={90} source={require('../assets/p1.jpg')} />
              <Text style = {ComponentsStyle.professionalAvatar.nameText}>{props.name}</Text>

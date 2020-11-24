@@ -1,23 +1,19 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Avatar, Button, Card, Title, Paragraph,Image } from 'react-native-paper';
 import ComponentsStyle from '../styles/ComponentsStyle';
 
-const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+// const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
-  const onChangeSearch = query => setSearchQuery(query);
+const CategoryCard = (props) => (
+<Card style = {ComponentsStyle.categoryCardStyle}
+  onPress={props.onPress}>
+    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style ={ComponentsStyle.categoryCardStyle.cardCover} />
+    <Card.Title 
+        title={props.title} 
+        titleStyle = {ComponentsStyle.categoryCardStyle.titleStyle} 
+      />
+  </Card>  
+)
 
-  const iconColor = "#1b262c";
-  
-  return (
-    <Searchbar
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-      iconColor = {iconColor}
-      style = {ComponentsStyle.searchBarStyle}
-    />
-  );
-};
-
-export default SearchBar;
+export default CategoryCard;

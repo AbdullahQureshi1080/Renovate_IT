@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { View, Text, StyleSheet,} from 'react-native';
+// import { View, Text, StyleSheet,} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -11,30 +11,6 @@ import CreateStackNav from './CreateStackNav';
 import ProfileStackNav from './ProfileStackNav';
 
 const Tab = createBottomTabNavigator();
-
-function Feed() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Feed!</Text>
-      </View>
-    );
-  }
-  
-  function Profile() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Profile!</Text>
-      </View>
-    );
-  }
-  
-  function Notifications() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notifications!</Text>
-      </View>
-    );
-  }
  
 const BottomNav = () =>{
     return (
@@ -42,7 +18,6 @@ const BottomNav = () =>{
         initialRouteName="Home"
         tabBarOptions={{
           activeTintColor: '#1b262c',
-        //   activeBackgroundColor: '#222831',
           showLabel:false,
           style:{
             backgroundColor:'#F4F4F2'
@@ -108,15 +83,5 @@ const BottomNav = () =>{
     );
   }
 
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
-  
-  
+    
   export default BottomNav;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dimensions } from 'react-native'
 
 const marginHorizontal = 20;
 const ComponentsStyle = {
@@ -14,19 +15,32 @@ const ComponentsStyle = {
             shadowOpacity: 0.34,
             shadowRadius: 6.27,
             elevation: 10,
+            backgroundColor: "#e8e8e8",
+            border:"none",
         },
         projectCardStyle:{
             borderRadius : 5,
             marginHorizontal: marginHorizontal,
             marginVertical : 10,
             backgroundColor: "#e8e8e8",
+            border:"none",
+            shadowColor:"#1b262c",
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+            elevation: 10,
             titleStyle: {
                 fontSize : 20,
                 fontWeight : "600",
+                marginHorizontal:6,
             },
            subtitleStyle: {
                 fontSize : 16,
                 fontWeight : "normal",
+                marginHorizontal:6,
             }
         },
         postCardStyle:{
@@ -34,6 +48,15 @@ const ComponentsStyle = {
             marginHorizontal: marginHorizontal,
             marginVertical : 10,
             backgroundColor: "#e8e8e8",
+            shadowColor:"#1b262c",
+            border:"none",
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+            elevation: 10,
             titleStyle: {
                 fontSize : 20,
                 fontWeight : "600",
@@ -47,11 +70,34 @@ const ComponentsStyle = {
         },
         professionalAvatar:{
             // marginHorizontal:marginHorizontal,
+            border:"none",
             marginVertical:15,
             nameText : {
                 fontSize : 16,
                 marginTop : 5,
             }
+        },
+        categoryCardStyle:{
+            height: Dimensions.get('window').height/4,
+            width:  Dimensions.get('window').width/2.3,
+            backgroundColor:"#e8e8e8",
+            border:"none",
+            marginVertical:10,
+            titleStyle: {
+                fontSize : 18,
+                fontWeight : "600",
+                color : "#495464",
+            },
+            cardCover:{
+                height: Dimensions.get('window').height/5,
+                width:  Dimensions.get('window').width/2.3,
+            }
+
+        },
+        inputStyle:{
+            marginVertical : 15,
+            backgroundColor: "#E8E8E8",
+            width: Dimensions.get('window').width/1.25,
         }
     }
 

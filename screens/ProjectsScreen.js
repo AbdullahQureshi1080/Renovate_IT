@@ -1,40 +1,39 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,FlatList} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TabNavigatorStyle from '../styles/TabNavigatorStyle';
 import ProjectCard from '../components/ProjectCard';
 import Posts from './PostsScreen';
+import {projectsDummyData} from '../assets/DummyData';
 const Tab = createMaterialTopTabNavigator();
 
-const title = "Hi, Boss";
-const content = "This is attempt at working with react native paper and react native core";
+// const title = "Hi, Boss";
+// const content = "This is attempt at working with react native paper and react native core";
+
+
 
 const Projects = ({navigation}) =>{
+   // {console.log(projectsDummyData)}
 return(
    <View>
+      <FlatList 
+      data = {projectsDummyData}
+      renderItem = {(item) => (
       <ProjectCard 
-       title = "House Renovation"
-       name = "Abdul karim"
-       profileImage = "../styles/p1.jpg"
-       onPress = {()=>navigation?.push('ProjectDetails',
-         title,
-         content,
+       key = {item.item.key}
+       title = {item.item.title}
+       name = {item.item.name}
+       profileImage = {item.item.profileImage}
+       onPress = {()=>navigation?.push('Project Details',
+         {item : item.item},
          )}
+      />
+      )}
       />
    </View>
 );
 }
-
-
-// const Posts = () =>{
-//    return(
-//       <View>
-//          <Text> Hi, I'm the Posts Section</Text>
-//       </View>
-//    );
-// }
 
 
 const ProjectsScreen = () =>{

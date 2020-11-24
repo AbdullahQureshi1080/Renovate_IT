@@ -4,7 +4,6 @@ import {View,Text} from 'react-native';
 import ComponentsStyle from '../styles/ComponentsStyle';
 
 const LeftContent = props => <Text style={{fontSize : 18,fontWeight : "600",}}>Budget</Text>
-// const RightContent = props => <Text>{props.budget}</Text>
 
 const PostCard = (props) => (
     
