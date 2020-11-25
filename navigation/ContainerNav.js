@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {DefaultTheme,NavigationContainer } from '@react-navigation/native'; 
 import BottomNav from './BottomNavigator';
-
+// import AppStack from './AppStack';
 
 const MyTheme = {
     ...DefaultTheme,

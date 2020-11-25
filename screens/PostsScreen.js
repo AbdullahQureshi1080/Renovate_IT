@@ -16,11 +16,11 @@ return(
       <PostCard 
        key = {item.item.key}
        title = {item.item.title}
+       postAuthor = {item.item.postAuthor}
        description = {item.item.description}
        budget = {item.item.budget}
        onPress = {()=>navigation?.push('Post Details',
-         title,
-         content,
+       {item : item.item},
          )}
       />
       )}

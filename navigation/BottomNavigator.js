@@ -4,11 +4,12 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AppStackNav from './AppStackNav';
+import AppStack from './AppStack';
 import StoreStackNav from './StoreStackNav';
 import ChatStackNav from './ChatStackNav';
 import CreateStackNav from './CreateStackNav';
-import ProfileStackNav from './ProfileStackNav';
+import ProfileStack from './ProfileStack';
+import HomeScreen from '../screens/HomeScreen';
 
 const Tab = createBottomTabNavigator();
  
@@ -27,7 +28,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Home"
         //   The Main Home Screen ------ From App Stack All Screen availale from that stack navigator
-          component={AppStackNav}
+          component={AppStack}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
@@ -71,7 +72,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Profile"
         //   Profile stack All screens
-          component={ProfileStackNav}
+          component={ProfileStack}
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color, size }) => (

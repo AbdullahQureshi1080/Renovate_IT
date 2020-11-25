@@ -25,6 +25,7 @@ return(
        title = {item.item.title}
        name = {item.item.name}
        profileImage = {item.item.profileImage}
+       likes = {item.item.likes}
        onPress = {()=>navigation?.push('Project Details',
          {item : item.item},
          )}

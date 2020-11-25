@@ -14,7 +14,8 @@ export const projectsDummyData = [
                      s1 : "../assets/img1",
                      s2 : "../assets/img1",
                  }
-             }
+             },
+             likes: 300,
           },
           {
             key : "2",
@@ -83,5 +84,93 @@ export const projectsDummyData = [
         profileImage : "../styles/p2.jpg",
      }
     ]      
+
+export const professionalCategory = [
+    {
+      key:"1",
+      category:"Interior Designer ",
+      
+   },
+   {
+      key:"2",
+      category:"Architect "
+   },
+   {
+      key:"3",
+      category:"Renovator "
+   },
+   {
+      key:"4",
+      category:"Builder "
+   },
+   {
+      key:"5",
+      category:"Supplier "
+   },
+
+]
+
+export const professionals = [
+      {
+         key:"1",
+         name : "Abdul Karim",
+         title : "Interior Designer"
+      },
+      {
+         key:"2",
+         name : "Baba Danish",
+         title : "Renovator"
+      },
+      {
+         key:"3",
+         name : "Baig Sahab",
+         title : "Builder"
+      },
+      {
+         key:"1",
+         name : "Abdul Karim",
+         title : "Interior Designer"
+      },
+      {
+         key:"2",
+         name : "Baba Danish",
+         title : "Renovator"
+      },
+      {
+         key:"3",
+         name : "Baig Sahab",
+         title : "Builder"
+      },
+      {
+         key:"1",
+         name : "Abdul Karim",
+         title : "Interior Designer"
+      },
+      {
+         key:"2",
+         name : "Baba Danish",
+         title : "Renovator"
+      },
+      {
+         key:"3",
+         name : "Baig Sahab",
+         title : "Builder"
+      },
+      {
+         key:"1",
+         name : "Abdul Karim",
+         title : "Interior Designer"
+      },
+      {
+         key:"2",
+         name : "Baba Danish",
+         title : "Renovator"
+      },
+      {
+         key:"3",
+         name : "Baig Sahab",
+         title : "Builder"
+      },
+   ]
 
 //  export default projectsDummyData;

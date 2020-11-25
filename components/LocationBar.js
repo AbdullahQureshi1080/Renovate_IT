@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 
 
-const LocationBar = () => {
+const LocationBar = (props) => {
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -15,7 +15,7 @@ const LocationBar = () => {
   return (
     <View style = {{marginVertical:15, alignSelf:"center", display:"flex", flexDirection:"row"}}>
     
-      <Button style={{backgroundColor:"#e8e8e8", width:250, }} color = "#222831" icon = {()=> <Entypo name = "location-pin" size = {18} />} onPress={showDialog} >Islamabad,Pakistan</Button>
+      <Button style={{backgroundColor:"#e8e8e8", width:250, }} color = "#222831" icon = {()=> <Entypo name = "location-pin" size = {18} />} onPress={showDialog} >{props.location}</Button>
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
           <Dialog.Title>Alert</Dialog.Title>

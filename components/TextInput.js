@@ -16,6 +16,7 @@ const InputText = () => {
      selectionColor="#1b262c"
      multiline = {true}
      clearButtonMode = "always"
+     theme={{colors: {primary: '#1b262c'}}}
     />
   );
 };

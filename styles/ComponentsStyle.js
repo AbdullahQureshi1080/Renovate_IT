@@ -75,6 +75,14 @@ const ComponentsStyle = {
             nameText : {
                 fontSize : 16,
                 marginTop : 5,
+                fontWeight:"bold",
+                color:"#495464"
+            },
+            titleText : {
+                fontSize : 14,
+                fontWeight:"normal",
+                color:"#495464"
+                // marginTop : 5,
             }
         },
         categoryCardStyle:{
@@ -85,14 +93,13 @@ const ComponentsStyle = {
             marginVertical:10,
             titleStyle: {
                 fontSize : 18,
-                fontWeight : "600",
+                fontWeight : "bold",
                 color : "#495464",
             },
             cardCover:{
                 height: Dimensions.get('window').height/5,
                 width:  Dimensions.get('window').width/2.3,
             }
-
         },
         inputStyle:{
             marginVertical : 15,

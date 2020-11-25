@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text, Image, ScrollView, Dimensions} from 'react-native';
+import {View, Text, Image, ScrollView, Dimensions,StyleSheet} from 'react-native';
 import {
    Paragraph,
    Button,
@@ -9,7 +9,8 @@ import {
 import ScreenStyles from '../styles/ScreenStyles'
 import InputText from '../components/TextInput';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Entypo from 'react-native-vector-icons/Entypo';
+import { FloatingAction } from "react-native-floating-action";
 var { width, height } = Dimensions.get('window')
 
 const ProjectDetailsScreen = (props) =>{
@@ -17,21 +18,20 @@ const ProjectDetailsScreen = (props) =>{
    return (
       <ScrollView style = {ScreenStyles.projectsDetailScreen}>
         <View style = {ScreenStyles.projectsDetailScreen.viewBox}>
-        <Text style = {{fontSize:20, fontWeight: "400", marginHorizontal:3}}>{props.route.params.item.title}</Text>
+        <Text style = {ScreenStyles.projectsDetailScreen.viewBox.titleText}>{props.route.params.item.title}</Text>
         <Button style={{backgroundColor:"#495464"}} color = "#F4F4F2">Follow</Button>
         </View>
         <View style = {ScreenStyles.projectsDetailScreen.AvatarBox}>
           <Avatar.Image source = {require("../assets/p1.jpg")} style={{
             marginHorizontal:3
           }}/>
-          <Text style = {{
-            fontSize:16, alignSelf:"center", marginHorizontal: 10,
-          }}>{props.route.params.item.name}</Text>
+          <Text style = {ScreenStyles.projectsDetailScreen.AvatarBox.nameText}>{props.route.params.item.name}</Text>
         </View>
         <View style={{
           marginVertical:15,
               borderBottomColor: '#1b262c', 
               borderBottomWidth: 1, 
+              opacity:0.5,
               width: width - 20,}}>
         </View>
         <View>
@@ -48,10 +48,30 @@ const ProjectDetailsScreen = (props) =>{
           marginVertical:15,
               borderBottomColor: '#1b262c', 
               borderBottomWidth: 1, 
-              width: width - 20,}}>
+              opacity:0.5,
+              width: width - 20,
+              // marginHorizontal:0,
+              }}>
         </View>
+        <View>
+             <Text style = {ScreenStyles.projectsDetailScreen.viewBox.titleText}>{props.route.params.item.title}</Text>
+             <View style = {ScreenStyles.projectsDetailScreen.infoBox}>
+             <Entypo name="thumbs-up" size={20} color="#1b262c"/>
+            <Text style={{...ScreenStyles.projectsDetailScreen.contentText},{alignSelf:"center",}} >{props.route.params.item.likes}</Text>
+             </View>     
+        </View> 
+        <View style={{
+          marginVertical:15,
+              borderBottomColor: '#1b262c', 
+              borderBottomWidth: 1, 
+              opacity:0.5,
+              width: width - 20,
+              // marginHorizontal:0,
+              }}>
+        </View>
+       
         <View style = {ScreenStyles.projectsDetailScreen.commentBox}>
-          <Text style = {ScreenStyles.projectsDetailScreen.commentBox.text}>Be the first one to leave a comment !</Text>
+          <Text style = {ScreenStyles.projectsDetailScreen.commentBox.text}>Want to Comment? </Text>
           <View 
           style = 
           {{
@@ -59,12 +79,25 @@ const ProjectDetailsScreen = (props) =>{
           }}
           >
           <InputText/>
-          {/* <Button color="#f4f4f2" icon = "comment-arrow-right-outline" style = {{backgroundColor:"#495464", marginVertical:15, }}/> */}
           <Button icon = "comment-arrow-right-outline" style={{backgroundColor:"#495464", width:Dimensions.get('window').width/3, alignSelf:"center"}} color = "#F4F4F2">Comment</Button>
           </View>
         </View>
+        <FloatingAction
+            distanceToEdge = {vertical=15}
+            floatingIcon={<Entypo name="thumbs-up" size={30} color="#F4F4F2" style={{alignSelf:"center",}}/>}
+            onPressMain ={()=> console.log("Yo")}
+            color = "#495464"
+            overlayColor = "none"
+        />
       </ScrollView>
     );
    }
 
+   const styles = StyleSheet.create({
+    actionButtonIcon: {
+      fontSize: 20,
+      height: 22,
+      color: 'white',
+    },
+  });
 export default ProjectDetailsScreen;
