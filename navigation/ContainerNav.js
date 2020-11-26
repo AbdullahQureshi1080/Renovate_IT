@@ -6,6 +6,7 @@ import BottomNav from './BottomNavigator';
 
 const MyTheme = {
     ...DefaultTheme,
+    dark:true,
     colors: {
       ...DefaultTheme.colors,
       background:'#F4F4F2',

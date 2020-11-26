@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Button, Searchbar } from 'react-native-paper';
 import ComponentsStyle from '../styles/ComponentsStyle';
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
@@ -10,11 +10,14 @@ const SearchBar = () => {
   
   return (
     <Searchbar
-      placeholder="Search"
+      placeholder={props.placeholder}
       onChangeText={onChangeSearch}
       value={searchQuery}
       iconColor = {iconColor}
       style = {ComponentsStyle.searchBarStyle}
+      inputStyle = {{
+        fontSize:14,
+      }}
     />
   );
 };

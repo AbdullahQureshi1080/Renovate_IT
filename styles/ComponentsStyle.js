@@ -17,6 +17,7 @@ const ComponentsStyle = {
             elevation: 10,
             backgroundColor: "#e8e8e8",
             border:"none",
+            // fontSize:12,
         },
         projectCardStyle:{
             borderRadius : 5,
@@ -69,7 +70,10 @@ const ComponentsStyle = {
             },
         },
         professionalAvatar:{
-            // marginHorizontal:marginHorizontal,
+            // marginHorizontal:marginHorizontal-5,
+            marginVertival:100,
+            // width:100,
+            // height:100,
             border:"none",
             marginVertical:15,
             nameText : {
@@ -81,7 +85,9 @@ const ComponentsStyle = {
             titleText : {
                 fontSize : 14,
                 fontWeight:"normal",
-                color:"#495464"
+                color:"#495464",
+                width:Dimensions.get('window').width/3,
+
                 // marginTop : 5,
             }
         },

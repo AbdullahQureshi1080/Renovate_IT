@@ -114,7 +114,7 @@ export const professionals = [
       {
          key:"1",
          name : "Abdul Karim",
-         title : "Interior Designer"
+         title : "Room Designer"
       },
       {
          key:"2",
@@ -127,47 +127,47 @@ export const professionals = [
          title : "Builder"
       },
       {
-         key:"1",
+         key:"4",
          name : "Abdul Karim",
-         title : "Interior Designer"
+         title : "Room Designer"
       },
       {
-         key:"2",
+         key:"5",
          name : "Baba Danish",
          title : "Renovator"
       },
       {
-         key:"3",
+         key:"6",
          name : "Baig Sahab",
          title : "Builder"
       },
       {
-         key:"1",
+         key:"7",
          name : "Abdul Karim",
-         title : "Interior Designer"
+         title : "Room Designer"
       },
       {
-         key:"2",
+         key:"8",
          name : "Baba Danish",
          title : "Renovator"
       },
       {
-         key:"3",
+         key:"9",
          name : "Baig Sahab",
          title : "Builder"
       },
       {
-         key:"1",
+         key:"10",
          name : "Abdul Karim",
-         title : "Interior Designer"
+         title : "Room Designer"
       },
       {
-         key:"2",
+         key:"11",
          name : "Baba Danish",
          title : "Renovator"
       },
       {
-         key:"3",
+         key:"12",
          name : "Baig Sahab",
          title : "Builder"
       },

@@ -3,6 +3,10 @@ import { Dimensions } from 'react-native'
 
 const marginHorizontal = 20;
 const ScreenStyle = {
+      userprofileScreen:{
+        marginHorizontal:marginHorizontal-5,
+        marginVertical: 10,
+      },
       professionalsScreen:{
         marginHorizontal:20,
         marginVertical:15,
@@ -19,7 +23,9 @@ const ScreenStyle = {
       },
       allProfessionals:{
         marginHorizontal:marginHorizontal,
-        
+        marginVertical:15,
+        flex: 1,
+        justifyContent : 'center',
       },
       projectsDetailScreen:{
         marginHorizontal:marginHorizontal,

@@ -11,7 +11,9 @@ const Stack = createStackNavigator();
 const ProfileStack = () => {
     return(
         <Stack.Navigator initialRouteName="User Profile">
-            <Stack.Screen name="User Profile" component={UserProfileScreen} />
+            <Stack.Screen name="User Profile" component={UserProfileScreen} options={{
+                headerShown:false,
+            }} />
         </Stack.Navigator>
     );
 }

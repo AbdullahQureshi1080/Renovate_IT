@@ -9,32 +9,50 @@ import StoreStackNav from './StoreStackNav';
 import ChatStackNav from './ChatStackNav';
 import CreateStackNav from './CreateStackNav';
 import ProfileStack from './ProfileStack';
-import HomeScreen from '../screens/HomeScreen';
+// import HomeScreen from '../screens/HomeScreen';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
  
 const BottomNav = () =>{
+   
     return (
         <Tab.Navigator
         initialRouteName="Home"
+        // options = {({route})=>({
+        //   tabBarVisible: ((route) => {
+        //     const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+        //     if (routeName == 'Home') {
+        //       return true;
+        //     }
+        //     return false;
+        //   })(route),
+        // })}
         tabBarOptions={{
           activeTintColor: '#1b262c',
           showLabel:false,
           style:{
             backgroundColor:'#F4F4F2'
-          }
+          },
         }}
       >
         <Tab.Screen
           name="Home"
         //   The Main Home Screen ------ From App Stack All Screen availale from that stack navigator
           component={AppStack}
-          options={{
-            tabBarLabel: 'Home',
+          options = {({route})=>({
+          tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
              <MaterialCommunityIcons name="home" color={color} size={35} />
             ),
-          }}
+          tabBarVisible: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+            if (routeName == 'Home') {
+              return true;
+            }
+            else{return false;}
+          })(route),
+        })}
         />
         <Tab.Screen
           name="Store"

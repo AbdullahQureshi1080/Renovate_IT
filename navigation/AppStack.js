@@ -8,20 +8,27 @@ import SearchBar from '../components/SearchBar';
 import PostDetailsScreen from '../screens/PostDetailsScreen';
 import BottomNav from './BottomNavigator';
 import AllProfessionals from "../screens/AllProfessionals"; 
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+
 const Stack = createStackNavigator();
 
+
+const searchBar = ()=>{
+  return(
+    <SearchBar placeholder = "Search"/>
+  )
+}
 const AppStack = () => {
+
     return(
         <Stack.Navigator 
           initialRouteName="Home"
-          screenOptions = {{
-          }}
           >
             <Stack.Screen 
             name="Home" 
             component={HomeScreen} 
             options={{
-              header: SearchBar,
+              header:searchBar ,
               headerTitle: false,
               headerStyle:{
                 marginHorizontal:20,
@@ -30,9 +37,12 @@ const AppStack = () => {
               
             }}
             />
-            <Stack.Screen name="Project Details" component={ProjectDetailsScreen}/>   
+            <Stack.Screen name="Project Details" component={ProjectDetailsScreen}
+           />   
             <Stack.Screen name="Post Details" component={PostDetailsScreen} />  
-            <Stack.Screen name="All Professionals" component={AllProfessionals} />  
+            <Stack.Screen name="All Professionals" component={AllProfessionals}
+             options={({ route }) => ({ title: route.params.title })}
+            />  
         </Stack.Navigator>
     );
 }
