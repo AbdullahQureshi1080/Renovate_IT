@@ -4,24 +4,14 @@ import {View,Text,TouchableOpacity} from 'react-native';
 // import{DefaultTheme} from '@react-navigation/native'
 import ComponentsStyle from '../styles/ComponentsStyle'
 
-// const MyTheme = {
-//     ...DefaultTheme,
-//     dark:true,
-//     colors: {
-//       ...DefaultTheme.colors,
-//       background:'#F4F4F2',
-//       primary:"#222831",
-//       text:"#495464",
-//     },
-//   };
 
 const ProfessionalAvatar = (props) => {
  return(
-     <TouchableOpacity onPress={props.onPress} >
-        <View style={ComponentsStyle.professionalAvatar}>
-             <Avatar.Image size={90} source={require('../assets/p1.jpg')} />
-             <Text style = {ComponentsStyle.professionalAvatar.nameText}>{props.name}</Text>
-             <Text style = {ComponentsStyle.professionalAvatar.titleText}>{props.title}</Text>
+     <TouchableOpacity onPress={props.onPress} disabled={props.disabled}>
+        <View style={props.style}>
+             <Avatar.Image size={props.size} source={require('../assets/p1.jpg')} />
+             <Text style = {props.style.nameText}>{props.name}</Text>
+             <Text style = {props.style.titleText}>{props.title}</Text>
         </View> 
     </TouchableOpacity>
     

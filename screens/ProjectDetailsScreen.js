@@ -78,7 +78,7 @@ const ProjectDetailsScreen = (props) =>{
             alignSelf:"center"
           }}
           >
-          <InputText/>
+          <InputText label="Comment on post"/>
           <Button icon = "comment-arrow-right-outline" style={{backgroundColor:"#495464", width:Dimensions.get('window').width/3, alignSelf:"center"}} color = "#F4F4F2">Comment</Button>
           </View>
         </View>

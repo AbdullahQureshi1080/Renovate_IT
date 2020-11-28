@@ -8,7 +8,7 @@ import ComponentsStyle from '../styles/ComponentsStyle';
 const CategoryCard = (props) => (
 <Card style = {ComponentsStyle.categoryCardStyle}
   onPress={props.onPress}>
-    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style ={ComponentsStyle.categoryCardStyle.cardCover} />
+    <Card.Cover source={props.source} style ={ComponentsStyle.categoryCardStyle.cardCover} />
     <Card.Title 
         title={props.title} 
         titleStyle = {ComponentsStyle.categoryCardStyle.titleStyle} 

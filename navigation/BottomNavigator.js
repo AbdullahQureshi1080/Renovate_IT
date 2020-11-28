@@ -28,6 +28,8 @@ const BottomNav = () =>{
         //     return false;
         //   })(route),
         // })}
+        
+        
         tabBarOptions={{
           activeTintColor: '#1b262c',
           showLabel:false,
@@ -47,7 +49,7 @@ const BottomNav = () =>{
             ),
           tabBarVisible: ((route) => {
             const routeName = getFocusedRouteNameFromRoute(route) ?? '';
-            if (routeName == 'Home') {
+            if (routeName === 'Home') {
               return true;
             }
             else{return false;}
@@ -63,6 +65,7 @@ const BottomNav = () =>{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="store" color={color} size={35} />
             ),
+            
           }}
         />
         <Tab.Screen
@@ -91,12 +94,19 @@ const BottomNav = () =>{
           name="Profile"
         //   Profile stack All screens
           component={ProfileStack}
-          options={{
+          options = {({route})=>({
             tabBarLabel: 'Profile',
             tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="account-circle" color={color} size={35} />
               ), 
-          }}
+              // tabBarVisible: ((route) => {
+              //   const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+              //   if (routeName === 'Profile') {
+              //     return false;
+              //   }
+              //   else{return true;}
+              // })(route),
+            })}
         />
       </Tab.Navigator>
     );

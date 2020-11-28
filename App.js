@@ -18,19 +18,19 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const fontConfig = {
   default: {
     regular: {
-      fontFamily: 'poppins-medium',
+      fontFamily: 'Poppins-Medium',
       fontWeight: 'normal',
     },
     medium: {
-      fontFamily: 'poppins-bold',
+      fontFamily: 'Poppins-Bold',
       fontWeight: 'normal',
     },
     light: {
-      fontFamily: 'poppins-regular',
+      fontFamily: 'Poppins-Regular',
       fontWeight: 'normal',
     },
     thin: {
-      fontFamily: 'poppins-light',
+      fontFamily: 'Poppins-Light',
       fontWeight: 'normal',
     },
   },

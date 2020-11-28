@@ -3,7 +3,36 @@ import { Dimensions } from 'react-native'
 
 const marginHorizontal = 20;
 const ComponentsStyle = {
+        infoCardStyle:{ 
+            marginVertical:15,
+            marginHorizontal:5,
+            width:Dimensions.get('window').width/3.8,
+            display:"flex",
+            justifyContent: 'center',
+            backgroundColor:"#e8e8e8",
+            borderRadius: 5,
+            shadowColor:"#1b262c",
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+            elevation: 10,
+            valueStyle: {
+                fontSize : 16,
+                fontWeight : "bold",
+                marginBottom: 10,
+                fontFamily: 'Poppins-Medium',
+            },
+            subtitleStyle: {
+                fontSize : 14,
+                fontWeight : "600",
+                fontFamily: 'Poppins-Regular',
+            },
+        },
         searchBarStyle : {
+            fontFamily: 'Poppins-Regular',
             marginHorizontal:marginHorizontal,
             marginVertical:15,
             borderRadius: 5,
@@ -34,14 +63,16 @@ const ComponentsStyle = {
             shadowRadius: 6.27,
             elevation: 10,
             titleStyle: {
-                fontSize : 20,
-                fontWeight : "600",
+                fontSize : 18,
+                fontWeight : "500",
                 marginHorizontal:6,
+                // fontFamily:"Poppins-Regular",
             },
            subtitleStyle: {
                 fontSize : 16,
                 fontWeight : "normal",
                 marginHorizontal:6,
+                // fontFamily:"Poppins-Regular" ,
             }
         },
         postCardStyle:{
@@ -59,39 +90,21 @@ const ComponentsStyle = {
             shadowRadius: 6.27,
             elevation: 10,
             titleStyle: {
-                fontSize : 20,
+                fontSize : 16,
                 fontWeight : "600",
+                // fontFamily: 'Poppins-Regular',
                 
             },
             subtitleStyle: {
-                fontSize : 16,
-                fontWeight : "normal",
+                fontSize : 14,
+                // fontWeight : "normal",
+                fontWeight : "600",
+                // fontFamily: 'Poppins-Bold',
                 
             },
         },
-        professionalAvatar:{
-            // marginHorizontal:marginHorizontal-5,
-            marginVertival:100,
-            // width:100,
-            // height:100,
-            border:"none",
-            marginVertical:15,
-            nameText : {
-                fontSize : 16,
-                marginTop : 5,
-                fontWeight:"bold",
-                color:"#495464"
-            },
-            titleText : {
-                fontSize : 14,
-                fontWeight:"normal",
-                color:"#495464",
-                width:Dimensions.get('window').width/3,
-
-                // marginTop : 5,
-            }
-        },
         categoryCardStyle:{
+            // fontFamily: 'Poppins-Medium',
             height: Dimensions.get('window').height/4,
             width:  Dimensions.get('window').width/2.3,
             backgroundColor:"#e8e8e8",
@@ -99,8 +112,9 @@ const ComponentsStyle = {
             marginVertical:10,
             titleStyle: {
                 fontSize : 18,
-                fontWeight : "bold",
+                // fontWeight : "700",
                 color : "#495464",
+                fontFamily: 'Poppins-Bold',
             },
             cardCover:{
                 height: Dimensions.get('window').height/5,
@@ -109,7 +123,9 @@ const ComponentsStyle = {
         },
         inputStyle:{
             marginVertical : 15,
+            // marginHorizontal: 10,
             backgroundColor: "#E8E8E8",
+            fontFamily: 'Poppins-Regular',
             width: Dimensions.get('window').width/1.25,
         }
     }

@@ -37,6 +37,7 @@ subTabBarStyle:{
         marginHorizontal:20,
         marginBottom:15,
         borderRadius: 5,
+        fontFamily: 'Poppins-Medium',
     }
 },
 userProfileTab:{
@@ -53,9 +54,40 @@ userProfileTab:{
      labelStyle:{
          fontSize:12,
          fontWeight:"800",
+         fontFamily: 'Poppins-Regular',
      },
      tabStyle: { width: Dimensions.get('window').width/3 }
      
+},
+userProjectsTab:{
+    // scrollEnabled:true,
+    // marginVertical:15,
+    // width:Dimensions.get('window').width/2,
+    // alignItems: 'center',
+    // alignSelf: 'center',
+    // alignContent: 'center',
+    // marginHorizontal:100,
+    swipeEnabled:true,
+    shifting:true,
+
+    activeTintColor:"#1b262c",
+    inactiveTintColor:"#495464",
+    indicatorStyle: {
+        height: '10%',
+        backgroundColor: '#1b262c'
+    },
+    style : {
+     backgroundColor:'#F4F4F2',
+     width: Dimensions.get('window').width/2,
+     alignSelf: 'center',
+     fontFamily: 'Poppins-Regular',
+     },
+     labelStyle:{
+         fontSize:12,
+         fontWeight:"800",
+         fontFamily: 'Poppins-Regular',
+     },
+    //  tabStyle: { width: Dimensions.get('window').width/4, }  
 }
 }
 
