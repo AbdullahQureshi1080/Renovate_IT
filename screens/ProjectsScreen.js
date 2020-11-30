@@ -6,15 +6,11 @@ import TabNavigatorStyle from '../styles/TabNavigatorStyle';
 import ProjectCard from '../components/ProjectCard';
 import Posts from './PostsScreen';
 import {projectsDummyData} from '../assets/DummyData';
+
 const Tab = createMaterialTopTabNavigator();
-
-// const title = "Hi, Boss";
-// const content = "This is attempt at working with react native paper and react native core";
-
 
 
 const Projects = ({navigation}) =>{
-   // {console.log(projectsDummyData)}
 return(
    <View>
       <FlatList 

@@ -9,40 +9,51 @@ import PostDetailsScreen from '../screens/PostDetailsScreen';
 import BottomNav from './BottomNavigator';
 import AllProfessionals from "../screens/AllProfessionals"; 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import SplashScreen from '../screens/SplashScreen';
+import LoginScreen from '../screens/LoginScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const Stack = createStackNavigator();
 
 
-const searchBar = ()=>{
-  return(
-    <SearchBar placeholder = "Search"/>
-  )
-}
+// const searchBar = ()=>{
+//   return(
+//     <SearchBar placeholder = "Search"/>
+//   )
+// }
 const AppStack = () => {
-
     return(
         <Stack.Navigator 
-          initialRouteName="Home"
+          initialRouteName="SplashScreen"
           >
             <Stack.Screen 
-            name="Home" 
-            component={HomeScreen} 
+            name="SplashScreen" 
+            component={SplashScreen} 
             options={{
-              header:searchBar ,
-              headerTitle: false,
-              headerStyle:{
-                marginHorizontal:20,
-                marginTop:20,
-              },
-              
+              headerShown:false ,
             }}
             />
-            <Stack.Screen name="Project Details" component={ProjectDetailsScreen}
-           />   
-            <Stack.Screen name="Post Details" component={PostDetailsScreen} />  
-            <Stack.Screen name="All Professionals" component={AllProfessionals}
-             options={({ route }) => ({ title: route.params.title })}
+            <Stack.Screen 
+            name="Login" 
+            component={LoginScreen}
+            options={{
+                headerShown:false ,
+              }}
+            />   
+            <Stack.Screen 
+            name="Sign Up" 
+            component={SignUpScreen} 
+            options={{
+                headerShown:false ,
+              }}
             />  
+            <Stack.Screen 
+            name="Home" 
+            component={BottomNav}
+            options={{
+                headerShown:false ,
+              }}
+             />  
         </Stack.Navigator>
     );
 }

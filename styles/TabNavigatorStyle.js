@@ -60,16 +60,8 @@ userProfileTab:{
      
 },
 userProjectsTab:{
-    // scrollEnabled:true,
-    // marginVertical:15,
-    // width:Dimensions.get('window').width/2,
-    // alignItems: 'center',
-    // alignSelf: 'center',
-    // alignContent: 'center',
-    // marginHorizontal:100,
     swipeEnabled:true,
     shifting:true,
-
     activeTintColor:"#1b262c",
     inactiveTintColor:"#495464",
     indicatorStyle: {
@@ -87,7 +79,6 @@ userProjectsTab:{
          fontWeight:"800",
          fontFamily: 'Poppins-Regular',
      },
-    //  tabStyle: { width: Dimensions.get('window').width/4, }  
 }
 }
 

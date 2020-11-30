@@ -9,24 +9,14 @@ import CategoryCard from '../components/CategoryCard';
       
 
 const profileAvatar = {
-   // marginHorizontal:marginHorizontal-5,
-   marginVertival:100,
-   // width:100,
-   // height:100,
    border:"none",
    marginVertical:15,
-   // alignItems: 'center',
-   // alignContent: 'center',
-   // justifyContent: 'center',
    nameText : {
        fontSize : 16,
        marginTop : 5,
        fontWeight:"bold",
        color:"#495464",
        fontFamily: 'Poppins-Bold',
-      //  alignSelf: 'center',
-      //  justifyContent: 'center',
-
    },
    titleText : {
        fontSize : 14,
@@ -34,8 +24,6 @@ const profileAvatar = {
        color:"#495464",
        width:Dimensions.get('window').width/3,
        fontFamily: 'Poppins-Medium',
-      //  alignSelf: 'center',
-       // marginTop : 5,
    }
  }
 
@@ -51,7 +39,6 @@ const profileAvatar = {
       <Text style = {ScreenStyles.professionalsScreen.headTitle}>Select By Category</Text>
       <LocationBar/>
       <View>
-         {/* <CategoryCards onPress={(props)=>navigation.navigate('All Professionals',{title:props.title})}/> */}
       <View style={ScreenStyles.professionalsScreen.viewBox}>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                <CategoryCard title = "Interior Designer" source = {require('../assets/interior-design.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Interior Designer"})}/>      

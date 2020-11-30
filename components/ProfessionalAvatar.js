@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Avatar } from 'react-native-paper';
 import {View,Text,TouchableOpacity} from 'react-native';
-// import{DefaultTheme} from '@react-navigation/native'
-import ComponentsStyle from '../styles/ComponentsStyle'
 
 
 const ProfessionalAvatar = (props) => {

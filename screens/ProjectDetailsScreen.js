@@ -50,7 +50,6 @@ const ProjectDetailsScreen = (props) =>{
               borderBottomWidth: 1, 
               opacity:0.5,
               width: width - 20,
-              // marginHorizontal:0,
               }}>
         </View>
         <View>
@@ -66,7 +65,6 @@ const ProjectDetailsScreen = (props) =>{
               borderBottomWidth: 1, 
               opacity:0.5,
               width: width - 20,
-              // marginHorizontal:0,
               }}>
         </View>
        
@@ -78,7 +76,7 @@ const ProjectDetailsScreen = (props) =>{
             alignSelf:"center"
           }}
           >
-          <InputText label="Comment on post"/>
+          <InputText  style={ComponentsStyle.inputStyle}  label="Comment on post" selectionColor="#1b262c" underlineColor="#1b262c"  textColor="#1b262c"/>
           <Button icon = "comment-arrow-right-outline" style={{backgroundColor:"#495464", width:Dimensions.get('window').width/3, alignSelf:"center"}} color = "#F4F4F2">Comment</Button>
           </View>
         </View>

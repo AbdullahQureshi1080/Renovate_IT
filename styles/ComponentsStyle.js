@@ -21,13 +21,13 @@ const ComponentsStyle = {
             elevation: 10,
             valueStyle: {
                 fontSize : 16,
-                fontWeight : "bold",
+                // fontWeight : "bold",
                 marginBottom: 10,
                 fontFamily: 'Poppins-Medium',
             },
             subtitleStyle: {
                 fontSize : 14,
-                fontWeight : "600",
+                // fontWeight : "600",
                 fontFamily: 'Poppins-Regular',
             },
         },
@@ -123,8 +123,17 @@ const ComponentsStyle = {
         },
         inputStyle:{
             marginVertical : 15,
-            // marginHorizontal: 10,
-            backgroundColor: "#E8E8E8",
+            backgroundColor: 'rgba(232, 232, 232, 0.7)',
+            opacity: 0.6,
+            color:"#f4f4f2",
+            fontFamily: 'Poppins-Regular',
+            width: Dimensions.get('window').width/1.25,
+        },
+        inputStyleSign:{
+            marginVertical : 15,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            opacity: 0.6,
+            color:"#f4f4f2",
             fontFamily: 'Poppins-Regular',
             width: Dimensions.get('window').width/1.25,
         }

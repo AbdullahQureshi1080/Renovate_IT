@@ -13,13 +13,11 @@ const profileAvatar = {
   nameText : {
       fontSize : 14,
       marginTop : 5,
-      // fontWeight:"bold",
       color:"#495464",
       fontFamily: 'Poppins-Bold',
   },
   titleText : {
       fontSize : 12,
-      // fontWeight:"normal",
       color:"#495464",
       width:Dimensions.get('window').width/3,
       fontFamily: 'Poppins-Medium',
@@ -29,8 +27,7 @@ const profileAvatar = {
 const AllProfessionals = (navigation) =>{
     return(
         <View style={ScreenStyles.allProfessionals}>
-          {/* <SearchBar placeholder = "What kind of services you need?"/>
-          <Button icon = ""/> */}
+          <SearchBar placeholder = "Search by Name"/>
           <FlatList 
             data = {professionals}
              numColumns={3}
@@ -42,7 +39,6 @@ const AllProfessionals = (navigation) =>{
                 title = {item.item.title}
                 style={profileAvatar}
                 size={90}
-                // onPress = {()=>navigation?.push('')}
             />
           </View>
       )}

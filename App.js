@@ -39,12 +39,14 @@ const fontConfig = {
 const theme = {
   ...DefaultTheme,
   fonts: configureFonts(fontConfig),
+  colors:{
   ...DefaultTheme.colors, 
   primary: '#f4f4f2', 
   accent: '#495464',
   background:'#f4f4f2',
   surface:'#495464',
-  text:'#222831',
+  text:'#495464',
+}
 };
 
 

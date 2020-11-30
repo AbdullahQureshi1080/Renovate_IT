@@ -22,10 +22,9 @@ const LocationBar = (props) => {
         <Dialog visible={visible} onDismiss={hideDialog}>
           <Dialog.Title style={{fontSize:16, fontWeight:"bold"}}>Change Location</Dialog.Title>
           <Dialog.Content>
-            {/* <TextInput placeholder="Enter City"/> */}
             <Picker
               selectedValue={data}
-              style={{height: 50, width:250, alignSelf:"center", }}
+              style={{height: 50, width:250, alignSelf:"center", fontFamily:"Poppins-Regular", fontSize:16,}}
               onValueChange={(itemValue, itemIndex) =>
                 setData( itemValue)
               }

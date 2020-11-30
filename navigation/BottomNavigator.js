@@ -4,7 +4,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AppStack from './AppStack';
+import HomeStack from './HomeStack';
 import StoreStackNav from './StoreStackNav';
 import ChatStackNav from './ChatStackNav';
 import CreateStackNav from './CreateStackNav';
@@ -41,7 +41,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Home"
         //   The Main Home Screen ------ From App Stack All Screen availale from that stack navigator
-          component={AppStack}
+          component={HomeStack}
           options = {({route})=>({
           tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (

@@ -76,20 +76,16 @@ const ScreenStyle = {
           width:  Dimensions.get('window').width,
         },
         viewBox : {
-          // marginVertical:1,
           marginTop:10,
           display:'flex', 
           flexDirection:"row", 
           justifyContent:"space-between",
-          // backgroundColor:"#e8e8e8",
           titleText:
-          {fontSize:20, fontWeight: "800",fontFamily: 'Poppins-Medium',}
+          {fontSize:18, fontWeight: "800",fontFamily: 'Poppins-Medium',}
         },
         AvatarBox : {
-          // marginVertical:1,
           display:'flex', 
           flexDirection:"row", 
-          // backgroundColor:"#e8e8e8"
           nameText:{
             fontSize:16, 
             alignSelf:"center", 
@@ -118,7 +114,6 @@ const ScreenStyle = {
         }
       },
       postsDetailScreen:{
-        // fontFamily: 'Poppins-Regular',
         marginHorizontal:marginHorizontal,
         imageStyle:{
           marginVertical:15,
@@ -126,20 +121,16 @@ const ScreenStyle = {
           width:  Dimensions.get('window').width,
         },
         viewBox : {
-          // marginVertical:1,
           marginTop:10,
           display:'flex', 
           flexDirection:"row", 
           justifyContent:"space-between",
-          // backgroundColor:"#e8e8e8",
           titleText:
           {fontSize:20, fontWeight: "800", fontFamily: 'Poppins-Medium',}
         },
         AvatarBox : {
-          // marginVertical:1,
           display:'flex', 
           flexDirection:"row", 
-          // backgroundColor:"#e8e8e8"
           nameText:{
             fontSize:16, 
             alignSelf:"center", 
@@ -153,14 +144,7 @@ const ScreenStyle = {
           fontSize:16,
           fontFamily: 'Poppins-Regular',
         },
-        // commentBox:{
-        //   marginVertical:25,
-        //   text : {
-        //     fontSize: 18,
-        //     fontWeight: 'bold',
-        //     fontFamily: 'Poppins-Regular',
-        //   }
-        },
+      },
         infoBox:{
           display:'flex', 
           flexDirection:"row", 

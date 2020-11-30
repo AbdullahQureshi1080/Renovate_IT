@@ -76,15 +76,11 @@ const userAbout = () =>{
 const logout = () =>{
     return(
         <View>
-            <Text>Logout</Text>
+            {console.log("logout")}
         </View>
     );
 }
-// const editProfile = ({navigation}) =>{
-//     return(
-//         navigation.?push("Edit Profile");
-//     );
-// }
+
 
 const UserProfileScreen = ({navigation}) =>{
 return(
@@ -125,7 +121,6 @@ const profileAvatar = {
     nameText : {
         fontSize : 18,
         marginTop : 5,
-        // fontWeight:"bold",
         color:"#495464",
         fontFamily: 'Poppins-Bold',
     },
