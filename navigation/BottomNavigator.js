@@ -9,7 +9,6 @@ import StoreStackNav from './StoreStackNav';
 import ChatStackNav from './ChatStackNav';
 import CreateStackNav from './CreateStackNav';
 import ProfileStack from './ProfileStack';
-// import HomeScreen from '../screens/HomeScreen';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
@@ -18,18 +17,7 @@ const BottomNav = () =>{
    
     return (
         <Tab.Navigator
-        initialRouteName="Home"
-        // options = {({route})=>({
-        //   tabBarVisible: ((route) => {
-        //     const routeName = getFocusedRouteNameFromRoute(route) ?? '';
-        //     if (routeName == 'Home') {
-        //       return true;
-        //     }
-        //     return false;
-        //   })(route),
-        // })}
-        
-        
+        initialRouteName="Home"        
         tabBarOptions={{
           activeTintColor: '#1b262c',
           showLabel:false,
@@ -99,13 +87,6 @@ const BottomNav = () =>{
             tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="account-circle" color={color} size={35} />
               ), 
-              // tabBarVisible: ((route) => {
-              //   const routeName = getFocusedRouteNameFromRoute(route) ?? '';
-              //   if (routeName === 'Profile') {
-              //     return false;
-              //   }
-              //   else{return true;}
-              // })(route),
             })}
         />
       </Tab.Navigator>

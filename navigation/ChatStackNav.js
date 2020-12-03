@@ -49,7 +49,6 @@ const HomeScreen = ({ navigation }) => (
   );
   
   const DetailsScreen = (props) => {
-    // const { title, content } = props?.route?.params;
     return (
       <List.Section>
         <List.Subheader>{title}</List.Subheader>

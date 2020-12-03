@@ -6,6 +6,7 @@ import ScreenStyles from '../styles/ScreenStyles'
 import InputText from '../components/TextInput';
 import ProfessionalAvatar from '../components/ProfessionalAvatar';
 import ComponentsStyle from '../styles/ComponentsStyle';
+import AppButton from '../components/AppButton';
 
 
 const ProfileEditScreen=()=>{
@@ -13,6 +14,7 @@ const ProfileEditScreen=()=>{
         <ScrollView style={ScreenStyles.profileEditScreen}>
             <View style={ScreenStyles.profileEditScreen.inputView}>
                 <ProfessionalAvatar style = {profileAvatar} size = {120}/>
+                {/* <AppButton name="Upload"/> */}
                 <Button style={{backgroundColor:"#495464", alignSelf:"center",width:Dimensions.get('window').width/2, marginHorizontal:10}} color = "#F4F4F2">Upload Picture</Button>
             </View>
             <View style={ScreenStyles.profileEditScreen.inputView}>
@@ -46,12 +48,13 @@ const profileAvatar = {
     nameText : {
         fontSize : 16,
         marginTop : 5,
-        fontWeight:"bold",
+        // fontWeight:"bold",
         color:"#495464",
     },
     titleText : {
         fontSize : 14,
-        fontWeight:"normal",
+        fontFamily:"Poppins-Medium",
+        // fontWeight:"normal",
         color:"#495464",
     }
 }

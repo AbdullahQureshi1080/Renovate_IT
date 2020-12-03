@@ -11,6 +11,8 @@ import InputText from '../components/TextInput';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { FloatingAction } from "react-native-floating-action";
+import ComponentsStyle from "../styles/ComponentsStyle";
+import AppButton from '../components/AppButton';
 var { width, height } = Dimensions.get('window')
 
 const ProjectDetailsScreen = (props) =>{
@@ -19,7 +21,7 @@ const ProjectDetailsScreen = (props) =>{
       <ScrollView style = {ScreenStyles.projectsDetailScreen}>
         <View style = {ScreenStyles.projectsDetailScreen.viewBox}>
         <Text style = {ScreenStyles.projectsDetailScreen.viewBox.titleText}>{props.route.params.item.title}</Text>
-        <Button style={{backgroundColor:"#495464"}} color = "#F4F4F2">Follow</Button>
+        <AppButton name="Follow" onPress={()=>console.log("Follow Button")}/>
         </View>
         <View style = {ScreenStyles.projectsDetailScreen.AvatarBox}>
           <Avatar.Image source = {require("../assets/p1.jpg")} style={{

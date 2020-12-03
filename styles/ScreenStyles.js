@@ -16,23 +16,24 @@ const ScreenStyle = {
         },
         textLabel:{
           fontSize:16,
-          fontWeight:"bold",
-          fontFamily: 'Poppins-Medium',
+          // fontWeight:"bold",
+          fontFamily: 'Poppins-Bold',
+          color:"#495464"
         },
       },
       userprofileScreen:{
         // fontFamily: 'Poppins-Regular',
         marginHorizontal:marginHorizontal,
         marginVertical: 10,
-        color:"#222831",
+        color:"#495464",
         userAbout:{
           marginVertical:15,
           userAboutTitle:{
             marginVertical:5,
             fontSize:20,
-            fontWeight:"bold",
-            // color:"#222831",
-            fontFamily: 'Poppins-Medium',
+            // fontWeight:"bold",
+            color:"#495464",
+            fontFamily: 'Poppins-Bold',
           },
           userAboutText:{
             marginVertical:5,
@@ -52,6 +53,8 @@ const ScreenStyle = {
               fontSize:20,
               // fontWeight:"bold",
               fontFamily: 'Poppins-Bold',
+              color:"#495464",
+
           },
         viewBox : {
           display:"flex", 
@@ -81,7 +84,11 @@ const ScreenStyle = {
           flexDirection:"row", 
           justifyContent:"space-between",
           titleText:
-          {fontSize:18, fontWeight: "800",fontFamily: 'Poppins-Medium',}
+          {fontSize:18, 
+            // fontWeight: "800",
+          fontFamily: 'Poppins-Bold', 
+           color:"#495464",
+}
         },
         AvatarBox : {
           display:'flex', 
@@ -90,15 +97,17 @@ const ScreenStyle = {
             fontSize:16, 
             alignSelf:"center", 
             marginHorizontal: 10, 
-            fontWeight:"bold",
+            // fontWeight:"bold",
             color:"#495464",
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins-Bold',
           }
         },
         contentText:{
           marginVertical:10, 
           fontSize:16,
           fontFamily:'Poppins-Regular',
+          color:"#495464",
+
         },
         commentBox:{
           marginVertical:25,
@@ -106,6 +115,7 @@ const ScreenStyle = {
             fontSize: 18,
             fontWeight: 'bold',
             fontFamily: 'Poppins-Regular',
+            color:"#495464",
           }
         },
         infoBox:{
@@ -126,7 +136,12 @@ const ScreenStyle = {
           flexDirection:"row", 
           justifyContent:"space-between",
           titleText:
-          {fontSize:20, fontWeight: "800", fontFamily: 'Poppins-Medium',}
+          {
+            fontSize:20, 
+            // fontWeight: "800", 
+            fontFamily: 'Poppins-Bold',
+            color:"#495464",
+          }
         },
         AvatarBox : {
           display:'flex', 
@@ -143,6 +158,8 @@ const ScreenStyle = {
           marginVertical:10, 
           fontSize:16,
           fontFamily: 'Poppins-Regular',
+          color:"#495464",
+
         },
       },
         infoBox:{

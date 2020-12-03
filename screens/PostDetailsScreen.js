@@ -10,6 +10,7 @@ import ScreenStyles from '../styles/ScreenStyles'
 import InputText from '../components/TextInput';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {postsDummyData} from '../assets/DummyData';
+import AppButton from '../components/AppButton';
 
 var { width, height } = Dimensions.get('window')
 
@@ -26,7 +27,7 @@ const ProjectDetailsScreen = (props) =>{
           <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{props.route.params.item.postAuthor}</Text>
         </View>
         <View style={{alignSelf:"center",}}>
-        <Button style={{backgroundColor:"#495464", }} color = "#F4F4F2">Message</Button>
+        <AppButton name="Message"  onPress={()=>console.log("Message Button")}/>
         </View>
         </View>
 

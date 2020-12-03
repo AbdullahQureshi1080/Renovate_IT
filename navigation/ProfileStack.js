@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View,TouchableOpacity,StyleSheet} from 'react-native';
-
+import AppButton from '../components/AppButton'
 
 import UserProfileScreen from '../screens/UserProfileScreen';
 import ProfileEditScreen from '../screens/ProfileEditScreen';
@@ -18,6 +18,7 @@ const ProfileStack = () => {
             }} />
             <Stack.Screen name="Edit Profile" component={ProfileEditScreen} options={{
                 headerRight:  () => (  
+                    // <AppButton name="Save"/>
                     <Button style={{backgroundColor:"#495464", marginHorizontal:10}} color = "#F4F4F2" onPress={()=>console.log("Pressed")}>Save</Button>
                 )
             }} />

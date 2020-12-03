@@ -23,12 +23,12 @@ const ComponentsStyle = {
                 fontSize : 16,
                 // fontWeight : "bold",
                 marginBottom: 10,
-                fontFamily: 'Poppins-Medium',
+                fontFamily: 'Poppins-Bold',
             },
             subtitleStyle: {
                 fontSize : 14,
                 // fontWeight : "600",
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Poppins-Medium',
             },
         },
         searchBarStyle : {

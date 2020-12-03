@@ -16,7 +16,7 @@ const LocationBar = (props) => {
   const [data,setData] = React.useState("Islamabad");
 
   return (
-    <View style = {{marginVertical:15, alignSelf:"center", display:"flex", flexDirection:"row", }}>
+    <View style = {{marginVertical:15, alignSelf:"center", display:"flex", flexDirection:"row", backgroundColor:"#e8e8e8" }}>
     
     <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
@@ -24,7 +24,7 @@ const LocationBar = (props) => {
           <Dialog.Content>
             <Picker
               selectedValue={data}
-              style={{height: 50, width:250, alignSelf:"center", fontFamily:"Poppins-Regular", fontSize:16,}}
+              style={{height: 50, width:250, alignSelf:"center", fontFamily:"Poppins-Regular", fontSize:16, color:"#f4f4f2"}}
               onValueChange={(itemValue, itemIndex) =>
                 setData( itemValue)
               }
@@ -34,7 +34,7 @@ const LocationBar = (props) => {
             </Picker>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog} style={{backgroundColor:"#495464", }} color = "#e8e8e8">Done</Button>
+            <Button onPress={hideDialog} style={{backgroundColor:"#f4f4f2", }} color = "#495464">Done</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

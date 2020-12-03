@@ -4,8 +4,8 @@ import {View, Text, FlatList} from 'react-native';
 import PostCard from '../components/PostCard';
 import {postsDummyData} from '../assets/DummyData';
 
-const title = "Hi, Boss";
-const content = "This is attempt at working with react native paper and react native core";
+// const title = "Hi, Boss";
+// const content = "This is attempt at working with react native paper and react native core";
 
 const Posts = ({navigation}) =>{
 return(

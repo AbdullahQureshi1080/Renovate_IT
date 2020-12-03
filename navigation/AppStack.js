@@ -15,12 +15,6 @@ import SignUpScreen from '../screens/SignUpScreen';
 
 const Stack = createStackNavigator();
 
-
-// const searchBar = ()=>{
-//   return(
-//     <SearchBar placeholder = "Search"/>
-//   )
-// }
 const AppStack = () => {
     return(
         <Stack.Navigator 

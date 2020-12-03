@@ -4,40 +4,63 @@ import { ImageBackground, StyleSheet,View, Text, Dimensions, Keyboard,TouchableW
 import InputText from '../components/TextInput';
 import {Button} from "react-native-paper";
 import ComponentsStyle from '../styles/ComponentsStyle';
+import {Formik} from 'formik'; 
+import * as Yup from "yup";
+// import ErrorMessage from "../components/ErrorMessage";
+import AppFormField from '../components/AppFormField';
+var { width, height } = Dimensions.get('window');
+import SubmitButton from '../components/SubmitButton';
+import AppForm from '../components/AppForm';
+import AppButton from '../components/AppButton';
 
-var { width, height } = Dimensions.get('window')
+
+
+const validationSchema = Yup.object().shape({
+  email : Yup.string().required().email().label("Email"),
+  password : Yup.string().required().min(4).label("Password")
+});
 
 const LoginScreen = ({navigation}) =>{
 return(
-    <TouchableWithoutFeedback style={styles.container}>
+    <View style={styles.container}>
         <ImageBackground source={require('../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
-            <View style={{alignSelf:"center"}}>  
+        <View style={{alignSelf:"center"}}>  
             <Text style = {styles.titleText}>Sign In</Text>
-            </View>
-            <View style={{alignSelf:"center"}}>
-                <InputText 
-                  style={ComponentsStyle.inputStyleSign} 
+        </View>
+        <AppForm
+          initialValues={{email:"",password:""}}
+          onSubmit = {values => console.log(values)}
+          validationSchema = {validationSchema}
+          > 
+          <View style={{alignSelf:"center"}}>
+            <AppFormField 
+                  style={ComponentsStyle.inputStyleSign}
                   label="Email" 
-                  selectionColor="#f4f4f2" 
+                  name="email" 
+                  selectionColor="#f4f4f2"  
                   underlineColor="#f4f4f2" 
-                  textColor="#f4f4f2"/>
+                  textColor="#f4f4f2"
+                  />
             </View>
             <View style={{alignSelf:"center"}}>
-                <InputText 
+            <AppFormField 
                   style={ComponentsStyle.inputStyleSign} 
-                  label="Password" disabled={false} 
+                  label="Password" 
+                  name="password" 
                   selectionColor="#f4f4f2" 
                   underlineColor="#f4f4f2" 
-                  textColor="#f4f4f2"/>
+                  textColor="#f4f4f2"
+                  textContentType ="password"
+                  secureTextEntry = {true}
+                  />
+
             </View>
             <View style={{alignSelf:"center"}}>
-            <Button 
-              style={styles.btnSign} color = "#F4F4F2" 
-              onPress={()=>navigation.navigate("Home")}>Sign in</Button>
+            <SubmitButton name="Sign in"/>
             <Button 
               style={{backgroundColor:"#DB4437",  marginVertical:5,}} 
-              color = "#F4F4F2">Sign in with google</Button>
+              color = "#F4F4F2" onPress={()=>navigation.navigate("Home")}>Sign in with google</Button>
             </View>
             
             <View style={{
@@ -50,14 +73,18 @@ return(
 
             <View style={{alignSelf:"center"}}>
             <Text style={styles.text}>Don't have an account?</Text>
-            <Button 
-              style={styles.btnSign} 
-              color = "#F4F4F2" 
-              onPress={()=>navigation.navigate("Sign Up")} >Sign Up</Button>
+            <AppButton name="Sign Up" onPress={()=>navigation.navigate("Sign Up")}/>
             </View>
+          {/* {() => (
+            <> 
+            
+            </>
+          )} */}
+          </AppForm>        
+            
         </View>
         </ImageBackground>
-    </TouchableWithoutFeedback>
+    </View>
 );
 
 }
