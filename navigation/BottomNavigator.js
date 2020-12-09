@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import HomeStack from './HomeStack';
 import StoreStackNav from './StoreStackNav';
-import ChatStackNav from './ChatStackNav';
+import ChatStack from './ChatStack';
 import CreateStackNav from './CreateStackNav';
 import ProfileStack from './ProfileStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -70,7 +70,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Chats"
         //   Chat Stack all screens 
-          component={ChatStackNav}
+          component={ChatStack}
           options={{
             tabBarLabel: 'Chats',
             tabBarIcon: ({ color, size }) => (

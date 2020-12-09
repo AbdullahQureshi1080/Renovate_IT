@@ -103,6 +103,35 @@ const ComponentsStyle = {
                 
             },
         },
+        AppCardStyle:{
+            borderRadius : 5,
+            marginHorizontal: marginHorizontal,
+            height: Dimensions.get('window').height/2.4,
+            marginVertical : 10,
+            backgroundColor: "#e8e8e8",
+            shadowColor:"#1b262c",
+            border:"none",
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+            elevation: 10,
+            titleStyle: {
+                fontSize : 16,
+                fontWeight : "600",
+                // fontFamily: 'Poppins-Regular',
+                
+            },
+            subtitleStyle: {
+                fontSize : 14,
+                // fontWeight : "normal",
+                fontWeight : "600",
+                // fontFamily: 'Poppins-Bold',
+                
+            },
+        },
         categoryCardStyle:{
             // fontFamily: 'Poppins-Medium',
             height: Dimensions.get('window').height/4,

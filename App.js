@@ -52,8 +52,7 @@ const theme = {
 
 const App = () => {
   return (
-    <PaperProvider theme={theme}
-    >
+    <PaperProvider theme={theme}>
      <ContainerNav />
     </PaperProvider>
   );
