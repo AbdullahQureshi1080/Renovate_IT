@@ -1,10 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProjectsScreen from '../screens/ProjectsScreen';
-import ProfessionalsScreen from '../screens/ProfessionalsScreen';
+import ProjectsScreen from '../screens/HomeStack/ProjectsScreen';
+import ProfessionalsScreen from '../screens/HomeStack/ProfessionalsScreen';
 
 import TabNavigatorStyle from '../styles/TabNavigatorStyle';
 
@@ -18,12 +17,6 @@ return(
         initialRouteName = {ProjectsScreen}
         tabBarOptions = {TabNavigatorStyle.mainTabBarStyle}
     >
-        {/* Screens for the tab  top  navigations 
-        1.Projects
-            1.Projects
-            2.Posts
-        2.Professionals
-        */}
       <Tab.Screen 
         name="Projects" 
         component={ProjectsScreen} 

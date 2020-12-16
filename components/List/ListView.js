@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {View,Text, FlatList,Dimensions} from 'react-native';
 // import { List } from 'react-native-paper';
-import ProfessionalAvatar from './ProfessionalAvatar';
-import AppButton from './AppButton';
+import ProfessionalAvatar from '../ProfessionalAvatar';
+import AppButton from '../AppButton';
 import { Button } from 'react-native-paper';
 // const [messageData, setMessageData] = React.useState(messages);
 
 const notifications = [
-      {id:"1",name:"Abdullah Najam",descrition:"followed you", image:require('../assets/p1.jpg')},
-      {id:"2",name:"Abdul Karim",descrition:"apperciated your work", image:require('../assets/p1.jpg')},
-      {id:"3",name:"James Taylor",descrition:"followed you", image:require('../assets/p1.jpg')},
-      {id:"4",name:"Felicity Smoke",descrition:"apperciated your work", image:require('../assets/p1.jpg')},
+      {id:"1",name:"Abdullah Najam",descrition:"followed you", image:require('../../assets/p1.jpg')},
+      {id:"2",name:"Abdul Karim",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
+      {id:"3",name:"James Taylor",descrition:"followed you", image:require('../../assets/p1.jpg')},
+      {id:"4",name:"Felicity Smoke",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
   ]
 
 const messages = [

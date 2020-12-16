@@ -1,14 +1,21 @@
+// Native Imports
 import 'react-native-gesture-handler';
-import React, { useRef } from 'react';
-import { ImageBackground, StyleSheet,View, Text, Dimensions, Keyboard,TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
-import ComponentsStyle from '../styles/ComponentsStyle';
+
+// Component Imports
+import AppFormField from '../../components/AppForm/AppFormField';
+import SubmitButton from '../../components/AppForm/SubmitButton';
+import AppForm from '../../components/AppForm/AppForm';
+import AppButton from '../../components/AppButton';
+
+// Style Imports
+import ComponentsStyle from '../../styles/ComponentsStyle';
+
+// Supporting Imports
 import * as Yup from "yup";
-import AppFormField from '../components/AppFormField';
-import { ScrollView } from 'react-native-gesture-handler';
-import SubmitButton from '../components/SubmitButton';
-import AppForm from '../components/AppForm';
-import AppButton from '../components/AppButton';
+
 var { width, height } = Dimensions.get('window')
 
 
@@ -25,7 +32,7 @@ const validationSchema = Yup.object().shape({
 const SignUpScreen = ({navigation}) =>{
     return(
         <ScrollView style={styles.container}>
-            <ImageBackground source={require('../assets/splashscreen.jpg')} style={styles.image}>
+            <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
             <View style={styles.child}> 
                 <View style={{alignSelf:"center"}}>  
                 <Text style = {styles.titleText}>Sign Up</Text>

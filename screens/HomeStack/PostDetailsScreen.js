@@ -1,18 +1,16 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text, Image, ScrollView, Dimensions} from 'react-native';
-import {
-   Paragraph,
-   Button,
-   Avatar,
- } from 'react-native-paper';
-import ScreenStyles from '../styles/ScreenStyles'
-import InputText from '../components/TextInput';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {postsDummyData} from '../assets/DummyData';
-import AppButton from '../components/AppButton';
+import {Paragraph,Avatar,} from 'react-native-paper';
 
-var { width, height } = Dimensions.get('window')
+// Components Imports
+import AppButton from '../../components/AppButton';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
+
+// var { width, height } = Dimensions.get('window')
 
 const ProjectDetailsScreen = (props) =>{
 
@@ -21,7 +19,7 @@ const ProjectDetailsScreen = (props) =>{
          
         <View style = {ScreenStyles.postsDetailScreen.viewBox}>
         <View style = {ScreenStyles.postsDetailScreen.AvatarBox}>
-          <Avatar.Image source = {require("../assets/p1.jpg")} style={{
+          <Avatar.Image source = {require("../../assets/p1.jpg")} style={{
             marginHorizontal:3
           }}/>
           <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{props.route.params.item.postAuthor}</Text>

@@ -1,10 +1,10 @@
+// Native Imports
 import * as React from 'react';
 import { View, } from 'react-native';
-import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Button, Dialog, Portal } from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
-import TextInput from '../components/TextInput';
 import {Picker} from '@react-native-picker/picker';
+
 
 const LocationBar = (props) => {
   const [visible, setVisible] = React.useState(false);

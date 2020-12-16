@@ -1,7 +1,10 @@
+// Native Imports
 import React from 'react';
 import {View,Text, StyleSheet} from 'react-native';
-import AppCard from '../components/AppCard';
-import {ListViewNotifications,ListViewMessages} from '../components/ListView';
+
+// Components Imports
+import AppCard from '../../components/AppCard';
+import {ListViewNotifications,ListViewMessages} from '../../components/List/ListView';
 
 const ChatScreen = ({navigation}) => {
 return(
@@ -13,11 +16,12 @@ return(
         } 
             onPress={()=>navigation.navigate('All Notifications')}/>
         <AppCard 
-            title="Inbox"  
-            onPress={()=>navigation.navigate('All Messages')}  
+            title="Inbox" 
             component = {
-            <ListViewMessages/>
-            } 
+                <ListViewMessages navigation = {navigation}/>
+                }  
+            onPress={()=>{navigation.navigate('All Messages')}}  
+            
         />
     </View>    
 );

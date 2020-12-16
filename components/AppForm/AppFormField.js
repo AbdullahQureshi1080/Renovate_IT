@@ -1,13 +1,16 @@
+// Native Imports
 import React from 'react';
-import InputText from '../components/TextInput';
-import ErrorMessage from "../components/ErrorMessage";
+import AppTextInput from '../AppTextInput';
+import ErrorMessage from "./ErrorMessage";
+
+// Supporting Imports
 import {useFormikContext} from 'formik';
 
 const AppFormField = ({name, ...otherProps}) =>{
     const {setFieldTouched, touched, handleChange, errors} = useFormikContext(); 
     return(
         <>
-        <InputText 
+        <AppTextInput 
         {...otherProps}
         onBlur={()=> setFieldTouched(name)}
         onChangeText = {handleChange(name)}

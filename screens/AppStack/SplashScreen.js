@@ -1,7 +1,8 @@
+// Native Imports
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet,View,Text } from 'react-native';
-import { ActivityIndicator, Colors } from 'react-native-paper';
+import React, {useEffect } from 'react';
+import { ImageBackground, StyleSheet,View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 const SplashScreen = ({navigation}) =>{
@@ -10,7 +11,7 @@ const SplashScreen = ({navigation}) =>{
       });
 return(
     <View style={styles.container}>
-        <ImageBackground source={require('../assets/splashscreen.jpg')} style={styles.image}>
+        <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
         </View>
         <ActivityIndicator animating={true} color="#F4f4f2" size="large" style={{position:"absolute", alignSelf:"center"}}/>

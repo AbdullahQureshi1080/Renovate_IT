@@ -1,6 +1,12 @@
+// Native Imports
 import React from 'react';
+
+// Component Imports
+import AppButton from '../AppButton';
+
+// Supporting Imports
 import {useFormikContext} from 'formik';
-import AppButton from './AppButton';
+
 
 const SubmitButton = ({name}) =>{
     const {handleSubmit} = useFormikContext(); 

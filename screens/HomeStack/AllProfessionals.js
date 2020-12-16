@@ -1,10 +1,14 @@
+// Native Imports
 import * as React from 'react';
-import {View,Text,Dimensions} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { professionals } from '../assets/DummyData';
-import ProfessionalAvatar from '../components/ProfessionalAvatar';
-import SearchBar from '../components/SearchBar';
-import ScreenStyles from '../styles/ScreenStyles'
+import {View,Text,Dimensions, FlatList} from 'react-native';
+
+// Components Imports
+import { professionals } from '../../assets/DummyData';
+import ProfessionalAvatar from '../../components/ProfessionalAvatar';
+import SearchBar from '../../components/SearchBar';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
 
 const profileAvatar = {
   marginVertival:100,
@@ -30,7 +34,7 @@ const AllProfessionals = (navigation) =>{
           <SearchBar placeholder = "Search by Name"/>
           <FlatList 
             data = {professionals}
-             numColumns={3}
+            numColumns={3}
             renderItem = {(item) => (
             <View style = {{flex:1, flexDirection:"column", justifyContent:'space-between', marginHorizontal:15}}>
               <ProfessionalAvatar 

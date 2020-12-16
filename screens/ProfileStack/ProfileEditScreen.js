@@ -1,13 +1,16 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import { View,Text,ScrollView,Image, ImageBackground, Dimensions} from 'react-native';
 import { Button,List,TextInput } from 'react-native-paper';
-import ScreenStyles from '../styles/ScreenStyles'
-import InputText from '../components/TextInput';
-import ProfessionalAvatar from '../components/ProfessionalAvatar';
-import ComponentsStyle from '../styles/ComponentsStyle';
-import AppButton from '../components/AppButton';
 
+// Components Imports
+import InputText from '../../components/AppTextInput';
+import ProfessionalAvatar from '../../components/ProfessionalAvatar';
+import ComponentsStyle from '../../styles/ComponentsStyle';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
 
 const ProfileEditScreen=()=>{
     return(

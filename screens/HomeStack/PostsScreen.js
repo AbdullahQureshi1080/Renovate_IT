@@ -1,8 +1,11 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text, FlatList} from 'react-native';
-import PostCard from '../components/PostCard';
-import {postsDummyData} from '../assets/DummyData';
+
+// Components Imports
+import PostCard from '../../components/Card/PostCard';
+import {postsDummyData} from '../../assets/DummyData';
 
 // const title = "Hi, Boss";
 // const content = "This is attempt at working with react native paper and react native core";

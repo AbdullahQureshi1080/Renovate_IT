@@ -1,7 +1,10 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Avatar, Button, Card, Title, Paragraph,Image } from 'react-native-paper';
-import ComponentsStyle from '../styles/ComponentsStyle';
+import {Card} from 'react-native-paper';
+
+// Styles Imports
+import ComponentsStyle from '../../styles/ComponentsStyle';
 
 
 const InfoCard = (props) => (
@@ -17,3 +20,4 @@ const InfoCard = (props) => (
 )
 
 export default InfoCard;
+

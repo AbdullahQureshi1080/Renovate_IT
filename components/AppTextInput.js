@@ -1,6 +1,9 @@
+// Native Imports
 import * as React from 'react';
 import { TextInput } from 'react-native-paper';
-const InputText = (props) => {
+
+
+const AppTextInput = (props) => {
   // const [text, setText] = React.useState('');
 
   return (
@@ -22,4 +25,4 @@ const InputText = (props) => {
   );
 };
 
-export default InputText;
+export default AppTextInput;

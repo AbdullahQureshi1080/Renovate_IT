@@ -1,17 +1,17 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View,TouchableOpacity,StyleSheet,Text} from 'react-native';
-import HomeScreen  from '../screens/HomeScreen';
-import ProjectDetailsScreen  from '../screens/ProjectDetailsScreen';
-import SearchBar from '../components/SearchBar';
-import PostDetailsScreen from '../screens/PostDetailsScreen';
+import {StyleSheet} from 'react-native';
+
+// Supporting Imports
+
+// Stack Screens
 import BottomNav from './BottomNavigator';
-import AllProfessionals from "../screens/AllProfessionals"; 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import SplashScreen from '../screens/SplashScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SignUpScreen from '../screens/SignUpScreen';
+import SplashScreen from '../screens/AppStack/SplashScreen';
+import LoginScreen from '../screens/AppStack/LoginScreen';
+import SignUpScreen from '../screens/AppStack/SignUpScreen';
 
 const Stack = createStackNavigator();
 

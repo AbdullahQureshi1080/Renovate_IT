@@ -1,10 +1,18 @@
+// Native Imports
 import React from 'react';
 import {View,Text, StyleSheet} from 'react-native';
 
-const NewMessageScreen = ({navigation}) => {
+// Components Imports
+import AppTextInput from '../../components/AppTextInput';
+
+const NewMessageScreen = () => {
     return(
         <View style={styles.mainContainer}>
             <Text>New Message will be here </Text>
+            <AppTextInput 
+                placeholder="Enter Email" 
+                
+            />
         </View>    
     );
 }

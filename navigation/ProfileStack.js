@@ -4,8 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { View,TouchableOpacity,StyleSheet} from 'react-native';
 import AppButton from '../components/AppButton'
 
-import UserProfileScreen from '../screens/UserProfileScreen';
-import ProfileEditScreen from '../screens/ProfileEditScreen';
+import UserProfileScreen from '../screens/ProfileStack/UserProfileScreen';
+import ProfileEditScreen from '../screens/ProfileStack/ProfileEditScreen';
 import { Button } from 'react-native-paper';
 
 const Stack = createStackNavigator();

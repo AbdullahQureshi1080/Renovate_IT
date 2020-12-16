@@ -1,16 +1,19 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import { View,Text,ScrollView,Image, ImageBackground, Dimensions} from 'react-native';
 import { Button,List } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialComunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import ScreenStyles from '../styles/ScreenStyles'
-import ProfessionalAvator from '../components/ProfessionalAvatar';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
+
+// Components
+import ProfessionalAvator from '../../components/ProfessionalAvatar';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
-import TabNavigatorStyle from '../styles/TabNavigatorStyle';
-import InfoCard from '../components/InfoCard';
+import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
+import InfoCard from '../../components/Card/InfoCard';
 import ProfileEditScreen from './ProfileEditScreen';
 
 const Tab = createMaterialTopTabNavigator();

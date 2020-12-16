@@ -2,10 +2,10 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View,TouchableOpacity,StyleSheet} from 'react-native';
-import ChatScreen from '../screens/ChatScreen';
-import AllNotificationScreen from '../screens/AllNotificationScreen';
-import AllMessagesScreen from '../screens/AllMessagesScreen';
-import NewMessageScreen from '../screens/NewMessageScreen'; 
+import ChatScreen from '../screens/ChatStack/ChatScreen';
+import AllNotificationScreen from '../screens/ChatStack/AllNotificationScreen';
+import AllMessagesScreen from '../screens/ChatStack/AllMessagesScreen';
+import NewMessageScreen from '../screens/ChatStack/NewMessageScreen'; 
 
 const Stack = createStackNavigator();
 

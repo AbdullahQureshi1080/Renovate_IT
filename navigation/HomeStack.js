@@ -2,13 +2,11 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View,TouchableOpacity,StyleSheet,Text} from 'react-native';
-import HomeScreen  from '../screens/HomeScreen';
-import ProjectDetailsScreen  from '../screens/ProjectDetailsScreen';
+import HomeScreen  from '../screens/HomeStack/HomeScreen';
+import ProjectDetailsScreen  from '../screens/HomeStack/ProjectDetailsScreen';
 import SearchBar from '../components/SearchBar';
-import PostDetailsScreen from '../screens/PostDetailsScreen';
-import BottomNav from './BottomNavigator';
-import AllProfessionals from "../screens/AllProfessionals"; 
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import PostDetailsScreen from '../screens/HomeStack/PostDetailsScreen';
+import AllProfessionals from "../screens/HomeStack/AllProfessionals"; 
 
 const Stack = createStackNavigator();
 

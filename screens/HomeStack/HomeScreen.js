@@ -1,7 +1,8 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import TopNavigator from '../navigation/TopNavigator';
+import TopNavigator from '../../navigation/TopNavigator';
 
 const HomeScreen = () =>{
 return(

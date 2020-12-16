@@ -1,7 +1,10 @@
+// Native Imports
 import * as React from 'react';
 import { Card,Paragraph } from 'react-native-paper';
 import {View,Text} from 'react-native';
-import ComponentsStyle from '../styles/ComponentsStyle';
+
+// Styles Imports
+import ComponentsStyle from '../../styles/ComponentsStyle';
 
 const LeftContent = props => <Text style={{fontSize : 18,fontFamily:"Poppins-Medium", color:"#495464"}}>Budget</Text>
 

@@ -1,11 +1,16 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text, ScrollView,Dimensions} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ScreenStyles from '../styles/ScreenStyles'
-import ProfessionalAvator from '../components/ProfessionalAvatar';
-import LocationBar from '../components/LocationBar';
-import CategoryCard from '../components/CategoryCard';
+
+// Components Imports
+import ProfessionalAvator from '../../components/ProfessionalAvatar';
+import LocationBar from '../../components/LocationBar';
+import CategoryCard from '../../components/Card/CategoryCard';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
+
       
 
 const profileAvatar = {
@@ -37,19 +42,19 @@ const profileAvatar = {
          <ProfessionalAvator name = "Baig Sahab"  title = "Builder" style={profileAvatar}  size={90}/>
       </View>
       <Text style = {ScreenStyles.professionalsScreen.headTitle}>Select By Category</Text>
-      <LocationBar/>
+      {/* <LocationBar/> */}
       <View>
       <View style={ScreenStyles.professionalsScreen.viewBox}>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Interior Designer" source = {require('../assets/interior-design.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Interior Designer"})}/>      
-               <CategoryCard title = "Architect" source = {require('../assets/architecture.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Architect"})}/>
+               <CategoryCard title = "Interior Designer" source = {require('../../assets/interior-design.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Interior Designer"})}/>      
+               <CategoryCard title = "Architect" source = {require('../../assets/architecture.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Architect"})}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Renovators" source = {require('../assets/renovation.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Renovators"})}/>
-               <CategoryCard title = "Builders" source = {require('../assets/builder.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Builders"})}/>
+               <CategoryCard title = "Renovators" source = {require('../../assets/renovation.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Renovators"})}/>
+               <CategoryCard title = "Builders" source = {require('../../assets/builder.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Builders"})}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Suppliers" source = {require('../assets/supplier.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Suppliers"})}/>
+               <CategoryCard title = "Suppliers" source = {require('../../assets/supplier.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Suppliers"})}/>
             </View>
       </View>
       </View>

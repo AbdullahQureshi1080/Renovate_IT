@@ -1,17 +1,23 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
-import { ImageBackground, StyleSheet,View, Text, Dimensions, Keyboard,TouchableWithoutFeedback } from 'react-native';
-import InputText from '../components/TextInput';
+import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
-import ComponentsStyle from '../styles/ComponentsStyle';
-import {Formik} from 'formik'; 
+
+// Component Imports
+import AppFormField from '../../components/AppForm/AppFormField';
+import SubmitButton from '../../components/AppForm/SubmitButton';
+import AppForm from '../../components/AppForm/AppForm';
+import AppButton from '../../components/AppButton';
+
+// Style Imports
+import ComponentsStyle from '../../styles/ComponentsStyle';
+
+// Supporting Imports
 import * as Yup from "yup";
-// import ErrorMessage from "../components/ErrorMessage";
-import AppFormField from '../components/AppFormField';
+
 var { width, height } = Dimensions.get('window');
-import SubmitButton from '../components/SubmitButton';
-import AppForm from '../components/AppForm';
-import AppButton from '../components/AppButton';
+
 
 
 
@@ -23,7 +29,7 @@ const validationSchema = Yup.object().shape({
 const LoginScreen = ({navigation}) =>{
 return(
     <View style={styles.container}>
-        <ImageBackground source={require('../assets/splashscreen.jpg')} style={styles.image}>
+        <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
         <View style={{alignSelf:"center"}}>  
             <Text style = {styles.titleText}>Sign In</Text>

@@ -1,11 +1,14 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text,FlatList} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TabNavigatorStyle from '../styles/TabNavigatorStyle';
-import ProjectCard from '../components/ProjectCard';
+import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
+
+// Components Imports
+import ProjectCard from '../../components/Card/ProjectCard';
 import Posts from './PostsScreen';
-import {projectsDummyData} from '../assets/DummyData';
+import {projectsDummyData} from '../../assets/DummyData';
 
 const Tab = createMaterialTopTabNavigator();
 

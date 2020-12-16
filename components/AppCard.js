@@ -1,9 +1,9 @@
+// Native Imports
 import * as React from 'react';
-import { Card,Paragraph } from 'react-native-paper';
-import {View,Text} from 'react-native';
+import { Card } from 'react-native-paper';
+
+// Styles Imports
 import ComponentsStyle from '../styles/ComponentsStyle';
-// import ListViewItem from './ListViewItem';
-import ListView from './ListView';
 
 
 const AppCard = (props) => {

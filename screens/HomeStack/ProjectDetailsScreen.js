@@ -1,18 +1,20 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text, Image, ScrollView, Dimensions,StyleSheet} from 'react-native';
-import {
-   Paragraph,
-   Button,
-   Avatar,
- } from 'react-native-paper';
-import ScreenStyles from '../styles/ScreenStyles'
-import InputText from '../components/TextInput';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Paragraph,Button,Avatar,} from 'react-native-paper';
+
+// Components Imports
+import AppTextInput from '../../components/AppTextInput';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { FloatingAction } from "react-native-floating-action";
-import ComponentsStyle from "../styles/ComponentsStyle";
-import AppButton from '../components/AppButton';
+import ComponentsStyle from "../../styles/ComponentsStyle";
+import AppButton from '../../components/AppButton';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles'
+
+
 var { width, height } = Dimensions.get('window')
 
 const ProjectDetailsScreen = (props) =>{
@@ -24,7 +26,7 @@ const ProjectDetailsScreen = (props) =>{
         <AppButton name="Follow" onPress={()=>console.log("Follow Button")}/>
         </View>
         <View style = {ScreenStyles.projectsDetailScreen.AvatarBox}>
-          <Avatar.Image source = {require("../assets/p1.jpg")} style={{
+          <Avatar.Image source = {require("../../assets/p1.jpg")} style={{
             marginHorizontal:3
           }}/>
           <Text style = {ScreenStyles.projectsDetailScreen.AvatarBox.nameText}>{props.route.params.item.name}</Text>
@@ -40,8 +42,8 @@ const ProjectDetailsScreen = (props) =>{
           <Paragraph style={ScreenStyles.projectsDetailScreen.contentText}>
           {props.route.params.item.content.textbar1}
           </Paragraph>
-          <Image style = {ScreenStyles.projectsDetailScreen.imageStyle} source={require('../assets/img1.jpg')}/>
-          <Image style = {ScreenStyles.projectsDetailScreen.imageStyle} source={require('../assets/img2.jpg')}/>
+          <Image style = {ScreenStyles.projectsDetailScreen.imageStyle} source={require('../../assets/img1.jpg')}/>
+          <Image style = {ScreenStyles.projectsDetailScreen.imageStyle} source={require('../../assets/img2.jpg')}/>
           <Paragraph  style={ScreenStyles.projectsDetailScreen.contentText}>
           {props.route.params.item.content.textbar2}
           </Paragraph>
@@ -78,7 +80,7 @@ const ProjectDetailsScreen = (props) =>{
             alignSelf:"center"
           }}
           >
-          <InputText  style={ComponentsStyle.inputStyle}  label="Comment on post" selectionColor="#1b262c" underlineColor="#1b262c"  textColor="#1b262c"/>
+          <AppTextInput  style={ComponentsStyle.inputStyle}  label="Comment on post" selectionColor="#1b262c" underlineColor="#1b262c"  textColor="#1b262c"/>
           <Button icon = "comment-arrow-right-outline" style={{backgroundColor:"#495464", width:Dimensions.get('window').width/3, alignSelf:"center"}} color = "#F4F4F2">Comment</Button>
           </View>
         </View>

@@ -1,5 +1,8 @@
+// Native Imports
 import * as React from 'react';
-import { Button, Searchbar } from 'react-native-paper';
+import {Searchbar } from 'react-native-paper';
+
+// Styles Imports
 import ComponentsStyle from '../styles/ComponentsStyle';
 const SearchBar = (props) => {
   const [searchQuery, setSearchQuery] = React.useState('');
