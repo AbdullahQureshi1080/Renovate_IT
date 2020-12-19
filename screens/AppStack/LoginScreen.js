@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState, useContext} from 'react';
 import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
 
@@ -8,6 +8,7 @@ import {Button} from "react-native-paper";
 import AppFormField from '../../components/AppForm/AppFormField';
 import SubmitButton from '../../components/AppForm/SubmitButton';
 import AppForm from '../../components/AppForm/AppForm';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
 import AppButton from '../../components/AppButton';
 
 // Style Imports
@@ -15,6 +16,11 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 
 // Supporting Imports
 import * as Yup from "yup";
+
+// Api Imports
+import authAPI from '../../api/auth';
+import useAuth from '../../auth/useAuth';
+
 
 var { width, height } = Dimensions.get('window');
 
@@ -27,6 +33,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) =>{
+  const {logIn} = useAuth()
+  const [loginFailed, setLoginFailed] = useState(false); 
+  const handleSubmit = async ({email,password}) =>{
+    const result = await authAPI.login(email,password);
+    if(!result.ok)return setLoginFailed(true);
+    setLoginFailed(false);
+    logIn(result.data);
+  }
 return(
     <View style={styles.container}>
         <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
@@ -36,10 +50,11 @@ return(
         </View>
         <AppForm
           initialValues={{email:"",password:""}}
-          onSubmit = {values => console.log(values)}
+          onSubmit = {handleSubmit}
           validationSchema = {validationSchema}
           > 
           <View style={{alignSelf:"center"}}>
+            <ErrorMessage error="Invalid email and/or Password" visible={loginFailed}/>
             <AppFormField 
                   style={ComponentsStyle.inputStyleSign}
                   label="Email" 
@@ -81,11 +96,6 @@ return(
             <Text style={styles.text}>Don't have an account?</Text>
             <AppButton name="Sign Up" onPress={()=>navigation.navigate("Sign Up")}/>
             </View>
-          {/* {() => (
-            <> 
-            
-            </>
-          )} */}
           </AppForm>        
             
         </View>

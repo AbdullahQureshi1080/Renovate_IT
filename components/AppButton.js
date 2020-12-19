@@ -13,7 +13,9 @@ return (
         style={styles.button} 
         color = {styles.button.color}
         onPress={onPress}
-        >{name}</Button>
+        // icon={()=>{iconName}}
+        >{name}
+        </Button>
 );
 }
 const styles = StyleSheet.create({

@@ -11,6 +11,7 @@ const ProfessionalAvatar = (props) => {
              <Avatar.Image size={props.size} source={require('../assets/p1.jpg')} />
              <Text style = {props.style.nameText}>{props.name}</Text>
              <Text style = {props.style.titleText}>{props.title}</Text>
+             <Text style = {props.style.titleText}>{props.email}</Text>
         </View> 
     </TouchableOpacity>
     

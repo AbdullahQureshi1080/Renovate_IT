@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
 
@@ -16,6 +16,15 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 // Supporting Imports
 import * as Yup from "yup";
 
+// Api Imports
+// import authAPI from '../../api/auth';
+import userApi from '../../api/user';
+
+// import jwtDecode from 'jwt-decode';
+// import AuthContext from '../../auth/context';
+import useAuth from '../../auth/useAuth';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
+
 var { width, height } = Dimensions.get('window')
 
 
@@ -30,19 +39,46 @@ const validationSchema = Yup.object().shape({
 
 
 const SignUpScreen = ({navigation}) =>{
+  const {logIn} = useAuth()
+  const [error, setError] = useState(false); 
+  const [passwordChecked, setPasswordChecked] = useState(false); 
+ 
+
+
+  const handleSubmit = async (userInfo) =>{
+    // if(userInfo.password == userInfo.retypepassword){
+      const result = await userApi.register(userInfo);
+    if(!result.ok) {
+      if(result.data) setError(result.data);
+      else{
+        setError("An unexpected error occured");
+        console.log(result)
+      }
+    return;
+    }
+    const {data:authToken} = await authAPI.login(
+      userInfo.email,
+      userInfo.password,
+    )
+    logIn(authToken);
+    // }
+    // else setPasswordChecked(true);
+  }
     return(
-        <ScrollView style={styles.container}>
+        // <ScrollView style={styles.container}>
             <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
             <View style={styles.child}> 
                 <View style={{alignSelf:"center"}}>  
                 <Text style = {styles.titleText}>Sign Up</Text>
                 </View>
                 <AppForm
-          initialValues={{firstName:"", lastName: "", email:"",password:"", retypepassword:""}}
-          onSubmit = {values => console.log(values)}
+          initialValues={{firstname:"", lastname: "", email:"", password:""}}
+          onSubmit = {handleSubmit}
           validationSchema = {validationSchema}
           > 
            <View style={{alignSelf:"center"}}>
+           <ErrorMessage error="Could not register account" visible={error}/>
+           <ErrorMessage error="Passwords do not match" visible={passwordChecked}/>
             <AppFormField 
                   style={ComponentsStyle.inputStyleSign} 
                   label="First Name"
@@ -86,7 +122,7 @@ const SignUpScreen = ({navigation}) =>{
                   />
 
             </View>
-            <View style={{alignSelf:"center"}}>
+            {/* <View style={{alignSelf:"center"}}>
             <AppFormField 
                   style={ComponentsStyle.inputStyleSign} 
                   label="Re-type Password"
@@ -98,7 +134,7 @@ const SignUpScreen = ({navigation}) =>{
                   secureTextEntry = {true}
                   />
 
-            </View>
+            </View> */}
             <View style={{alignSelf:"center"}}>
               <SubmitButton name="Sign Up" />
             <Button 
@@ -121,7 +157,7 @@ const SignUpScreen = ({navigation}) =>{
           </AppForm>
             </View>
             </ImageBackground>
-        </ScrollView>
+        // </ScrollView>
     );
     
     }
@@ -133,12 +169,12 @@ const SignUpScreen = ({navigation}) =>{
           // marginVertical:30,
         },
         child: {
-            flex: 2,
+            flex: 1,
             flexDirection: "column",
             backgroundColor: 'rgba(0,0,0,0.5)',
             justifyContent:"center",
             paddingHorizontal:20,
-            paddingVertical :30,
+            // paddingVertical :30,
 
           },
         image: {

@@ -9,7 +9,7 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 const ProjectCard = (props) => (
 <Card style = {ComponentsStyle.projectCardStyle}
   onPress={props.onPress}>
-    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+    <Card.Cover source={require("../../assets/renovation.jpg")} />
     <Card.Title 
         title={props.title} 
         subtitle={props.name} 

@@ -8,10 +8,16 @@
 
 
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
+// import {Provider} from "react-redux";
 import { configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import ContainerNav from './navigation/ContainerNav';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+
+// import configureStore from './store/configureStore';
+
+// const store = configureStore();
+
 
 
 
@@ -49,12 +55,14 @@ const theme = {
 }
 };
 
-
 const App = () => {
+  // const [user,setUser] = useState();
   return (
-    <PaperProvider theme={theme}>
-     <ContainerNav />
-    </PaperProvider>
+    // <Provider store = {store}>
+      <PaperProvider theme={theme}>
+       <ContainerNav />
+      </PaperProvider>
+    // </Provider> 
   );
 };
 

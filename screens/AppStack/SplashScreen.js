@@ -7,7 +7,7 @@ import { ActivityIndicator } from 'react-native-paper';
 
 const SplashScreen = ({navigation}) =>{
     useEffect(() => {
-        setTimeout(()=>{navigation.navigate("Login")},1)
+        setTimeout(()=>{navigation.navigate("Login")}, 3000)
       });
 return(
     <View style={styles.container}>

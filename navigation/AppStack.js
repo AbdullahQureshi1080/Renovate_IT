@@ -41,13 +41,13 @@ const AppStack = () => {
                 headerShown:false ,
               }}
             />  
-            <Stack.Screen 
+            {/* <Stack.Screen 
             name="Home" 
             component={BottomNav}
             options={{
                 headerShown:false ,
               }}
-             />  
+             />   */}
         </Stack.Navigator>
     );
 }

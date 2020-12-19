@@ -1,10 +1,14 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+// Screen Imports
 import ProjectsScreen from '../screens/HomeStack/ProjectsScreen';
 import ProfessionalsScreen from '../screens/HomeStack/ProfessionalsScreen';
 
+// Styles Imports
 import TabNavigatorStyle from '../styles/TabNavigatorStyle';
 
 const Tab = createMaterialTopTabNavigator();

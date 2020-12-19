@@ -1,9 +1,11 @@
+// Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View,TouchableOpacity,StyleSheet} from 'react-native';
 import AppButton from '../components/AppButton'
 
+// Screen Imports
 import UserProfileScreen from '../screens/ProfileStack/UserProfileScreen';
 import ProfileEditScreen from '../screens/ProfileStack/ProfileEditScreen';
 import { Button } from 'react-native-paper';

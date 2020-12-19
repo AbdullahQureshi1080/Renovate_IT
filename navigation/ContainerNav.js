@@ -1,9 +1,15 @@
+// Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {DefaultTheme,NavigationContainer } from '@react-navigation/native'; 
+
+// Navigation Imports
 import BottomNav from './BottomNavigator';
 import AppStack from './AppStack';
-// import AppStack from './AppStack';
+
+// Auth Imports
+import AuthContext from '../auth/context';
+import authStorage from '../auth/storage';
 
 const MyTheme = {
     ...DefaultTheme,
@@ -16,11 +22,26 @@ const MyTheme = {
     },
   };
 
+
 const ContainerNav = () =>{
+  const [user,setUser] = useState();
+
+  const restoreUser = async()=>{
+    const user = await authStorage.getUser();
+    if(user) setUser(user);
+  }
+
+  useEffect(() => {
+    restoreUser();
+  }, [])
+
     return(
-        <NavigationContainer theme = {MyTheme}>
-           <AppStack/>
+      <AuthContext.Provider value={{user,setUser}}>
+           <NavigationContainer theme = {MyTheme}>
+           {user?  <BottomNav/> : <AppStack/> }
+           {/* <AppStack/> */}
         </NavigationContainer>
+      </AuthContext.Provider>
     );
 };
 
