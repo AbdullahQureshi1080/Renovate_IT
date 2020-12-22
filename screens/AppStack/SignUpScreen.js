@@ -1,7 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
+import { ImageBackground, StyleSheet,View, Text, Dimensions,} from 'react-native';
 import {Button} from "react-native-paper";
 
 // Component Imports
@@ -9,6 +9,7 @@ import AppFormField from '../../components/AppForm/AppFormField';
 import SubmitButton from '../../components/AppForm/SubmitButton';
 import AppForm from '../../components/AppForm/AppForm';
 import AppButton from '../../components/AppButton';
+import ActivityIndicator from '../../components/ActivityIndicator';
 
 // Style Imports
 import ComponentsStyle from '../../styles/ComponentsStyle';
@@ -17,56 +18,50 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 import * as Yup from "yup";
 
 // Api Imports
-// import authAPI from '../../api/auth';
-import userApi from '../../api/user';
-
-// import jwtDecode from 'jwt-decode';
-// import AuthContext from '../../auth/context';
+import authAPI from '../../api/auth';
+import userAPI from '../../api/user';
 import useAuth from '../../auth/useAuth';
+import useApi from '../../hooks/useApi';
+
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
 
 var { width, height } = Dimensions.get('window')
 
 
 const validationSchema = Yup.object().shape({
-  firstName : Yup.string().required().label("First name"),
-  lastName : Yup.string().required().label("Last name"),
+  firstname : Yup.string().required().label("First Name"),
+  lastname : Yup.string().required().label("Last Name"),
   email : Yup.string().required().email().label("Email"),
   password : Yup.string().required().min(4).label("Password"),
-  retypepassword : Yup.string().required().min(4).label("Retype-Password"),
-
+  // retypepassword : Yup.string().required().min(4).label("Retype-Password"),
 });
 
 
 const SignUpScreen = ({navigation}) =>{
-  const {logIn} = useAuth()
-  const [error, setError] = useState(false); 
-  const [passwordChecked, setPasswordChecked] = useState(false); 
- 
-
-
-  const handleSubmit = async (userInfo) =>{
-    // if(userInfo.password == userInfo.retypepassword){
-      const result = await userApi.register(userInfo);
+  const auth = useAuth()
+  const registerApi = useApi(userAPI.register);
+  const loginApi = useApi(authAPI.login);
+  const [error, setError] = useState(); 
+  const handleSubmit = async ({firstname,lastname,email,password}) =>{
+      const result = await registerApi.request(firstname,lastname,email,password);
     if(!result.ok) {
-      if(result.data) setError(result.data);
+      if(result.data) setError(result.data.error);
       else{
         setError("An unexpected error occured");
         console.log(result)
       }
     return;
     }
-    const {data:authToken} = await authAPI.login(
-      userInfo.email,
-      userInfo.password,
+    const getNewToken = await loginApi.request(
+      email,
+      password,
     )
-    logIn(authToken);
-    // }
-    // else setPasswordChecked(true);
+    auth.logIn(getNewToken.data);
   }
     return(
         // <ScrollView style={styles.container}>
             <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
+              <ActivityIndicator visible = {registerApi.loading || loginApi.loading}/>
             <View style={styles.child}> 
                 <View style={{alignSelf:"center"}}>  
                 <Text style = {styles.titleText}>Sign Up</Text>
@@ -77,12 +72,11 @@ const SignUpScreen = ({navigation}) =>{
           validationSchema = {validationSchema}
           > 
            <View style={{alignSelf:"center"}}>
-           <ErrorMessage error="Could not register account" visible={error}/>
-           <ErrorMessage error="Passwords do not match" visible={passwordChecked}/>
+           <ErrorMessage error={error} visible={error}/>
             <AppFormField 
                   style={ComponentsStyle.inputStyleSign} 
                   label="First Name"
-                  name="firstName" 
+                  name="firstname" 
                   selectionColor="#f4f4f2" 
                   underlineColor="#f4f4f2" 
                   textColor="#f4f4f2"
@@ -92,7 +86,7 @@ const SignUpScreen = ({navigation}) =>{
             <AppFormField 
                   style={ComponentsStyle.inputStyleSign} 
                   label="Last Name"
-                  name="lastName" 
+                  name="lastname" 
                   selectionColor="#f4f4f2" 
                   underlineColor="#f4f4f2" 
                   textColor="#f4f4f2"

@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React, { useState, useContext} from 'react';
+import React, { useState, useEffect} from 'react';
 import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
 
@@ -10,6 +10,8 @@ import SubmitButton from '../../components/AppForm/SubmitButton';
 import AppForm from '../../components/AppForm/AppForm';
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
 import AppButton from '../../components/AppButton';
+import ActivityIndicator from '../../components/ActivityIndicator';
+
 
 // Style Imports
 import ComponentsStyle from '../../styles/ComponentsStyle';
@@ -20,10 +22,9 @@ import * as Yup from "yup";
 // Api Imports
 import authAPI from '../../api/auth';
 import useAuth from '../../auth/useAuth';
-
+import useApi from '../../hooks/useApi';
 
 var { width, height } = Dimensions.get('window');
-
 
 
 
@@ -33,16 +34,18 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) =>{
-  const {logIn} = useAuth()
+  const auth = useAuth()
+  const loginApi = useApi(authAPI.login);
   const [loginFailed, setLoginFailed] = useState(false); 
   const handleSubmit = async ({email,password}) =>{
-    const result = await authAPI.login(email,password);
+    const result = await loginApi.request(email,password);
     if(!result.ok)return setLoginFailed(true);
     setLoginFailed(false);
-    logIn(result.data);
+    auth.logIn(result.data);
   }
 return(
     <View style={styles.container}>
+         <ActivityIndicator visible = {loginApi.loading}/>
         <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
         <View style={{alignSelf:"center"}}>  
@@ -94,7 +97,7 @@ return(
 
             <View style={{alignSelf:"center"}}>
             <Text style={styles.text}>Don't have an account?</Text>
-            <AppButton name="Sign Up" onPress={()=>navigation.navigate("Sign Up")}/>
+            <AppButton name="Sign Up" onPress={()=>{navigation.navigate("Sign Up")}}/>
             </View>
           </AppForm>        
             
