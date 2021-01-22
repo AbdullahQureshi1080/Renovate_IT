@@ -7,7 +7,7 @@ import {StyleSheet} from 'react-native';
 // Supporting Imports
 
 // Stack Screens
-import BottomNav from './BottomNavigator';
+import BottomNavigation from './BottomNavigation';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import SplashScreen from '../screens/AppStack/SplashScreen';
 import LoginScreen from '../screens/AppStack/LoginScreen';
@@ -41,13 +41,13 @@ const AppStack = () => {
                 headerShown:false ,
               }}
             />  
-            {/* <Stack.Screen 
+            <Stack.Screen 
             name="Home" 
-            component={BottomNav}
+            component={BottomNavigation}
             options={{
                 headerShown:false ,
               }}
-             />   */}
+             />  
         </Stack.Navigator>
     );
 }

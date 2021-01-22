@@ -1,6 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import { ImageBackground, StyleSheet,View, Text, Dimensions,} from 'react-native';
 import {Button} from "react-native-paper";
 
@@ -23,6 +24,9 @@ import userAPI from '../../api/user';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
 
+import { userVerify, assignUserData } from "../../store/auth";
+
+
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
 
 var { width, height } = Dimensions.get('window')
@@ -38,26 +42,45 @@ const validationSchema = Yup.object().shape({
 
 
 const SignUpScreen = ({navigation}) =>{
+  const dispatch = useDispatch();
   const auth = useAuth()
   const registerApi = useApi(userAPI.register);
   const loginApi = useApi(authAPI.login);
   const [error, setError] = useState(); 
+  // const handleSubmit = async ({firstname,lastname,email,password}) =>{
+  //     const result = await registerApi.request(firstname,lastname,email,password);
+  //   if(!result.ok) {
+  //     if(result.data) setError(result.data.error);
+  //     else{
+  //       setError("An unexpected error occured");
+  //       console.log(result)
+  //     }
+  //   return;
+  //   }
+  //   const getNewToken = await loginApi.request(
+  //     email,
+  //     password,
+  //   )
+  //   auth.logIn(getNewToken.data);
+  // }
   const handleSubmit = async ({firstname,lastname,email,password}) =>{
-      const result = await registerApi.request(firstname,lastname,email,password);
-    if(!result.ok) {
-      if(result.data) setError(result.data.error);
-      else{
-        setError("An unexpected error occured");
-        console.log(result)
-      }
-    return;
+    const result = await registerApi.request(firstname,lastname,email,password);
+  if(!result.ok) {
+    if(result.data) setError(result.data.error);
+    else{
+      setError("An unexpected error occured");
+      console.log(result)
     }
-    const getNewToken = await loginApi.request(
-      email,
-      password,
-    )
-    auth.logIn(getNewToken.data);
+  return;
   }
+  const getNewToken = await loginApi.request(
+    email,
+    password,
+  )
+  auth.logIn(getNewToken.data);
+  dispatch(userVerify(result.data));
+  navigation.navigate("Home");
+}
     return(
         // <ScrollView style={styles.container}>
             <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>

@@ -4,7 +4,7 @@ import React from 'react';
 
 import TopNavigator from '../../navigation/TopNavigator';
 
-const HomeScreen = () =>{
+const HomeScreen = ({navigation}) =>{
 return(
     <TopNavigator/>
 );

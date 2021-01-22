@@ -7,19 +7,19 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 // Screen Imports
 import HomeStack from './HomeStack';
-import StoreStackNav from './StoreStackNav';
+import StoreStack from './StoreStack';
 import ChatStack from './ChatStack';
-import CreateStackNav from './CreateStackNav';
+import CreateStack from './CreateStack';
 import ProfileStack from './ProfileStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
  
-const BottomNav = () =>{
+const BottomNavigation = () =>{
    
-    return (
+    return ( 
         <Tab.Navigator
-        initialRouteName="Home"        
+        initialRouteName="AppHome"        
         tabBarOptions={{
           activeTintColor: '#1b262c',
           // inactiveTintColor:'#495465',
@@ -30,18 +30,18 @@ const BottomNav = () =>{
         }}
       >
         <Tab.Screen
-          name="Home"
+          name="AppHome"
         //   The Main Home Screen ------ From App Stack All Screen availale from that stack navigator
           component={HomeStack}
           options = {({route,navigation})=>({
-          tabBarLabel: 'Home',
+          tabBarLabel: 'AppHome',
             tabBarIcon: ({ color, size }) => (
              <MaterialCommunityIcons name="home" color={color} size={35} />
             ),
           tabBarVisible: ((route) => {
-            let routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+            let routeName = getFocusedRouteNameFromRoute(route) ?? 'AppHome';
             console.log(routeName);
-            if (routeName === 'Home') return true;
+            if (routeName === 'AppHome') return true;
             else return false;
           })(route),
         })}
@@ -49,7 +49,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Store"
         //   From Store Stack Screen will be avaible 
-          component={StoreStackNav}
+          component={StoreStack}
           options={{
             tabBarLabel: 'Store',
             tabBarIcon: ({ color, size }) => (
@@ -61,7 +61,7 @@ const BottomNav = () =>{
         <Tab.Screen
           name="Add"
         //   Still have to figure out, how to do this
-          component={CreateStackNav}
+          component={CreateStack}
           options={{
             tabBarLabel: 'Add',
             tabBarIcon: ({ color, size }) => (
@@ -109,4 +109,4 @@ const BottomNav = () =>{
   }
 
     
-  export default BottomNav;
+  export default BottomNavigation;

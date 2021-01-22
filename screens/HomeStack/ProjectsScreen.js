@@ -2,6 +2,8 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {View, Text,FlatList} from 'react-native';
+import {useSelector} from 'react-redux';
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
 
@@ -14,6 +16,9 @@ const Tab = createMaterialTopTabNavigator();
 
 
 const Projects = ({navigation}) =>{
+   // const state = useSelector((state) => state);
+   // const user = state.entities.auth.data;
+   // console.log(user);
 return(
    <View>
       <FlatList 

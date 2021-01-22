@@ -28,7 +28,7 @@ const profileAvatar = {
   }
 }
 
-const AllProfessionals = (navigation) =>{
+const AllProfessionals = ({navigation}) =>{
     return(
         <View style={ScreenStyles.allProfessionals}>
           <SearchBar placeholder = "Search by Name"/>

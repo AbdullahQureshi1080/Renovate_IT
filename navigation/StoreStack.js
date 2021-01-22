@@ -14,7 +14,7 @@ import {
 const title = "Hi, Boss";
 const content = "This is attempt at working with react native paper and react native core";
 
-const HomeScreen = ({ navigation }) => (
+const ShopScreen = ({ navigation }) => (
     <View>
       <TouchableOpacity
       onPress={() =>
@@ -51,24 +51,14 @@ const HomeScreen = ({ navigation }) => (
     </View>
   );
   
-  const DetailsScreen = (props) => {
-    // const { title, content } = props?.route?.params;
-    return (
-      <List.Section>
-        <List.Subheader>{title}</List.Subheader>
-        <List.Item title={content} />
-      </List.Section>
-    );
-  };
   
 
 const Stack = createStackNavigator();
 
-const StoreStackNav = () => {
+const StoreStack= () => {
     return(
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />   
+        <Stack.Navigator initialRouteName="Shop">
+            <Stack.Screen name="Shop" component={ShopScreen} />  
         </Stack.Navigator>
     );
 }
@@ -80,4 +70,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default StoreStackNav;
+export default StoreStack;

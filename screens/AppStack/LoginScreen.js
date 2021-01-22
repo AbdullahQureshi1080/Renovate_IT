@@ -1,6 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React, { useState, useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import { ImageBackground, StyleSheet,View, Text, Dimensions, ScrollView} from 'react-native';
 import {Button} from "react-native-paper";
 
@@ -24,6 +25,8 @@ import authAPI from '../../api/auth';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
 
+import { userVerify, assignUserData } from "../../store/auth";
+
 var { width, height } = Dimensions.get('window');
 
 
@@ -34,15 +37,40 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) =>{
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  console.log(state);
+  // api calls ---
   const auth = useAuth()
   const loginApi = useApi(authAPI.login);
+
   const [loginFailed, setLoginFailed] = useState(false); 
-  const handleSubmit = async ({email,password}) =>{
-    const result = await loginApi.request(email,password);
-    if(!result.ok)return setLoginFailed(true);
+
+  // const handleSubmit = async ({email,password}) =>{
+  //   const result = await loginApi.request(email,password);
+  //   if(!result.ok)return setLoginFailed(true);
+  //   setLoginFailed(false);
+  //   auth.logIn(result.data);
+  // }
+
+  const handleSubmit = async ({ email, password }) => {
+    const user = {
+      email: email,
+      password: password,
+    };
+    console.log(user);
+    const result = await loginApi.request(email, password);
+    // dispatch(userAuthentication(user));
+    // const checking = await state.entities.auth.token;
+    // console.log(checking);
+    if (!result.ok) {
+      return setLoginFailed(true);
+    }
     setLoginFailed(false);
     auth.logIn(result.data);
-  }
+    dispatch(userVerify(result.data));
+    navigation.navigate("Home");
+  };
 return(
     <View style={styles.container}>
          <ActivityIndicator visible = {loginApi.loading}/>

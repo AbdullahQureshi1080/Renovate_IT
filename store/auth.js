@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { apiCallBegan, LOGIN_URL, REGISTER_URL } from "./api";
-import authAPI from "../api/auth";
-import auth from "../api/auth";
+// import authAPI from "../api/auth";
+// import auth from "../api/auth";
 // import moment from "moment";
 // Combing the two functions createAction and createReducer into one
 // let lastId = 0;
 
-const authSlice = createSlice({
+const auth = createSlice({
   name: "auth",
   initialState: {
     token: null,
@@ -18,11 +18,6 @@ const authSlice = createSlice({
   },
   reducers: {
     // actions => action handlers
-
-    authenticate: (auth, action) => {
-      auth.loading = true;
-      auth.token = action.payload;
-    },
 
     loginRequestFailed: (auth, action) => {
       auth.loading = false;
@@ -45,8 +40,10 @@ const authSlice = createSlice({
       auth.data = action.payload;
       auth.loading = false;
     },
-    logout: (auth, action) => {
+    signout: (auth, action) => {
       auth.token = null;
+      auth.data = {};
+      
     },
   },
 });
@@ -60,8 +57,7 @@ const {
   registerRequest,
   registerRequestFailed,
   userRegistration,
-  authenticate,
-  logout,
+  signout,
 } = auth.actions;
 export default auth.reducer;
 
@@ -69,15 +65,7 @@ export default auth.reducer;
 
 // ()=>{} signature function
 
-// export const userAuthentication = (user) =>
-//   apiCallBegan({
-//     url: LOGIN_URL,
-//     method: "post",
-//     data: user,
-//     onStart: loginRequest.type,
-//     onSuccess: authenticatedUser.type,
-//     onError: loginRequestFailed.type,
-//   });
+
 
 export const userVerify = (user) => ({
   type: authenticatedUser.type,
@@ -88,6 +76,23 @@ export const assignUserData = (user) => ({
   type: userRegistration.type,
   payload: user,
 });
+
+
+export const logout = () => ({
+  type: signout.type,
+  // payload: user,
+});
+
+
+// export const userAuthentication = (user) =>
+//   apiCallBegan({
+//     url: LOGIN_URL,
+//     method: "post",
+//     data: user,
+//     onStart: loginRequest.type,
+//     onSuccess: authenticatedUser.type,
+//     onError: loginRequestFailed.type,
+//   });
 
 // export const registerUser = (userData) =>
 //   apiCallBegan({

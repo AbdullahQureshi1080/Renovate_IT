@@ -23,10 +23,10 @@ const HomeStack = () => {
 
     return(
         <Stack.Navigator 
-          initialRouteName="Home"
+          initialRouteName="AppHome"
           >
             <Stack.Screen 
-            name="Home" 
+            name="AppHome" 
             component={HomeScreen} 
             options={{
               header:searchBar ,

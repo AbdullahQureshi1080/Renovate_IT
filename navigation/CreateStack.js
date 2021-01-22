@@ -10,10 +10,11 @@ import {
   List,
 } from 'react-native-paper';
 
+import CreatePostScreen from '../screens/CreateStack/CreatePostScreen';
 const title = "Hi, Boss";
 const content = "This is attempt at working with react native paper and react native core";
 
-const HomeScreen = ({ navigation }) => (
+const CreateModalPopup = ({ navigation }) => (
     <View>
       <TouchableOpacity
       onPress={() =>
@@ -50,24 +51,15 @@ const HomeScreen = ({ navigation }) => (
     </View>
   );
   
-  const DetailsScreen = (props) => {
-    // const { title, content } = props?.route?.params;
-    return (
-      <List.Section>
-        <List.Subheader>{title}</List.Subheader>
-        <List.Item title={content} />
-      </List.Section>
-    );
-  };
-  
+
 
 const Stack = createStackNavigator();
 
-const CreateStackNav = () => {
+const CreateStack = () => {
     return(
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />   
+        <Stack.Navigator initialRouteName="CreateModal">
+            <Stack.Screen name="CreateModal" component={CreateModalPopup} />
+            <Stack.Screen name="CreatePost" component={CreatePostScreen} />
         </Stack.Navigator>
     );
 }
@@ -79,4 +71,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CreateStackNav;
+export default CreateStack;

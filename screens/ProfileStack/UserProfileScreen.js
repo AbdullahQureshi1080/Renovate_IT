@@ -1,6 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
+import {useSelector} from 'react-redux';
 import { View,Text,ScrollView,Image, ImageBackground, Dimensions} from 'react-native';
 import { Button,List } from 'react-native-paper';
 import MaterialComunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -44,15 +45,17 @@ return(
 }
 
 const UserProfileScreen = ({navigation}) =>{
-    const {user,logOut} = useAuth();
-
+    const {logOut} = useAuth(navigation);
+    const state = useSelector((state) => state);
+    const user = state.entities.auth.data;
+    console.log(user);
 return(
     <ScrollView style={ScreenStyles.userprofileScreen}>
         <View> 
             <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                 <Button 
                     icon={()=> <MaterialComunityIcons name="logout" size={25} color="#1B262C"/>} 
-                    onPress={()=>logOut()}/>        
+                    onPress={logOut}/>        
                 <Text style={{width:Dimensions.get('window').width/1.6}}></Text>
                 <Button 
                     icon={()=> <MaterialComunityIcons name="account-edit" size={30} 
