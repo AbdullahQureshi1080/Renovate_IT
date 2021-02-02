@@ -59,15 +59,12 @@ const validationSchema = Yup.object().shape({
 });
  
 const ProfileEditScreen = ({ navigation, route }) => {
-  // console.log(state.entities.auth.data);
   const [imageUri, setImageUri] = useState(null);
   const [downloadURL, setDownloadURL] = useState("");
-  // console.log(imageUri);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
-  console.log(userId);
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
   const userApi = useApi();
@@ -126,20 +123,16 @@ const ProfileEditScreen = ({ navigation, route }) => {
               location: "",
               jobtitle: "",
             }}
-            onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-                       <ActivityIndicator visible = {userApi.loading}/>
-              <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                  <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
+     <ActivityIndicator visible = {userApi.loading}/>
+      <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
                   </TouchableOpacity>
               <View style={{ alignSelf: "center" }}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color="crimson" />
-              ) : (
                 <SubmitButton name="save" />
-              )}
             </View>
               </View>
               <View style={{ alignSelf: "center" }}>
