@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import AuthContext from "./context";
 import authStorage from "./storage";
 import jwtDecode from "jwt-decode";
-import { assignUserData,logout} from "../store/auth";
+import { assignUserData,logout, setUserData} from "../store/auth";
 export default useAuth = (navigation) => {
   const dispatch = useDispatch();
   //   Redux Store - State
@@ -11,7 +11,7 @@ export default useAuth = (navigation) => {
   // const userState = useSelector((state) => state);
   const logIn = (authToken) => {
     const userData = jwtDecode(authToken);
-    dispatch(assignUserData(userData));
+    dispatch(setUserData(userData));
     authStorage.storeToken(authToken);
   };
   const logOut = () => {

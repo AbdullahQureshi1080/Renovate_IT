@@ -24,7 +24,7 @@ import userAPI from '../../api/user';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
 
-import { userVerify, assignUserData } from "../../store/auth";
+import {loginUser } from "../../store/auth";
 
 
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
@@ -78,7 +78,7 @@ const SignUpScreen = ({navigation}) =>{
     password,
   )
   auth.logIn(getNewToken.data);
-  dispatch(userVerify(result.data));
+  dispatch(loginUser(result.data));
   navigation.navigate("Home");
 }
     return(

@@ -25,7 +25,7 @@ import authAPI from '../../api/auth';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
 
-import { userVerify, assignUserData } from "../../store/auth";
+import { setUserData, loginUser } from "../../store/auth";
 
 var { width, height } = Dimensions.get('window');
 
@@ -39,6 +39,7 @@ const validationSchema = Yup.object().shape({
 const LoginScreen = ({navigation}) =>{
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const user = state.entities.auth;
   console.log(state);
   // api calls ---
   const auth = useAuth()
@@ -46,12 +47,6 @@ const LoginScreen = ({navigation}) =>{
 
   const [loginFailed, setLoginFailed] = useState(false); 
 
-  // const handleSubmit = async ({email,password}) =>{
-  //   const result = await loginApi.request(email,password);
-  //   if(!result.ok)return setLoginFailed(true);
-  //   setLoginFailed(false);
-  //   auth.logIn(result.data);
-  // }
 
   const handleSubmit = async ({ email, password }) => {
     const user = {
@@ -60,17 +55,16 @@ const LoginScreen = ({navigation}) =>{
     };
     console.log(user);
     const result = await loginApi.request(email, password);
-    // dispatch(userAuthentication(user));
-    // const checking = await state.entities.auth.token;
-    // console.log(checking);
     if (!result.ok) {
       return setLoginFailed(true);
     }
     setLoginFailed(false);
     auth.logIn(result.data);
-    dispatch(userVerify(result.data));
+    dispatch(loginUser(result.data));
     navigation.navigate("Home");
   };
+
+
 return(
     <View style={styles.container}>
          <ActivityIndicator visible = {loginApi.loading}/>

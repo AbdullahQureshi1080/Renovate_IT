@@ -4,21 +4,22 @@ import React, {useEffect } from 'react';
 import {useDispatch,useSelector} from "react-redux";
 import { ImageBackground, StyleSheet,View } from 'react-native';
 
+// Api Imports
+import useApi from "../../hooks/useApi";
+import userAPI from "../../api/user";
 
 // Component Imports
 import ActivityIndicator from '../../components/ActivityIndicator';
 import storage from '../../auth/storage';
 
 // Redux-Store
-import { userVerify, assignUserData } from "../../store/auth";
+import { loginUser, setUserData } from "../../store/auth";
 
 const SplashScreen = ({navigation}) =>{
+  const userApi = useApi(userAPI.userProfile)
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   console.log(state);
-    // useEffect(() => {
-    //     setTimeout(()=>{navigation.navigate("Login")}, 3000)
-    //   });
     useEffect(() => {
       const tryLogin = async () => {
         const userToken = await storage.getToken();
@@ -27,16 +28,15 @@ const SplashScreen = ({navigation}) =>{
          navigation.navigate("Login");
           return;
         }
-        dispatch(userVerify(userToken));
-        dispatch(assignUserData(userData));
+      const email = userData.email;
+      console.log(email);
+      const profileData = await userApi.request(email);
+        dispatch(loginUser(userToken));
+        dispatch(setUserData(userData));
         // console.log(state);
         navigation.navigate("Home");
       };
-    
-    // const user = state.entities;
-    // console.log(user);
       tryLogin();
-      // add dispatch to dependency
     }, []);
 return(
     <View style={styles.container}>

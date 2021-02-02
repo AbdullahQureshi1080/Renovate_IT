@@ -1,18 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { apiCallBegan, LOGIN_URL, REGISTER_URL } from "./api";
-// import authAPI from "../api/auth";
-// import auth from "../api/auth";
-// import moment from "moment";
-// Combing the two functions createAction and createReducer into one
-// let lastId = 0;
+
 
 const auth = createSlice({
   name: "auth",
   initialState: {
     token: null,
     loading: false,
-    userId: "",
     // lastFetch: null,
     data: {},
   },
@@ -26,7 +21,7 @@ const auth = createSlice({
       auth.loading = true;
     },
 
-    authenticatedUser: (auth, action) => {
+    loginRequestSuccess: (auth, action) => {
       auth.token = action.payload;
       auth.loading = false;
     },
@@ -36,14 +31,13 @@ const auth = createSlice({
     registerRequest: (auth, action) => {
       auth.loading = true;
     },
-    userRegistration: (auth, action) => {
+    registerRequestSuccess: (auth, action) => {
       auth.data = action.payload;
       auth.loading = false;
     },
     signout: (auth, action) => {
       auth.token = null;
       auth.data = {};
-      
     },
   },
 });
@@ -53,10 +47,10 @@ const auth = createSlice({
 const {
   loginRequestFailed,
   loginRequest,
-  authenticatedUser,
+  loginRequestSuccess,
+  registerRequestSuccess,
   registerRequest,
   registerRequestFailed,
-  userRegistration,
   signout,
 } = auth.actions;
 export default auth.reducer;
@@ -67,13 +61,13 @@ export default auth.reducer;
 
 
 
-export const userVerify = (user) => ({
-  type: authenticatedUser.type,
+export const loginUser = (user) => ({
+  type: loginRequestSuccess.type,
   payload: user,
 });
 
-export const assignUserData = (user) => ({
-  type: userRegistration.type,
+export const setUserData = (user) => ({
+  type: registerRequestSuccess.type,
   payload: user,
 });
 
@@ -90,7 +84,7 @@ export const logout = () => ({
 //     method: "post",
 //     data: user,
 //     onStart: loginRequest.type,
-//     onSuccess: authenticatedUser.type,
+//     onSuccess: loginRequestSuccess.type,
 //     onError: loginRequestFailed.type,
 //   });
 
@@ -100,6 +94,6 @@ export const logout = () => ({
 //     method: "post",
 //     data: userData,
 //     onStart: registerRequest.type,
-//     onSuccess: userRegistration.type,
+//     onSuccess: registerRequestSuccess.type,
 //     onError: registerRequestFailed.type,
 //   });

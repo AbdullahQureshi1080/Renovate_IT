@@ -10,7 +10,7 @@ const api = ({ dispatch }) => (next) => async (action) => {
 
   try {
     const response = await axios.request({
-      baseURL: "http://192.168.18.7:9001/api/user",
+      baseURL: "http://192.168.18.7:9000/api/",
       url,
       method,
       data,
