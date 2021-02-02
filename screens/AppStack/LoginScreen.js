@@ -110,9 +110,9 @@ return(
             </View>
             <View style={{alignSelf:"center"}}>
             <SubmitButton name="Sign in"/>
-            <Button 
+            {/* <Button 
               style={{backgroundColor:"#DB4437",  marginVertical:5,}} 
-              color = "#F4F4F2" onPress={()=>navigation.navigate("Home")}>Sign in with google</Button>
+              color = "#F4F4F2" onPress={()=>navigation.navigate("Home")}>Sign in with google</Button> */}
             </View>
             
             <View style={{

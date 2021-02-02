@@ -6,7 +6,7 @@ const ScreenStyle = {
       // fontFamily:"Poppins-Regular" ,
       profileEditScreen:{
         fontFamily: 'Poppins-Regular',
-        marginHorizontal: marginHorizontal,
+        marginHorizontal: marginHorizontal-5,
         // alignContent: 'center',
         // alignItems: 'center',
         alignSelf: 'center',

@@ -19,10 +19,11 @@ const ProfileStack = () => {
                 headerShown:false,
             }} />
             <Stack.Screen name="Edit Profile" component={ProfileEditScreen} options={{
-                headerRight:  () => (  
-                    // <AppButton name="Save"/>
-                    <Button style={{backgroundColor:"#495464", marginHorizontal:10}} color = "#F4F4F2" onPress={()=>console.log("Pressed")}>Save</Button>
-                )
+                headerShown:false,
+                // headerRight:  () => (  
+                //     // <AppButton name="Save"/>
+                //     <Button style={{backgroundColor:"#495464", marginHorizontal:10}} color = "#F4F4F2" onPress={()=>console.log("Pressed")}>Save</Button>
+                // )
             }} />
         </Stack.Navigator>
     );

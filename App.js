@@ -19,8 +19,6 @@ import configureStore from './store/configureStore';
 const store = configureStore();
 
 
-
-
 const fontConfig = {
   default: {
     regular: {
@@ -56,7 +54,6 @@ const theme = {
 };
 
 const App = () => {
-  // const [user,setUser] = useState();
   return (
     <Provider store = {store}>
       <PaperProvider theme={theme}>

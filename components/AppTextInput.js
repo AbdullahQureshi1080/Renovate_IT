@@ -21,6 +21,7 @@ const AppTextInput = (props) => {
       disabled={props.disabled}
       textContentType={props.textContentType}
       secureTextEntry={props.secureTextEntry}
+      numberOfLines={props.numberOfLines}
     />
   );
 };
