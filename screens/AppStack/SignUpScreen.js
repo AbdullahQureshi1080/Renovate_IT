@@ -47,22 +47,6 @@ const SignUpScreen = ({navigation}) =>{
   const registerApi = useApi(userAPI.register);
   const loginApi = useApi(authAPI.login);
   const [error, setError] = useState(); 
-  // const handleSubmit = async ({firstname,lastname,email,password}) =>{
-  //     const result = await registerApi.request(firstname,lastname,email,password);
-  //   if(!result.ok) {
-  //     if(result.data) setError(result.data.error);
-  //     else{
-  //       setError("An unexpected error occured");
-  //       console.log(result)
-  //     }
-  //   return;
-  //   }
-  //   const getNewToken = await loginApi.request(
-  //     email,
-  //     password,
-  //   )
-  //   auth.logIn(getNewToken.data);
-  // }
   const handleSubmit = async ({firstname,lastname,email,password}) =>{
     const result = await registerApi.request(firstname,lastname,email,password);
   if(!result.ok) {

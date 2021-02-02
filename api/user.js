@@ -34,15 +34,16 @@ const userProfile = async (email) => {
   return result.data;
 };
  
-const uploadProfileImage = (imageSource) => {
-  client.post("cloudStorage/image-upload", {
+const imageUpload = (imageSource,userId) => {
+  client.post("profile/imageUpload", {
     imageSource,
+    userId
   });
 };
  
 export default {
   register,
   updateProfile,
-  uploadProfileImage,
+  imageUpload,
   userProfile,
 };

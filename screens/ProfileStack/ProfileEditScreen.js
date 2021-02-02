@@ -46,6 +46,7 @@ import useApi from "../../hooks/useApi";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ImageInput from '../../components/Image/ImageInput';
+import { setUserData } from '../../store/auth';
  
 var { width, height } = Dimensions.get("window");
  
@@ -55,20 +56,49 @@ const validationSchema = Yup.object().shape({
   about: Yup.string().label("About"),
   location: Yup.string().min(3).label("Location"),
   jobtitle: Yup.string().min(3).label("Job Title"),
-  image: Yup.string(),
+  // image: Yup.string(),
 });
  
 const ProfileEditScreen = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState(null);
-  const [downloadURL, setDownloadURL] = useState("");
+  const [downloadURL, setDownloadURL] = useState(null);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
+  console.log(userId);
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
-  const userApi = useApi();
+  // const imageApi = useApi(userAPI.imageUpload);
+  const updateApi =useApi(userAPI.updateProfile);
+
+
+
+  // const result = await updateApi.request(
+  //   userEmail, 
+  //   firstname,
+  //   lastname,
+  //   about,
+  //   location,
+  //   jobtitle,
+  //   downloadURL
+  //     );
+  // if (!result.ok) {
+  //         // console.log(result.data);
+  //         // setError(result.data);
+  //         setIsLoading(false);
+  //         return setSaveData(true);
+  //  }
+  //       setSaveData(false);
+  //       setIsLoading(false);
+  //       // console.log(result.data);
+  //       dispatch(setUserData(result.data));
+  //       // logIn(result.data);
+  //       navigation.navigate("User Profile");
+  
+
   const handleSubmit = async ({
+    email,
     firstname,
     lastname,
     about,
@@ -76,41 +106,91 @@ const ProfileEditScreen = ({ navigation, route }) => {
     jobtitle,
     image,
   }) => {
-      
-  
-    image = downloadURL;
-    const result = {
+    const data = {
+      email:userEmail,
       firstname,
       lastname,
       about,
       location,
       jobtitle,
-      image,
+      image
     };
-    console.log(result);
+    console.log(data);
+    const result = await updateApi.request(
+    email, 
+    firstname,
+    lastname,
+    about,
+    location,
+    jobtitle,
+    image
+     );
+  if (!result.ok) {
+          // console.log(result.data);
+          // setError(result.data);
+          setIsLoading(false);
+          return setSaveData(true);
+   }
+        setSaveData(false);
+        setIsLoading(false);
+        // console.log(result.data);
+        dispatch(setUserData(result.data));
+        // logIn(result.data);
+        navigation.navigate("User Profile");
     setIsLoading(true);
-    // const result = await userAPI.updateProfile(
-    //   userEmail,
-    //   firstname,
-    //   lastname,
-    //   about,
-    //   location,
-    //   jobtitle
-    // );
- 
-    // if (!result.ok) {
-    //   // console.log(result.data);
-    //   setError(result.data);
-    //   setIsLoading(false);
-    //   return setSaveData(true);
-    // }
-    // setSaveData(false);
-    // setIsLoading(false);
-    // // console.log(result.data);
-    // dispatch(setProfileData(result.data));
-    // // logIn(result.data);
-    // navigation.navigate("Home");
   };
+
+  const upload =  async({
+    firstname,
+    lastname,
+    about,
+    location,
+    jobtitle,
+  }) =>{
+    const uri = imageUri;
+    console.log(uri);
+    const childPath = `images/${userId}/${Math.random().toString(36)}`;
+    console.log(childPath);
+    const response = await fetch(uri);
+    console.log(response);
+    const blob = await response.blob();
+    const task = firebase.default.storage().ref().child(childPath).put(blob);
+
+    // console.log(task);
+    const taskProgress = (snapshot) => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        // savePostData(snapshot);
+        // console.log(snapshot);
+        const image = snapshot;
+        setDownloadURL(snapshot);
+        // console.log(snapshot);
+        const result = {
+          email:userEmail,
+          firstname,
+          lastname,
+          about,
+          location,
+          jobtitle,
+          image
+        };
+        // console.log(result);
+        handleSubmit(result);
+      });
+    };
+    const taskError = (snapshot) => {
+      const error = `An Error Occured ${snapshot}`;
+      console.log(error);
+      return(error);
+    };
+
+    task.on("state_changed", taskProgress, taskError, taskCompleted);
+    // console.log(response);
+    // console.log(blob);
+
+  }
  
   return (
     <ScrollView style={ScreenStyles.profileEditScreen}>
@@ -123,10 +203,10 @@ const ProfileEditScreen = ({ navigation, route }) => {
               location: "",
               jobtitle: "",
             }}
-              onSubmit={handleSubmit}
+              onSubmit={upload}
             validationSchema={validationSchema}
           >
-     <ActivityIndicator visible = {userApi.loading}/>
+     <ActivityIndicator visible = {updateApi.loading}/>
       <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                 <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
