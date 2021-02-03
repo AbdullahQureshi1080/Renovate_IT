@@ -9,7 +9,7 @@ const register = (firstname, lastname, email, password) =>
     password,
   });
  
-const updateProfile = (email, firstname, lastname, about, location, jobtitle,image) =>
+const updateProfile = (email, firstname, lastname, about, location, jobtitle,jobcategory,image) =>
   client.post("profile/updateProfile", {
     email,
     firstname,
@@ -17,6 +17,7 @@ const updateProfile = (email, firstname, lastname, about, location, jobtitle,ima
     about,
     location,
     jobtitle,
+    jobcategory,
     image
   });
 const getProfile = (email) =>
@@ -34,16 +35,16 @@ const userProfile = async (email) => {
   return result.data;
 };
  
-const imageUpload = (imageSource,userId) => {
-  client.post("profile/imageUpload", {
-    imageSource,
-    userId
-  });
-};
+// const imageUpload = (imageSource,userId) => {
+//   client.post("profile/imageUpload", {
+//     imageSource,
+//     userId
+//   });
+// };
  
 export default {
   register,
   updateProfile,
-  imageUpload,
+  // imageUpload,
   userProfile,
 };
