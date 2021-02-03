@@ -6,7 +6,7 @@ const ScreenStyle = {
       // fontFamily:"Poppins-Regular" ,
       profileEditScreen:{
         fontFamily: 'Poppins-Regular',
-        marginHorizontal: marginHorizontal-5,
+        marginHorizontal: 15,
         // alignContent: 'center',
         // alignItems: 'center',
         alignSelf: 'center',
@@ -27,17 +27,17 @@ const ScreenStyle = {
         marginVertical: 10,
         color:"#495464",
         userAbout:{
-          marginVertical:15,
+          marginVertical:12,
           userAboutTitle:{
-            marginVertical:5,
+            marginVertical:3,
             fontSize:20,
             // fontWeight:"bold",
             color:"#495464",
-            fontFamily: 'Poppins-Bold',
+            fontFamily: 'Poppins-SemiBold',
           },
           userAboutText:{
-            marginVertical:5,
-            fontSize:18,
+            // marginVertical:5,
+            fontSize:17,
             fontWeight:"normal",
             color:"#495464",
             fontFamily: 'Poppins-Regular',
@@ -47,7 +47,7 @@ const ScreenStyle = {
       },
       professionalsScreen:{
         // fontFamily: 'Poppins-Regular',
-        marginHorizontal:20,
+        marginHorizontal:marginHorizontal,
         marginVertical:15,
           headTitle : {
               fontSize:20,

@@ -29,7 +29,11 @@ const firebaseConfig = {
   measurementId: MEASUREMENT_ID,
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}else {
+  firebase.app(); // if already initialized, use that one
+}
 
 const fontConfig = {
   default: {

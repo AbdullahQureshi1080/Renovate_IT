@@ -79,9 +79,9 @@ const BottomNavigation = () =>{
                <Entypo name="chat" color={color} size={35} />
               ),
             tabBarVisible: ((route) => {
-              let routeName = getFocusedRouteNameFromRoute(route) ?? 'Chats';
+              let routeName = getFocusedRouteNameFromRoute(route) ?? ('Chats'||"Chat");
               console.log(routeName);
-              if (routeName === 'Chats') return true;
+              if (routeName === 'Chats' ||routeName === 'Chat') return true;
               else return false;
             })(route),
           })}
@@ -97,9 +97,9 @@ const BottomNavigation = () =>{
                <MaterialCommunityIcons name="account-circle" color={color} size={35} />
               ),
             tabBarVisible: ((route) => {
-              let routeName = getFocusedRouteNameFromRoute(route) ?? 'Profile';
+              let routeName = getFocusedRouteNameFromRoute(route) ?? ('Profile' || "User Profile");
               console.log(routeName);
-              if (routeName == 'Profile') return true;
+              if (routeName == 'Profile' || routeName ==="User Profile") return true;
               else return false;
             })(route),
           })}

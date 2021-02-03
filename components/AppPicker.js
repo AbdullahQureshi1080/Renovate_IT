@@ -8,7 +8,7 @@ import {
   FlatList,
   Text,
 } from "react-native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // import AppText from "./AppText";
 import Screen from "./Screen";
@@ -21,7 +21,7 @@ function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-        <View style={styles.container}>
+        <View style={{...styles.container,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}
@@ -36,7 +36,7 @@ function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
             <Text style={styles.placeholder}>{placeholder}</Text>
           )}
 
-          <MaterialCommunityIcons name="chevron-down" size={20} color="red" />
+          <MaterialCommunityIcons name="chevron-down" size={20} color="#1B262C" />
         </View>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
@@ -63,7 +63,7 @@ function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "red",
+    // backgroundColor: "red",
     borderRadius: 25,
     flexDirection: "row",
     width: "100%",
@@ -76,9 +76,13 @@ const styles = StyleSheet.create({
   placeholder: {
     color: "grey",
     flex: 1,
+    fontFamily:"Poppins-Medium",
+    color:"#495464"
   },
   text: {
     flex: 1,
+    fontFamily:"Poppins-Medium",
+    color:"#495464"
   },
 });
 
