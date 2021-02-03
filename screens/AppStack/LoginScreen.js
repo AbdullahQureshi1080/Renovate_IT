@@ -26,6 +26,7 @@ import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
 
 import { setUserData, loginUser } from "../../store/auth";
+import AppText from '../../components/AppText';
 
 var { width, height } = Dimensions.get('window');
 
@@ -71,7 +72,7 @@ return(
         <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
         <View style={{alignSelf:"center"}}>  
-            <Text style = {styles.titleText}>Sign In</Text>
+            <AppText style = {styles.titleText}>Sign In</AppText>
         </View>
         <AppForm
           initialValues={{email:"",password:""}}

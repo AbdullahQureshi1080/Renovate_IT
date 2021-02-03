@@ -28,6 +28,7 @@ import {loginUser } from "../../store/auth";
 
 
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
+import AppText from '../../components/AppText';
 
 var { width, height } = Dimensions.get('window')
 
@@ -71,7 +72,7 @@ const SignUpScreen = ({navigation}) =>{
               <ActivityIndicator visible = {registerApi.loading || loginApi.loading}/>
             <View style={styles.child}> 
                 <View style={{alignSelf:"center"}}>  
-                <Text style = {styles.titleText}>Sign Up</Text>
+                <AppText style = {styles.titleText}>Sign Up</AppText>
                 </View>
                 <AppForm
           initialValues={{firstname:"", lastname: "", email:"", password:""}}
@@ -123,24 +124,11 @@ const SignUpScreen = ({navigation}) =>{
                   />
 
             </View>
-            {/* <View style={{alignSelf:"center"}}>
-            <AppFormField 
-                  style={ComponentsStyle.inputStyleSign} 
-                  label="Re-type Password"
-                  name="retypepassword" 
-                  selectionColor="#f4f4f2" 
-                  underlineColor="#f4f4f2" 
-                  textColor="#f4f4f2"
-                  textContentType ="password"
-                  secureTextEntry = {true}
-                  />
-
-            </View> */}
             <View style={{alignSelf:"center"}}>
               <SubmitButton name="Sign Up" />
-            <Button 
+            {/* <Button 
               style={{backgroundColor:"#DB4437",  marginVertical:5,}} 
-              color = "#F4F4F2">Sign in with google</Button>
+              color = "#F4F4F2">Sign in with google</Button> */}
             </View>
             
             <View style={{

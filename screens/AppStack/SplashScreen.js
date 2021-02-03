@@ -14,6 +14,7 @@ import storage from '../../auth/storage';
 
 // Redux-Store
 import { loginUser, setUserData } from "../../store/auth";
+import { setProfileData } from '../../store/user';
 
 const SplashScreen = ({navigation}) =>{
   const userApi = useApi(userAPI.userProfile)
@@ -31,8 +32,10 @@ const SplashScreen = ({navigation}) =>{
       const email = userData.email;
       console.log(email);
       const profileData = await userApi.request(email);
+      console.log(profileData);
         dispatch(loginUser(userToken));
         dispatch(setUserData(userData));
+        dispatch(setProfileData(profileData));
         // console.log(state);
         navigation.navigate("Home");
       };

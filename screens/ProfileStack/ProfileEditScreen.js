@@ -9,23 +9,25 @@ import {
   Text,
   Dimensions,
   ScrollView,
-  ActivityIndicator,
+  // ActivityIndicator,
   Alert,
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
+  TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 // import { Button,List,TextInput } from 'react-native-paper';
 
 // Components Imports
-import InputText from '../../components/AppTextInput';
-import ProfessionalAvatar from '../../components/ProfessionalAvatar';
+// import InputText from '../../components/AppTextInput';
+// import ProfessionalAvatar from '../../components/ProfessionalAvatar';
 import AppFormField from "../../components/AppForm/AppFormField";
 import SubmitButton from "../../components/AppForm/SubmitButton";
 import AppForm from "../../components/AppForm/AppForm";
 import ErrorMessage from "../../components/AppForm/ErrorMessage";
-import AppButton from "../../components/AppButton";
-
+// import AppButton from "../../components/AppButton";
+import ActivityIndicator from "../../components/ActivityIndicator";
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
 import ComponentsStyle from "../../styles/ComponentsStyle";
@@ -46,7 +48,9 @@ import useApi from "../../hooks/useApi";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ImageInput from '../../components/Image/ImageInput';
-import { setUserData } from '../../store/auth';
+// import { setUserData } from '../../store/auth';
+import {setProfileData}from "../../store/user";
+import AppFormPicker from '../../components/AppForm/AppFormPicker';
  
 var { width, height } = Dimensions.get("window");
  
@@ -54,76 +58,67 @@ const validationSchema = Yup.object().shape({
   firstname: Yup.string().required().label("First Name"),
   lastname: Yup.string().required().min(3).label("Last Name"),
   about: Yup.string().label("About"),
-  location: Yup.string().min(3).label("Location"),
+  location:Yup.object().required().nullable().label("Location"),
+  // location: Yup.string().min(3).label("Location"),
   jobtitle: Yup.string().min(3).label("Job Title"),
+  jobcategory:Yup.object().required().nullable().label("Job Category"),
   // image: Yup.string(),
 });
  
 const ProfileEditScreen = ({ navigation, route }) => {
-  const [imageUri, setImageUri] = useState(null);
+  const profileData = route.params.profile;
+  console.log("Data from Prev Route", profileData);
+  const [imageUri, setImageUri] = useState(profileData.image);
   const [downloadURL, setDownloadURL] = useState(null);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
-  console.log(userId);
+  // console.log(userId);
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
   // const imageApi = useApi(userAPI.imageUpload);
   const updateApi =useApi(userAPI.updateProfile);
-
-
-
-  // const result = await updateApi.request(
-  //   userEmail, 
-  //   firstname,
-  //   lastname,
-  //   about,
-  //   location,
-  //   jobtitle,
-  //   downloadURL
-  //     );
-  // if (!result.ok) {
-  //         // console.log(result.data);
-  //         // setError(result.data);
-  //         setIsLoading(false);
-  //         return setSaveData(true);
-  //  }
-  //       setSaveData(false);
-  //       setIsLoading(false);
-  //       // console.log(result.data);
-  //       dispatch(setUserData(result.data));
-  //       // logIn(result.data);
-  //       navigation.navigate("User Profile");
   
-
   const handleSubmit = async ({
     email,
     firstname,
     lastname,
     about,
-    location,
+    locationName,
     jobtitle,
+    jobCategory,
     image,
   }) => {
-    const data = {
-      email:userEmail,
+ 
+    const jobcategory = jobCategory;
+    const location = locationName;
+    
+    // console.log(jobCategory,workingLocation)
+    // const data = {
+    //   email, 
+    //   firstname,
+    //   lastname,
+    //   about,
+    //   location,
+    //   jobtitle,
+    //   jobcategory,
+    //   image,
+    // }
+    // console.log("Data from Handle Submit ",data);
+    // setIsLoading(false);
+    // console.log(jobCategory,workinglocation);
+    // console.log(data);
+    // console.log("It comes till here")
+    const result = await updateApi.request(
+      email, 
       firstname,
       lastname,
       about,
       location,
       jobtitle,
-      image
-    };
-    console.log(data);
-    const result = await updateApi.request(
-    email, 
-    firstname,
-    lastname,
-    about,
-    location,
-    jobtitle,
-    image
+      jobcategory,
+      image,
      );
   if (!result.ok) {
           // console.log(result.data);
@@ -133,26 +128,31 @@ const ProfileEditScreen = ({ navigation, route }) => {
    }
         setSaveData(false);
         setIsLoading(false);
+        // const {prevEmail,newfirstName,newLastname,_id} = result.data;
         // console.log(result.data);
-        dispatch(setUserData(result.data));
+        // dispatch(setUserData(prevEmail,newfirstName,newLastname,_id));
+        dispatch(setProfileData(result.data));
         // logIn(result.data);
         navigation.navigate("User Profile");
-    setIsLoading(true);
+    // setIsLoading(true);
   };
 
   const upload =  async({
+    email,
     firstname,
     lastname,
     about,
     location,
     jobtitle,
+    jobcategory,
+    image,
   }) =>{
     const uri = imageUri;
-    console.log(uri);
+    // console.log(uri);
     const childPath = `images/${userId}/${Math.random().toString(36)}`;
-    console.log(childPath);
+    // console.log(childPath);
     const response = await fetch(uri);
-    console.log(response);
+    // console.log(response);
     const blob = await response.blob();
     const task = firebase.default.storage().ref().child(childPath).put(blob);
 
@@ -167,14 +167,17 @@ const ProfileEditScreen = ({ navigation, route }) => {
         const image = snapshot;
         setDownloadURL(snapshot);
         // console.log(snapshot);
+        const locationName = location.label;
+        const jobCategory = jobcategory.label;
         const result = {
           email:userEmail,
           firstname,
           lastname,
           about,
-          location,
+          locationName,
           jobtitle,
-          image
+          jobCategory,
+          image:image
         };
         // console.log(result);
         handleSubmit(result);
@@ -191,22 +194,91 @@ const ProfileEditScreen = ({ navigation, route }) => {
     // console.log(blob);
 
   }
+
+  const handleFormSave = ({ 
+    // email,
+    firstname,
+    lastname,
+    about,
+    location,
+    jobtitle,
+    jobcategory,
+    // image
+  })=>{
+    if(imageUri.includes("https://")){
+      console.log("imageUriPrevRoute", imageUri);
+      const locationName = location.label;
+      const jobCategory = jobcategory.label;
+      const result = {
+        email:userEmail,
+        firstname,
+        lastname,
+        about,
+        locationName,
+        jobtitle,
+        jobCategory,
+        image:imageUri
+      };
+      // console.log(result);
+      setIsLoading(true);
+      handleSubmit(result);
+    }
+    else{
+      console.log("newImageData", imageUri);
+       const result = {
+        email:userEmail,
+        firstname,
+        lastname,
+        about,
+        location,
+        jobtitle,
+        jobcategory,
+        image:imageUri
+      };
+      // console.log(result);
+      setIsLoading(true);
+      upload(result);
+
+      // upload(
+      //   firstname,
+      //   lastname,
+      //   about,
+      //   location,
+      //   jobtitle,
+      //   jobcategory,
+      //   )
+    }
+  }
  
+  const locations = [
+    {label:"Islamabad", value:1},
+    {label:"Rawalpindi", value:2},
+  ];
+  const categories = [
+    {label:"Interior Designer", value:1},
+    {label:"Architecture", value:2},
+    {label:"Builder", value:3},
+    {label:"Supplier", value:4},
+    {label:"Renovator", value:5}
+  ];
+
   return (
+    <KeyboardAvoidingView>
+    <ActivityIndicator visible = {isLoading}/>
     <ScrollView style={ScreenStyles.profileEditScreen}>
       <View style={styles.container}>
           <AppForm
             initialValues={{
-              firstname: "",
-              lastname: "",
-              about: "",
-              location: "",
-              jobtitle: "",
+              firstname:profileData.firstname ||"",
+              lastname: profileData.lastname||"",
+              location:null,
+              about: profileData.about||"",
+              jobtitle: profileData.jobtitle||"",
+              jobcategory:null,
             }}
-              onSubmit={upload}
+              onSubmit={handleFormSave}
             validationSchema={validationSchema}
           >
-     <ActivityIndicator visible = {updateApi.loading}/>
       <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                 <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
@@ -226,29 +298,31 @@ const ProfileEditScreen = ({ navigation, route }) => {
                 error="Not able to save User Data"
                 visible={saveData}
               />
+              {/* <TextInput placeholder={profileData.firstname}/> */}
               <AppFormField
                style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
                 label="First Name"
                 name="firstname"
                 selectionColor="#f4f4f2"
-                underlineColor="#f4f4f2"
+                underlineColor="#495464"
                  textColor="#495464"
+                 placeholder={profileData.firstname}
+                 placeholderTextColor="#495464"
               />
               <AppFormField
                    style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
                 label="Last Name"
                 name="lastname"
                 selectionColor="#f4f4f2"
-                underlineColor="#f4f4f2"
-                textColor="#f4f4f2"
+                underlineColor="#495464"
+                textColor="#495464"
+                placeholder={profileData.lastname}
+                 placeholderTextColor="#495464"
               />
-              <AppFormField
-                 style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
-                label="Location"
-                name="location"
-                selectionColor="#f4f4f2"
-                underlineColor="#f4f4f2"
-                 textColor="#495464"
+              <AppFormPicker
+              items={locations}
+              name="location"
+              placeholder="Location"
               />
               <AppFormField
                 style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
@@ -259,15 +333,23 @@ const ProfileEditScreen = ({ navigation, route }) => {
                 textColor="#495464"
                 multiline = {true}
                 numberOfLines = {5}
-
+                placeholder={profileData.about}
+                placeholderTextColor="#495464"
               />
               <AppFormField
                   style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
-                label="Job Title"
+                  label="Job Title"
                 name="jobtitle"
                 selectionColor="#f4f4f2"
                 underlineColor="#f4f4f2"
                  textColor="#495464"
+                 placeholder={profileData.jobtitle}
+                 placeholderTextColor="#495464"
+              />
+              <AppFormPicker
+              items={categories}
+              name="jobcategory"
+              placeholder="Job Category"
               />
             </View>
  
@@ -283,6 +365,7 @@ const ProfileEditScreen = ({ navigation, route }) => {
         {/* </View> */}
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
  

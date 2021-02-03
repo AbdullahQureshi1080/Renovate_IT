@@ -1,7 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React,{useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import { View,Text,ScrollView,Image, ImageBackground, Dimensions} from 'react-native';
 import { Button,List } from 'react-native-paper';
 import MaterialComunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -23,6 +23,8 @@ import useAuth from '../../auth/useAuth';
 import UserProjectsScreen from './UserProjectsScreen';
 import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
+import { setUserData } from '../../store/auth';
+// import { useEffect } from 'react';
 
 
 
@@ -45,10 +47,18 @@ return(
 }
 
 const UserProfileScreen = ({navigation}) =>{
-    const {logOut} = useAuth(navigation);
+    const dispatch = useDispatch();
     const state = useSelector((state) => state);
-    const user = state.entities.auth.data;
-    console.log(user);
+    const userId = state.entities.auth.data._id;
+useEffect(()=>{
+    const updateAuthData = {email:profile.email,firstname:profile.firstname,lastname:profile.lastname,_id:userId}
+    dispatch(setUserData(updateAuthData));
+},[])
+    const {logOut} = useAuth(navigation);
+    const profile = state.entities.user.profile;
+    console.log(profile);
+    const imgUri = profile.image;
+    console.log(imgUri);
 return(
     <ScrollView style={ScreenStyles.userprofileScreen}>
         <View> 
@@ -60,12 +70,13 @@ return(
                 <Button 
                     icon={()=> <MaterialComunityIcons name="account-edit" size={30} 
                     color="#1B262C"/>}
-                    onPress={()=>navigation.navigate("Edit Profile")}
+                    onPress={()=>navigation.navigate("Edit Profile",{profile:profile})}
                     />
            </View>
         </View>
         <View>
-            <ProfessionalAvator name={`${user.firstname}${user.lastname}`} title = "Interior Designer" email={user.email} style={profileAvatar} disabled={true} size={90}/>
+            {/* <Image source={{uri:imgUri}} style={{ flex:1,width:200, height:200, backgroundColor:"red"}}/> */}
+            <ProfessionalAvator imageUri={profile.image}name={`${profile.firstname} ${profile.lastname}`} title = {profile.jobtitle} email={profile.email} style={profileAvatar} disabled={true} size={90}/>
             </View>
         <View>
             <Tab.Navigator  
