@@ -9,6 +9,7 @@ const AppTextInput = (props) => {
   return (
     <TextInput
       placeholder = {props.placeholder}
+      placeholderTextColor={props.placeholderTextColor}
       label={props.label}
       // value={text}
       onBlur={props.onBlur}
