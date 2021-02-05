@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { useDispatch, useSelector } from "react-redux";
 import { apiCallBegan, LOGIN_URL, REGISTER_URL } from "./api";
-
+import clearData from './user';
 
 const auth = createSlice({
   name: "auth",
@@ -72,10 +72,12 @@ export const setUserData = (user) => ({
 });
 
 
-export const logout = () => ({
+export const logout = () => (
+  {
   type: signout.type,
   // payload: user,
-});
+}
+);
 
 
 // export const userAuthentication = (user) =>

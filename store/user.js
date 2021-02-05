@@ -24,6 +24,9 @@ const user = createSlice({
       user.loading = true;
       user.profile = action.payload;
     },
+    removeData:(user,action)=>{
+      user.profile = null
+    }
   },
 });
  
@@ -33,22 +36,17 @@ const {
   requestProfile,
   requestProfileFailed,
   requestProfileSuccess,
+  removeData
 } = user.actions;
 export default user.reducer;
  
 // Action Creators
  
 // ()=>{} signature function
- 
-// export const userVerify = (user) => ({
-//   type: authenticatedUser.type,
-//   payload: user,
-// });
- 
-// export const assignUserData = (user) => ({
-//   type: userRegistration.type,
-//   payload: user,
-// });
+
+export const clearData=()=>({
+  type:removeData.type,
+}) 
  
 export const setProfileData = (userData) => ({
   type: requestProfileSuccess.type,
