@@ -7,15 +7,17 @@ import {Button} from 'react-native-paper';
 var { width, height } = Dimensions.get('window');
 
 
-const AppButton = ({name,onPress}) =>{
+const AppButton = ({name,onPress,style}) =>{
 return (
     <Button 
-        style={styles.button} 
+        style={{...styles.button,...style}} 
         color = {styles.button.color}
         onPress={onPress}
         // icon={()=>{iconName}}
-        >{name}
-        </Button>
+        // title={name}
+        >
+        {name}
+     </Button>
 );
 }
 const styles = StyleSheet.create({
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor:"#495464", 
         color : "#F4F4F2",
         marginVertical:10, 
-        width:width/4,
+        width:width/3,
         alignSelf:"center",
     }
 })
