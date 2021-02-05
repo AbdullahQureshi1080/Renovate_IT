@@ -50,14 +50,33 @@ const UserProfileScreen = ({navigation}) =>{
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
     const userId = state.entities.auth.data._id;
+    const profile = state.entities.user.profile;
+    console.log(profile);
+    const getImageUri=()=>{
+        if(profile){
+            return profile.image;
+        }
+        else{
+            return false;
+        }
+    }
+    // const getProfileData=()=>{
+    //     if(profile){
+    //         return profile
+    //     }
+    //     else{
+    //         const {email,firstname,lastname,_id} = "";
+    //         return (email,firstname,lastname,_id)
+    //     }
+    // }
 useEffect(()=>{
+    // const profile = getProfileData();
     const updateAuthData = {email:profile.email,firstname:profile.firstname,lastname:profile.lastname,_id:userId}
     dispatch(setUserData(updateAuthData));
 },[])
+// console.log(profile.image)
+    const imgUri = getImageUri();
     const {logOut} = useAuth(navigation);
-    const profile = state.entities.user.profile;
-    console.log(profile);
-    const imgUri = profile.image;
     console.log(imgUri);
 return(
     <ScrollView style={ScreenStyles.userprofileScreen}>
@@ -75,14 +94,13 @@ return(
            </View>
         </View>
         <View>
-            {/* <Image source={{uri:imgUri}} style={{ flex:1,width:200, height:200, backgroundColor:"red"}}/> */}
-            <ProfessionalAvator imageUri={profile.image}name={`${profile.firstname} ${profile.lastname}`} title = {profile.jobtitle} email={profile.email} style={profileAvatar} disabled={true} size={90}/>
+            <ProfessionalAvator imageUri={imgUri}name={`${profile.firstname} ${profile.lastname}`} title = {profile.jobtitle} email={profile.email} style={profileAvatar} disabled={true} size={90}/>
             </View>
         <View>
             <Tab.Navigator  
                tabBarOptions = {TabNavigatorStyle.userProfileTab}>
-                   <Tab.Screen name = "Projects" component = {UserProjects}/>
                    <Tab.Screen name = "About" component = {AboutUser}/>
+                   <Tab.Screen name = "Projects" component = {UserProjects}/>
                    <Tab.Screen name = "Remote Firm" component = {display}/>
                    <Tab.Screen name = "Design a room" component = {display}/>
                </Tab.Navigator>

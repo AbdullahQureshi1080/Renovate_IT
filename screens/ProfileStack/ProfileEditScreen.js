@@ -265,7 +265,7 @@ const ProfileEditScreen = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView>
     <ActivityIndicator visible = {isLoading}/>
-    <ScrollView style={ScreenStyles.profileEditScreen}>
+    <ScrollView style={ScreenStyles.profileEditScreen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
           <AppForm
             initialValues={{
