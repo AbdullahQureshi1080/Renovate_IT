@@ -4,6 +4,24 @@ import { Dimensions } from 'react-native'
 const marginHorizontal = 20;
 const ScreenStyle = {
       // fontFamily:"Poppins-Regular" ,
+      createPostScreen:{
+        fontFamily: 'Poppins-Regular',
+        marginHorizontal: 15,
+        marginVertical:10,
+        // alignContent: 'center',
+        // alignItems: 'center',
+        // alignSelf: 'center',
+        inputView:{
+          marginVertical:5,
+          width: Dimensions.get('window').width/1.25,
+        },
+        textLabel:{
+          fontSize:16,
+          // fontWeight:"bold",
+          fontFamily: 'Poppins-Bold',
+          color:"#495464"
+        },
+      },
       profileEditScreen:{
         fontFamily: 'Poppins-Regular',
         marginHorizontal: 15,
@@ -83,12 +101,11 @@ const ScreenStyle = {
           display:'flex', 
           flexDirection:"row", 
           justifyContent:"space-between",
-          titleText:
-          {fontSize:18, 
+          titleText: {
+            fontSize:18, 
             // fontWeight: "800",
           fontFamily: 'Poppins-Bold', 
-           color:"#495464",
-}
+           color:"#495464",}
         },
         AvatarBox : {
           display:'flex', 
@@ -147,7 +164,7 @@ const ScreenStyle = {
           display:'flex', 
           flexDirection:"row", 
           nameText:{
-            fontSize:16, 
+            fontSize:18, 
             alignSelf:"center", 
             marginHorizontal: 10, 
             fontWeight:"bold",
