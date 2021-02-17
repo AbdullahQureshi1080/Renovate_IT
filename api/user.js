@@ -1,7 +1,6 @@
 import client from "./client";
  
 const register = (firstname, lastname, email, password) =>
-  // console.log(firstname,lastname,email,password);
   client.post("user/register", {
     firstname,
     lastname,
@@ -9,7 +8,7 @@ const register = (firstname, lastname, email, password) =>
     password,
   });
  
-const updateProfile = (email, firstname, lastname, about, location, jobtitle,jobcategory,image) =>
+  const updateProfile = (email, firstname, lastname, about, location, jobtitle,jobcategory,image) =>
   client.post("profile/updateProfile", {
     email,
     firstname,
@@ -20,6 +19,7 @@ const updateProfile = (email, firstname, lastname, about, location, jobtitle,job
     jobcategory,
     image
   });
+
 const getProfile = (email) =>
   client.post("profile/getProfile", {
     email,
@@ -35,16 +35,19 @@ const userProfile = async (email) => {
   return result.data;
 };
  
-// const imageUpload = (imageSource,userId) => {
-//   client.post("profile/imageUpload", {
-//     imageSource,
-//     userId
-//   });
-// };
+const createPost = (email, title, description, budget, images, documents) =>
+  client.post("posts/newPost", {
+    email,
+    title,
+    description,
+    budget,
+    images,
+    documents,
+  });
  
 export default {
   register,
   updateProfile,
-  // imageUpload,
   userProfile,
+  createPost,
 };

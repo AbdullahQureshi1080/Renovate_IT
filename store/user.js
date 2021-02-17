@@ -9,6 +9,7 @@ const user = createSlice({
   initialState: {
     loading: false,
     profile: {},
+    posts:[],
   },
   reducers: {
     // actions => action handlers
@@ -26,7 +27,11 @@ const user = createSlice({
     },
     removeData:(user,action)=>{
       user.profile = null
-    }
+    },
+    addNewPost: (user, action) => {
+      user.posts = [...user.posts, action.payload];
+    },
+
   },
 });
  
@@ -36,7 +41,8 @@ const {
   requestProfile,
   requestProfileFailed,
   requestProfileSuccess,
-  removeData
+  removeData,
+  addNewPost,
 } = user.actions;
 export default user.reducer;
  
@@ -52,6 +58,12 @@ export const setProfileData = (userData) => ({
   type: requestProfileSuccess.type,
   payload: userData,
 });
+
+export const addPost = (postData) => ({
+  type: addNewPost.type,
+  payload: postData,
+})
+
 
 // export const getProfileData = ({ email }) => {
 //   const result = userAPI.getProfile(email);
