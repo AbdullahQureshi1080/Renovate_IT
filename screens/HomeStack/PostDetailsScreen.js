@@ -1,7 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text, Image, ScrollView, Dimensions} from 'react-native';
+import {View, Text, Image, ScrollView, Dimensions,StyleSheet} from 'react-native';
 import {Paragraph,Avatar,} from 'react-native-paper';
 
 // Components Imports
@@ -22,7 +22,7 @@ const ProjectDetailsScreen = (props) =>{
           <Avatar.Image source = {require("../../assets/p1.jpg")} style={{
             marginHorizontal:3
           }}/>
-          <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{props.route.params.item.postAuthor}</Text>
+          <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{props.route.params.item.creator}</Text>
         </View>
         <View style={{alignSelf:"center",}}>
         <AppButton name="Message"  onPress={()=>console.log("Message Button")}/>
@@ -37,17 +37,38 @@ const ProjectDetailsScreen = (props) =>{
           </Paragraph>
           <View style = {{display:'flex', flexDirection:"row", justifyContent:"space-between"}}>
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>Budget</Text>
-          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>{props.route.params.item.budget} RS</Text>
+          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>RS {props.route.params.item.budget} </Text>
           </View>   
         </View>
 
-        <View style={{
-          marginVertical:15,}}>
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>Attachments</Text>
-           {/* Some Sort of way to get Attachements */}
+        <View style={{flexDirection:"row"}}>
+          {props.route.params.item.images.concat(props.route.params.item.documents).map(image=>
+            <View style={styles.container}>
+            <Image source = {{uri:image}} style={styles.image}/>
+           </View>
+          )}
         </View>
       </ScrollView>
     );
    }
 
+   const styles = StyleSheet.create({
+    container: {
+      backgroundColor: "grey",
+      borderRadius: 15,
+      display:"flex",
+      flexDirection:"row",
+      alignItems: "center",
+      justifyContent: "center",
+      height: 100,
+      width: 100,
+      overflow: "hidden",
+      marginHorizontal:5,
+    },
+    image: {
+      height: "100%",
+      width: "100%",
+    },
+  });
 export default ProjectDetailsScreen;
