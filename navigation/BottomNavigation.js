@@ -62,12 +62,18 @@ const BottomNavigation = () =>{
           name="Add"
         //   Still have to figure out, how to do this
           component={CreateStack}
-          options={{
+          options={({route})=>({
             tabBarLabel: 'Add',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="plus-circle" color={color} size={35} />
             ),
-          }}
+            tabBarVisible: ((route) => {
+              let routeName = getFocusedRouteNameFromRoute(route) ?? ('Add'||"Options");
+              console.log(routeName);
+              if (routeName === 'Add' ||routeName === 'Options') return true;
+              else return false;
+            })(route),
+          })}
         />
         <Tab.Screen
           name="Chats"

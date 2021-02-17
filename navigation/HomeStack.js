@@ -38,8 +38,7 @@ const HomeStack = () => {
               
             }}
             />
-            <Stack.Screen name="Project Details" component={ProjectDetailsScreen}
-           />   
+            <Stack.Screen name="Project Details" component={ProjectDetailsScreen} />   
             <Stack.Screen name="Post Details" component={PostDetailsScreen} />  
             <Stack.Screen name="All Professionals" component={AllProfessionals}
              options={({ route }) => ({ title: route.params.title })}

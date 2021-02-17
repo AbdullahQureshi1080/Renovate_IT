@@ -1,65 +1,41 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{useState} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View,TouchableOpacity,StyleSheet} from 'react-native';
-import {
-  Card,
-  Title,
-  Paragraph,
-  List,
-} from 'react-native-paper';
+import { View,TouchableOpacity,StyleSheet,Text,Button,Dimensions,Modal} from 'react-native';
+// import {
+//   Card,
+//   Title,
+//   Paragraph,
+//   List,
+// } from 'react-native-paper';
 
 import CreatePostScreen from '../screens/CreateStack/CreatePostScreen';
-const title = "Hi, Boss";
-const content = "This is attempt at working with react native paper and react native core";
+import AppButton from '../components/AppButton';
+import AppModal from '../components/AppModal';
 
-const CreateModalPopup = ({ navigation }) => (
-    <View>
-      <TouchableOpacity
-      onPress={() =>
-        navigation?.push('Details', {
-          title,
-          content,
-        })
-      }
-      style = {styles.cardDistance}
-    >
-      <Card>
-        <Card.Content>
-          <Title>{title}</Title>
-          <Paragraph>{content}</Paragraph>
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() =>
-        navigation?.push('Details', {
-          title,
-          content,
-        })
-      }
-    >
-      <Card theme={{ roundness: 3, background : "#16697a"}}>
-        <Card.Content>
-          <Title>{title}</Title>
-          <Paragraph>{content}</Paragraph>
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
-    
+var { width, height } = Dimensions.get('window');
+
+
+const Options = ({ navigation }) => (
+    <View style={styles.option}>
+      <AppButton name="Create Post" onPress={()=>navigation.navigate("CreatePost")} /> 
     </View>
-  );
+)
   
 
 
 const Stack = createStackNavigator();
 
-const CreateStack = () => {
+const CreateStack = ({navigation}) => {
     return(
-        <Stack.Navigator initialRouteName="CreateModal">
-            <Stack.Screen name="CreateModal" component={CreateModalPopup} />
-            <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+        <Stack.Navigator initialRouteName="Options">
+            <Stack.Screen name="Options" component={Options}  options={{
+              headerShown:false
+            }} navigation={navigation}/>
+            <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{
+              headerShown:false
+            }} navigation={navigation}/>
         </Stack.Navigator>
     );
 }
@@ -68,6 +44,12 @@ const CreateStack = () => {
 const styles = StyleSheet.create({
   cardDistance:{
     marginBottom:10,
+  },
+  option:{
+    flex:1,
+    justifyContent:"center",
+    alignContent:"center",
+    alignSelf:"center"
   }
 })
 
