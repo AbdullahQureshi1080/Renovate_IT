@@ -7,7 +7,7 @@ import {Button} from 'react-native-paper';
 var { width, height } = Dimensions.get('window');
 
 
-const AppButton = ({name,onPress,style}) =>{
+const AppButton = ({name,onPress,style,width}) =>{
 return (
     <Button 
         style={{...styles.button,...style}} 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor:"#495464", 
         color : "#F4F4F2",
         marginVertical:10, 
-        width:width/3,
+        // width:width/2.5,
         alignSelf:"center",
     }
 })
