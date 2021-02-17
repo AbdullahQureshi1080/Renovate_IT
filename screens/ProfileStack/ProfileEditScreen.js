@@ -67,7 +67,9 @@ const validationSchema = Yup.object().shape({
  
 const ProfileEditScreen = ({ navigation, route }) => {
   const profileData = route.params.profile;
-  console.log("Data from Prev Route", profileData);
+  useEffect(()=>{
+    console.log("Data from Prev Route", profileData);
+  },[])
   const [imageUri, setImageUri] = useState(profileData.image);
   const [downloadURL, setDownloadURL] = useState(null);
   const dispatch = useDispatch();
@@ -93,19 +95,19 @@ const ProfileEditScreen = ({ navigation, route }) => {
  
     const jobcategory = jobCategory;
     const location = locationName;
-    
+    // const image = image;
     // console.log(jobCategory,workingLocation)
-    // const data = {
-    //   email, 
-    //   firstname,
-    //   lastname,
-    //   about,
-    //   location,
-    //   jobtitle,
-    //   jobcategory,
-    //   image,
-    // }
-    // console.log("Data from Handle Submit ",data);
+    const data = {
+      email, 
+      firstname,
+      lastname,
+      about,
+      location,
+      jobtitle,
+      jobcategory,
+      image,
+    }
+    console.log("Data from Handle Submit ",data);
     // setIsLoading(false);
     // console.log(jobCategory,workinglocation);
     // console.log(data);
@@ -120,6 +122,7 @@ const ProfileEditScreen = ({ navigation, route }) => {
       jobcategory,
       image,
      );
+    //  const result = await updateApi.request( data );
   if (!result.ok) {
           // console.log(result.data);
           // setError(result.data);

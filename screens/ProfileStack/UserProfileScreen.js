@@ -80,12 +80,12 @@ useEffect(()=>{
     console.log(imgUri);
 return(
     <ScrollView style={ScreenStyles.userprofileScreen}>
-        <View> 
-            <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+        <View style={{marginHorizontal:0}}> 
+            <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-between",}}>
                 <Button 
-                    icon={()=> <MaterialComunityIcons name="logout" size={25} color="#1B262C"/>} 
+                    icon={()=> <MaterialComunityIcons name="logout" size={30} color="#1B262C"/>} 
                     onPress={logOut}/>        
-                <Text style={{width:Dimensions.get('window').width/1.6}}></Text>
+                {/* <Text style={{width:Dimensions.get('window').width/1.6}}></Text> */}
                 <Button 
                     icon={()=> <MaterialComunityIcons name="account-edit" size={30} 
                     color="#1B262C"/>}
