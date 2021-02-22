@@ -12,13 +12,15 @@ import { View,TouchableOpacity,StyleSheet,Text,Button,Dimensions,Modal} from 're
 
 import CreatePostScreen from '../screens/CreateStack/CreatePostScreen';
 import AppButton from '../components/AppButton';
-import AppModal from '../components/AppModal';
+import PopUpModal from '../components/PopUpModal';
+// import AppModal from '../components/AppModal';
 
 var { width, height } = Dimensions.get('window');
 
 
 const Options = ({ navigation }) => (
     <View style={styles.option}>
+      {/* <PopUpModal/> */}
       <AppButton name="Create Post" onPress={()=>navigation.navigate("CreatePost")} /> 
     </View>
 )
