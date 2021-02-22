@@ -14,10 +14,11 @@ import storage from '../../auth/storage';
 
 // Redux-Store
 import { loginUser, setUserData } from "../../store/auth";
-import { setProfileData } from '../../store/user';
+import { setProfileData,setUserPosts } from '../../store/user';
 
 const SplashScreen = ({navigation}) =>{
-  const userApi = useApi(userAPI.userProfile)
+  const userApi = useApi(userAPI.userProfile);
+  const userPostsApi = useApi(userAPI.userPosts); 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   console.log(state);
@@ -32,10 +33,13 @@ const SplashScreen = ({navigation}) =>{
       const email = userData.email;
       console.log(email);
       const profileData = await userApi.request(email);
+      const userPostsData = await userPostsApi.request(email);
       console.log(profileData);
-        dispatch(loginUser(userToken));
-        dispatch(setUserData(userData));
-        dispatch(setProfileData(profileData));
+       console.log(userPostsData)
+      dispatch(loginUser(userToken));
+      dispatch(setUserData(userData));
+      dispatch(setProfileData(profileData));
+      dispatch(setUserPosts(userPostsData))
         // console.log(state);
         navigation.navigate("Home");
       };

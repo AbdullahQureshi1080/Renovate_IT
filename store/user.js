@@ -17,7 +17,6 @@ const user = createSlice({
     requestProfile: (user, action) => {
       user.loading = true;
     },
- 
     requestProfileFailed: (user, action) => {
       user.loading = false;
     },
@@ -28,10 +27,16 @@ const user = createSlice({
     removeData:(user,action)=>{
       user.profile = null
     },
+    userPosts:(user,action)=>{
+      user.posts = action.payload;
+   },
     addNewPost: (user, action) => {
       user.posts = [...user.posts, action.payload];
     },
-
+    // deletePost:(user,action)=>{
+    //   const posts = user.posts.filter(id=>action.payload);
+    //   // user.posts = [...user.posts,]
+    // }
   },
 });
  
@@ -43,6 +48,7 @@ const {
   requestProfileSuccess,
   removeData,
   addNewPost,
+  userPosts,
 } = user.actions;
 export default user.reducer;
  
@@ -59,10 +65,15 @@ export const setProfileData = (userData) => ({
   payload: userData,
 });
 
+export const setUserPosts =(posts) =>({
+  type:userPosts.type,
+  payload: posts,
+});
+
 export const addPost = (postData) => ({
   type: addNewPost.type,
   payload: postData,
-})
+});
 
 
 // export const getProfileData = ({ email }) => {
