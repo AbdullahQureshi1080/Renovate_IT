@@ -5,7 +5,7 @@ import {View, Text, FlatList} from 'react-native';
 
 // Components Imports
 import PostCard from '../../components/Card/PostCard';
-import {postsDummyData} from '../../assets/DummyData';
+// import {postsDummyData} from '../../assets/DummyData';
 import dataAPI from '../../api/data';
 import useApi from '../../hooks/useApi';
 

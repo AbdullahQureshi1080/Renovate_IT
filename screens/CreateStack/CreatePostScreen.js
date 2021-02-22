@@ -9,7 +9,7 @@ import SubmitButton from "../../components/AppForm/SubmitButton";
 import AppForm from "../../components/AppForm/AppForm";
 
  
-import Screen from "../../components/Screen";
+// import Screen from "../../components/Screen";
 import FormImagePicker from"../../components/AppForm/FormImagePicker";
 import FormDocumentPicker from "../../components/AppForm/FormImagePicker";
  

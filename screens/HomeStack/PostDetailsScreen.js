@@ -1,49 +1,117 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
-import {View, Text, Image, ScrollView, Dimensions,StyleSheet} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View, Text, Image, ScrollView, Dimensions,StyleSheet, Button,TouchableOpacity,Pressable} from 'react-native';
 import {Paragraph,Avatar,} from 'react-native-paper';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// import PopUpModal from '../../components/PopUpModal';
+import Modal from 'react-native-modal';
 // Components Imports
 import AppButton from '../../components/AppButton';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
+import { useSelector } from 'react-redux';
+import PopUpModal from '../../components/PopUpModal';
+import { model } from 'mongoose';
 
 // var { width, height } = Dimensions.get('window')
 
-const ProjectDetailsScreen = (props) =>{
+const PostDetailsScreen = ({navigation,route}) =>{
+  const [idCheck, setCheckId] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  // const [isModalVisible, setModalVisible] = useState(false);
+  const state = useSelector(state=>state);
+  const  userPosts= state.entities.user.posts;
+  const postsIds = userPosts.map(post=>post._id);
+  console.log(postsIds);
+  const postId = route.params.item._id;
+  console.log(postId);
+  useEffect(()=>{
+    for (var i =0; i<postsIds.length; i++){
+      if(postId == postsIds[i]){
+        setCheckId(false)
+      }
+    }
+  }
+  ,[])
 
+// const popup = (check)=>{
+//   // <PopUpModal visible={true}/>
+//   console.log("Pressed")
+//   const toggleModal = () => {
+//     setModalVisible(!isModalVisible);
+//   };
+
+//     return (
+//       <View style={{flex: 1, backgroundColor:"red"}}>
+//         <Button title="Show modal" onPress={toggleModal} />
+
+//         <Modal isVisible={true}>
+//           <View style={{flex: 1}}>
+//             <Text>Hello!</Text>
+
+//             <Button title="Hide modal" onPress={toggleModal} />
+//           </View>
+//         </Modal>
+//       </View>
+//     );
+// }
+// const ShowModal = ()=>{
+
+// }
    return (
       <ScrollView style = {ScreenStyles.postsDetailScreen}>
+         <View style={{flexDirection:"row", justifyContent:"space-between", marginVertical:10}}>
+         <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
+                  <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
+                  </TouchableOpacity>
+                  {!idCheck?(
+                    <TouchableOpacity style={{alignSelf:"center"}}  onPress={() => setModalVisible(true)}>
+                    <MaterialIcons name="more-vert"  size={40} color="#495464"/>
+                      </TouchableOpacity>   
+                  ):(
+                    <View></View>
+                  )}
+              </View>
+              {/* {
+                !modalVisible? <View></View> :   <PopUpModal />
+
+              } */}
          
         <View style = {ScreenStyles.postsDetailScreen.viewBox}>
         <View style = {ScreenStyles.postsDetailScreen.AvatarBox}>
-          <Avatar.Image source = {require("../../assets/p1.jpg")} style={{
+          <Avatar.Image source = {{uri:route.params.item.creatorImage}} style={{
             marginHorizontal:3
           }}/>
-          <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{props.route.params.item.creator}</Text>
+          <Text style = {ScreenStyles.postsDetailScreen.AvatarBox.nameText}>{route.params.item.creator}</Text>
         </View>
         <View style={{alignSelf:"center",}}>
-        <AppButton name="Message"  onPress={()=>console.log("Message Button")}/>
+        {idCheck?(
+                   <AppButton name="Message"  onPress={()=>console.log("Message Button")}/>
+                  ):(
+                    <View></View>
+                  )}
+        {/* <AppButton name="Message"  onPress={()=>console.log("Message Button")}/> */}
         </View>
         </View>
 
         <View style={{
           marginVertical:15,}}>
-          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>{props.route.params.item.title}</Text>
+          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>{route.params.item.title}</Text>
           <Paragraph style={ScreenStyles.postsDetailScreen.contentText}>
-          {props.route.params.item.description}
+          {route.params.item.description}
           </Paragraph>
           <View style = {{display:'flex', flexDirection:"row", justifyContent:"space-between"}}>
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>Budget</Text>
-          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>RS {props.route.params.item.budget} </Text>
+          <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>RS {route.params.item.budget} </Text>
           </View>   
         </View>
 
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>Attachments</Text>
         <View style={{flexDirection:"row"}}>
-          {props.route.params.item.images.concat(props.route.params.item.documents).map(image=>
+          {route.params.item.images.concat(route.params.item.documents).map(image=>
             <View style={styles.container}>
             <Image source = {{uri:image}} style={styles.image}/>
            </View>
@@ -71,4 +139,4 @@ const ProjectDetailsScreen = (props) =>{
       width: "100%",
     },
   });
-export default ProjectDetailsScreen;
+export default PostDetailsScreen;
