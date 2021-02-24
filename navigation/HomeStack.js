@@ -19,7 +19,7 @@ const searchBar = ()=>{
     <SearchBar placeholder = "Search"/>
   )
 }
-const HomeStack = () => {
+const HomeStack = ({navigation}) => {
 
     return(
         <Stack.Navigator 
@@ -38,9 +38,9 @@ const HomeStack = () => {
               
             }}
             />
-            <Stack.Screen name="Project Details" component={ProjectDetailsScreen} />   
-            <Stack.Screen name="Post Details" component={PostDetailsScreen} options={{headerShown:false}} />  
-            <Stack.Screen name="All Professionals" component={AllProfessionals}
+            <Stack.Screen name="Project Details" component={ProjectDetailsScreen} navigation={navigation} />   
+            <Stack.Screen name="Post Details" component={PostDetailsScreen}   navigation={navigation} options={{headerShown:false}} />  
+            <Stack.Screen name="All Professionals" component={AllProfessionals}  navigation={navigation}
              options={({ route }) => ({ title: route.params.title })}
             />  
         </Stack.Navigator>

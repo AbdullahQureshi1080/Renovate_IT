@@ -13,6 +13,7 @@ import { View,TouchableOpacity,StyleSheet,Text,Button,Dimensions,Modal} from 're
 import CreatePostScreen from '../screens/CreateStack/CreatePostScreen';
 import AppButton from '../components/AppButton';
 import PopUpModal from '../components/PopUpModal';
+import UpdatePostScreen from '../screens/CreateStack/UpdatePostScreen';
 // import AppModal from '../components/AppModal';
 
 var { width, height } = Dimensions.get('window');
@@ -20,7 +21,6 @@ var { width, height } = Dimensions.get('window');
 
 const Options = ({ navigation }) => (
     <View style={styles.option}>
-      {/* <PopUpModal/> */}
       <AppButton name="Create Post" onPress={()=>navigation.navigate("CreatePost")} /> 
     </View>
 )
@@ -36,6 +36,9 @@ const CreateStack = ({navigation}) => {
               headerShown:false
             }} navigation={navigation}/>
             <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{
+              headerShown:false
+            }} navigation={navigation}/>
+                <Stack.Screen name="UpdatePost" component={UpdatePostScreen} options={{
               headerShown:false
             }} navigation={navigation}/>
         </Stack.Navigator>

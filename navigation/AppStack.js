@@ -15,7 +15,7 @@ import SignUpScreen from '../screens/AppStack/SignUpScreen';
 
 const Stack = createStackNavigator();
 
-const AppStack = () => {
+const AppStack = ({navigation}) => {
     return(
         <Stack.Navigator 
           initialRouteName="SplashScreen"
@@ -47,6 +47,7 @@ const AppStack = () => {
             options={{
                 headerShown:false ,
               }}
+              navigation={navigation}
              />  
         </Stack.Navigator>
     );

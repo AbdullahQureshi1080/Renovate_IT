@@ -15,7 +15,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
  
-const BottomNavigation = () =>{
+const BottomNavigation = ({navigation}) =>{
    
     return ( 
         <Tab.Navigator
@@ -45,6 +45,7 @@ const BottomNavigation = () =>{
             else return false;
           })(route),
         })}
+        navigation={navigation}
         />
         <Tab.Screen
           name="Store"
@@ -57,6 +58,7 @@ const BottomNavigation = () =>{
             ),
             
           }}
+          navigation={navigation}
         />
         <Tab.Screen
           name="Add"
@@ -74,6 +76,7 @@ const BottomNavigation = () =>{
               else return false;
             })(route),
           })}
+          navigation={navigation}
         />
         <Tab.Screen
           name="Chats"
@@ -91,7 +94,7 @@ const BottomNavigation = () =>{
               else return false;
             })(route),
           })}
-          
+          navigation={navigation}
         />
         <Tab.Screen
           name="Profile"
@@ -109,6 +112,7 @@ const BottomNavigation = () =>{
               else return false;
             })(route),
           })}
+          navigation={navigation}
         />
       </Tab.Navigator>
     );
