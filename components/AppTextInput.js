@@ -11,7 +11,7 @@ const AppTextInput = (props) => {
       placeholder = {props.placeholder}
       placeholderTextColor={props.placeholderTextColor}
       label={props.label}
-      // value={text}
+      value={props.value}
       onBlur={props.onBlur}
       onChangeText={props.onChangeText}
       style = {props.style}

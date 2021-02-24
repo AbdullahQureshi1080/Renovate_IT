@@ -41,7 +41,7 @@ const ScreenStyle = {
       },
       userprofileScreen:{
         // fontFamily: 'Poppins-Regular',
-        marginHorizontal:marginHorizontal,
+        marginHorizontal:10,
         marginVertical: 10,
         color:"#495464",
         userAbout:{
@@ -142,6 +142,7 @@ const ScreenStyle = {
       },
       postsDetailScreen:{
         marginHorizontal:marginHorizontal,
+        marginVertical:15,
         imageStyle:{
           marginVertical:15,
           height: Dimensions.get('window').height/2,
