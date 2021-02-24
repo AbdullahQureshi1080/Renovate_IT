@@ -20,7 +20,7 @@ import ActivityIndicator from "../../components/ActivityIndicator";
 import userAPI from "../../api/user";
 import useApi from "../../hooks/useApi";
 
-import { addPost } from "../../store/user";
+import { addPost, editPost } from "../../store/user";
 import AppText from "../../components/AppText";
 
 // import ComponentsStyle from "../../styles/ComponentsStyle";
@@ -43,29 +43,33 @@ const validationSchema = Yup.object().shape({
 });
  
  
-function CreatePostScreen( {navigation, route}) {
+function UpdatePostScreen( {route,navigation}) {
   const dispatch = useDispatch();
+  useEffect(()=>{
+    setImages(route.params.images);
+  },[])
   const state = useSelector((state) => state);
   const email = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
   console.log(userId);
- console.log(route.params)
+//  console.log(route.params.item)
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
   const [error, setError] = useState();
   const [Images, setImages] = useState([]);
-  const createApi = useApi(userAPI.createPost);
+  const updateApi = useApi(userAPI.updatePost);
   const handleSubmit = async ({
+    id,
     title,
     description,
     budget,
     images,
     documents,
   }) => {
-    console.log("Handle Submit", title, description, budget, images, documents);
+    console.log("Handle Submit", id,title, description, budget, images, documents);
     // setIsLoading(false);
-    const result = await createApi.request(
-      email,
+    const result = await updateApi.request(
+      id,
       title,
       description,
       budget,
@@ -82,7 +86,7 @@ function CreatePostScreen( {navigation, route}) {
     }
     setSaveData(false);
     setIsLoading(false);
-    dispatch(addPost(result.data));
+    dispatch(editPost(result.data));
     navigation.navigate("AppHome");
   };
   async function uploadAsPromise(file, type) {
@@ -125,49 +129,65 @@ function CreatePostScreen( {navigation, route}) {
     images,
     documents,
   }) => {
-    setIsLoading(true);
-    console.log("Going In Loop");
-    const arrImages = [];
-    const arrDocuments = [];
-    for (var i = 0; i < images.length; i++) {
-      var imageFile = images[i];
-      var type = "img";
-      await uploadAsPromise(imageFile,type).then((res) => {
-        arrImages.push(res);
-      });
+    if(images[0].includes("https://")){
+      setIsLoading(true);
+      const postData = {
+        id:route.params._id,
+        title,
+        budget,
+        description,
+        images: route.params.images,
+        documents: route.params.documents,
+      };
+      handleSubmit(postData);
     }
-    console.log("Coming out of loop - Images");
-    console.log(arrImages);
-    for (var i = 0; i < documents.length; i++) {
-      var documentFile = documents[i];
-      var type = "doc";
-      await uploadAsPromise(documentFile, type).then((res) => {
-        arrDocuments.push(res);
-      });
-      console.log("Coming out of loop - Documents ");
-      console.log(arrDocuments);
+    else{
+      setIsLoading(true);
+      console.log("Going In Loop");
+      const arrImages = [];
+      const arrDocuments = [];
+      for (var i = 0; i < images.length; i++) {
+        var imageFile = images[i];
+        var type = "img";
+        await uploadAsPromise(imageFile,type).then((res) => {
+          arrImages.push(res);
+        });
+      }
+      console.log("Coming out of loop - Images");
+      console.log(arrImages);
+      for (var i = 0; i < documents.length; i++) {
+        var documentFile = documents[i];
+        var type = "doc";
+        await uploadAsPromise(documentFile, type).then((res) => {
+          arrDocuments.push(res);
+        });
+        console.log("Coming out of loop - Documents ");
+        console.log(arrDocuments);
+      }
+      const postData = {
+        id:route.params._id,
+        title,
+        budget,
+        description,
+        images: arrImages,
+        documents: arrDocuments,
+      };
+      handleSubmit(postData);
     }
-    const postData = {
-      title,
-      budget,
-      description,
-      images: arrImages,
-      documents: arrDocuments,
-    };
-    handleSubmit(postData);
+    
   };
   return (
-    <KeyboardAvoidingView style={{flex:1,}}>
+    <KeyboardAvoidingView style={{flex:1}}>
       <ActivityIndicator visible={isLoading} />
     <ScrollView style={ScreenStyles.createPostScreen} showsVerticalScrollIndicator={false}>
       <AppForm
         initialValues={{
-          title: "",
-          budget:"",
-          description:"",
+          title: route.params.title || "",
+          budget: route.params.budget || "",
+          description: route.params.description ||"",
           // category: null,
-          images: [],
-          documents:[],
+          images:  route.params.images || [],
+          documents: route.params.documents||[],
         }}
         onSubmit={handleFormSubmit}
         validationSchema={validationSchema}
@@ -177,18 +197,18 @@ function CreatePostScreen( {navigation, route}) {
                   <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
                   </TouchableOpacity>
               <View style={{ alignSelf: "center" }}>
-                <SubmitButton name="Create" />
+                <SubmitButton name="Update" />
             </View>
               </View>
               <View style={{ alignSelf: "center" }}>
-            <AppText style={styles.titleText}>Create Post</AppText>
+            <AppText style={styles.titleText}>Update Post</AppText>
           </View>
-        <AppFormField maxLength={255} name="title" placeholder="Title"   />
+        <AppFormField maxLength={255} name="title"  placeholder={route.params.title} />
         <AppFormField
           keyboardType="numeric"
           maxLength={8}
           name="budget"
-          placeholder="Budget"
+          placeholder={route.params.budget}
         />
         <AppFormField
           maxLength={255}
@@ -196,9 +216,10 @@ function CreatePostScreen( {navigation, route}) {
           name="description"
           numberOfLines={7}
           placeholder="Description"
+          placeholder={route.params.description}
         />
         <AppText style={styles.subTitleText}>Images</AppText>
-        <FormImagePicker name="images" />
+        <FormImagePicker name="images"/>
         <AppText  style={styles.subTitleText}>Documents</AppText>
         <FormDocumentPicker name="documents" />
     
@@ -229,6 +250,6 @@ const styles = StyleSheet.create({
     // alignSelf: "center",
   },
 });
-export default CreatePostScreen;
+export default UpdatePostScreen;
  
 

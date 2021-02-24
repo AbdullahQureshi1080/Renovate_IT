@@ -50,6 +50,18 @@ const createPost = (email, title, description, budget, images, documents) =>
     documents,
   });
 
+  const updatePost = (id, title, description, budget, images, documents) =>
+  client.post("posts/updatePost", {
+    id,
+    title,
+    description,
+    budget,
+    images,
+    documents,
+  });
+  const deletePost = (email,id) =>
+  client.post("posts/deletePost", {email,id});
+
   const getUserPosts = (email) =>
   client.post("posts/getUserPosts", {
     email,
@@ -69,4 +81,6 @@ export default {
   userProfile,
   createPost,
   userPosts,
+  deletePost,
+  updatePost
 };
