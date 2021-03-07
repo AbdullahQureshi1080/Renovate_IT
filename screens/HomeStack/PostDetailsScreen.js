@@ -28,7 +28,7 @@ import { deleteAppPost } from '../../store/data';
 // var { width, height } = Dimensions.get('window')
 
 const PostDetailsScreen = ({navigation,route}) =>{
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
   const state = useSelector(state=>state);

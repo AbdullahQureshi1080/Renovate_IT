@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, ScrollView,Dimensions} from 'react-native';
 
 // Components Imports
@@ -10,18 +10,21 @@ import CategoryCard from '../../components/Card/CategoryCard';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
+import { useSelector } from 'react-redux';
 
       
 
 const profileAvatar = {
    border:"none",
    marginVertical:15,
+   justifyContent:"center",
    nameText : {
        fontSize : 16,
        marginTop : 5,
        fontWeight:"bold",
        color:"#495464",
        fontFamily: 'Poppins-Bold',
+      //  alignSelf: 'center',
    },
    titleText : {
        fontSize : 14,
@@ -29,25 +32,57 @@ const profileAvatar = {
        color:"#495464",
        width:Dimensions.get('window').width/3,
        fontFamily: 'Poppins-Medium',
+       alignSelf: 'center',
    }
  }
 
    const Professionals = ({navigation}) =>{
+      const [data,setData ] = useState([])
+      const state = useSelector(state=>state);
+      const professionals = state.entities.data.allusers;
+      console.log("All Professional",professionals);
+      
+      const categoryScreen = (category)=>{
+         // if(category == "Architecture"){
+            console.log("Category:",category)
+            // const result = professionals.map((user)=>{
+            //    if(user.jobcategory == category){
+            //       return user;
+            //    }
+            // });
+            const arrProfessionals = [];
+            for(var i=0; i<professionals.length; i++){
+               if(professionals[i].jobcategory == category){
+                 arrProfessionals.push(professionals[i]);
+               }
+            }
+            // setData(arrProfessionals);
+            console.log("Specific Category Professionals ",arrProfessionals);
+            navigation.navigate("All Professionals", {title:category, professionals:arrProfessionals},);
+         // }
+      }
+
     return( 
     <ScrollView style={ScreenStyles.professionalsScreen}>
       <Text style = {ScreenStyles.professionalsScreen.headTitle}>Top Professionals</Text>
       <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-         <ProfessionalAvator name = "Abdul Karim" title = "Interior Designer" style={profileAvatar} size={90}/>
-         <ProfessionalAvator name = "Danish Baba" title = "Renovator" style={profileAvatar}  size={90} />
-         <ProfessionalAvator name = "Baig Sahab"  title = "Builder" style={profileAvatar}  size={90}/>
+         {
+            professionals.slice(0,3).map((user)=>{
+                 return  (    
+                     <ProfessionalAvator name = {user.name} title ={user.jobtitle} style={profileAvatar} size={90} imageUri={user.image}/>
+                 )
+            })
+         }
+         {/* <ProfessionalAvator name = "Abdul Karim" title = "Interior Designer" style={profileAvatar} size={90}/> */}
+         {/* <ProfessionalAvator name = "Danish Baba" title = "Renovator" style={profileAvatar}  size={90} /> */}
+         {/* <ProfessionalAvator name = "Baig Sahab"  title = "Builder" style={profileAvatar}  size={90}/> */}
       </View>
       <Text style = {ScreenStyles.professionalsScreen.headTitle}>Select By Category</Text>
-      {/* <LocationBar/> */}
       <View>
       <View style={ScreenStyles.professionalsScreen.viewBox}>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Interior Designer" source = {require('../../assets/interior-design.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Interior Designer"})}/>      
-               <CategoryCard title = "Architect" source = {require('../../assets/architecture.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Architect"})}/>
+               <CategoryCard title = "Interior Designer" source = {require('../../assets/interior-design.jpg')} onPress={()=>categoryScreen("Interior Designer")}/>      
+               <CategoryCard title = "Architect" source = {require('../../assets/architecture.jpg')} onPress={()=>categoryScreen("Architecture")}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                <CategoryCard title = "Renovators" source = {require('../../assets/renovation.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Renovators"})}/>
