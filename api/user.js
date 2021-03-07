@@ -75,6 +75,44 @@ const createPost = (email, title, description, budget, images, documents) =>
     return result.data;
   }
  
+
+  //  Project ----------------------
+
+  const createProject = (email,title, description,category,data) =>
+  client.post("projects/newProject", {
+    email,
+    title,
+    description,
+    category,
+    data,
+  });
+ 
+  const deleteProject = (email,id) =>
+  client.post("projects/deleteProject", {email,id});
+
+  const updateProject = (id, title, description,category,data) =>
+  client.post("projects/updateProject", {
+    id,
+    title,
+    description,
+    category,
+    data
+  });
+
+  const getUserProjects = (email) =>
+  client.post("projects/getUserProjects", {
+    email,
+  });
+  const userProjects = async (email)=>{
+    const result = await getUserProjects(email);
+    if (!result.ok) {
+      console.log("API call failed", result.data);
+      return;
+    }
+    return result.data;
+  }
+ 
+
 export default {
   register,
   updateProfile,
@@ -82,5 +120,9 @@ export default {
   createPost,
   userPosts,
   deletePost,
-  updatePost
+  updatePost,
+  createProject,
+  deleteProject,
+  updateProject,
+  userProjects,
 };
