@@ -38,7 +38,7 @@ const HomeStack = ({navigation}) => {
               
             }}
             />
-            <Stack.Screen name="Project Details" component={ProjectDetailsScreen} navigation={navigation} />   
+            <Stack.Screen name="Project Details" component={ProjectDetailsScreen} navigation={navigation}  options={{headerShown:false}} />   
             <Stack.Screen name="Post Details" component={PostDetailsScreen}   navigation={navigation} options={{headerShown:false}} />  
             <Stack.Screen name="All Professionals" component={AllProfessionals}  navigation={navigation}
              options={({ route }) => ({ title: route.params.title })}
