@@ -9,8 +9,10 @@ const user = createSlice({
   initialState: {
     loading: false,
     profile: {},
-    postIds:{},
+    postIds:[],
+    projectIds:[],
     posts:[],
+    projects:[],
   },
   reducers: {
     // actions => action handlers
@@ -31,6 +33,9 @@ const user = createSlice({
     userPostsIds:(user,action)=>{
       user.postIds = action.payload;
     },
+    userProjectsIds:(user,action)=>{
+      user.projectIds = action.payload;
+    },
     userPosts:(user,action)=>{
       user.posts = action.payload;
    },
@@ -45,15 +50,30 @@ const user = createSlice({
     },
     updatePost: (user, action) => {
       // user.posts = [...user.posts, action.payload];
-      const _id = action.payload;
+      const _id = action.payload._id;
       const postIndex = user.posts.findIndex(x=>x._id== _id)
       // const newPosts = user.posts.filter(function(post){return post._id != _id})
-      // user.posts[postIndex]= action.payload;
+      user.posts[postIndex]= action.payload;
     },
-    // deletePost:(user,action)=>{
-    //   const posts = user.posts.filter(id=>action.payload);
-    //   // user.posts = [...user.posts,]
-    // }
+    userProjects:(user,action)=>{
+      user.projects = action.payload;
+   },
+    addNewProject: (user, action) => {
+      user.projects = [...user.projects, action.payload];
+    },
+    updateProject: (user, action) => {
+      // user.posts = [...user.posts, action.payload];
+      const _id = action.payload._id;
+      const projectIndex = user.projects.findIndex(x=>x._id== _id)
+      // const newProject= user.projects.filter(function(project){return project._id != _id})
+      // user.projects[projectIndex]= action.payload;
+    },
+    removeProject: (user, action) => {
+      // user.posts = [...user.posts, action.payload];
+      const _id = action.payload;
+      const newProjects = user.projects.filter(function(project){return project._id != _id})
+      user.projects = newProjects;
+    },
   },
 });
  
@@ -66,9 +86,14 @@ const {
   removeData,
   addNewPost,
   userPostsIds,
+  userProjectsIds,
   userPosts,
   removePost,
-  updatePost
+  updatePost,
+  userProjects,
+  addNewProject,
+  removeProject,
+  updateProject,
 } = user.actions;
 export default user.reducer;
  
@@ -90,6 +115,11 @@ export const setUserPosts =(posts) =>({
   payload: posts,
 });
 
+export const setUserProjects =(projects) =>({
+  type:userProjects.type,
+  payload: projects,
+});
+
 export const setUserPostIds=(posts)=>({
   type:userPostsIds.type,
   payload: posts,
@@ -105,9 +135,31 @@ export const deletePost = (postId) => ({
 });
 
 
-export const editPost = (postId) => ({
+export const editPost = (postData) => ({
   type: updatePost.type,
-  payload: postId,
+  payload: postData,
+});
+
+
+export const setUserProjectIds=(projectIds)=>({
+  type:userProjectsIds.type,
+  payload: projectIds,
+})
+export const addProject = (projectData) => ({
+  type: addNewProject.type,
+  payload: projectData,
+});
+
+export const deleteProject= (projectId) => ({
+  type: removeProject.type,
+  payload: projectId,
+});
+
+
+
+export const editProject = (projectId) => ({
+  type: updateProject.type,
+  payload: projectId,
 });
 
 // export const getProfileData = ({ email }) => {

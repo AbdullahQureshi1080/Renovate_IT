@@ -4,6 +4,24 @@ import { Dimensions } from 'react-native'
 const marginHorizontal = 20;
 const ScreenStyle = {
       // fontFamily:"Poppins-Regular" ,
+      createProjectScreen:{
+        fontFamily: 'Poppins-Regular',
+        marginHorizontal: 15,
+        marginVertical:10,
+        // alignContent: 'center',
+        // alignItems: 'center',
+        // alignSelf: 'center',
+        inputView:{
+          marginVertical:5,
+          width: Dimensions.get('window').width/1.25,
+        },
+        textLabel:{
+          fontSize:16,
+          // fontWeight:"bold",
+          fontFamily: 'Poppins-Bold',
+          color:"#495464"
+        },
+      },
       createPostScreen:{
         fontFamily: 'Poppins-Regular',
         marginHorizontal: 15,
@@ -22,7 +40,7 @@ const ScreenStyle = {
           color:"#495464"
         },
       },
-      profileEditScreen:{
+      updateProfileScreen:{
         fontFamily: 'Poppins-Regular',
         marginHorizontal: 15,
         // alignContent: 'center',
