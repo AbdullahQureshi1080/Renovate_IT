@@ -1,9 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-// import ImageInputList from "./ImageInputList";
 import { useFormikContext } from "formik";
-import ErrorMessage from "./AppForm/ErrorMessage";
-import DocumentInputList from "../Document/DocumentInputList";
+import ErrorMessage from "./ErrorMessage";
+import DocumentInputList from '../Document/DocumentInputList';
  
 export default function FormDocumentPicker({ name }) {
   //   const [imageUris, setImageUris] = useState([]);

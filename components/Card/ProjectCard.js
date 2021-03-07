@@ -9,11 +9,11 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 const ProjectCard = (props) => (
 <Card style = {ComponentsStyle.projectCardStyle}
   onPress={props.onPress}>
-    <Card.Cover source={require("../../assets/renovation.jpg")} />
+    <Card.Cover source={{uri:props.coverImage}} />
     <Card.Title 
         title={props.title} 
-        subtitle={props.name} 
-        left={()=><Avatar.Image size={50} source={require("../../assets/p1.jpg")} />}
+        subtitle={props.creator} 
+        left={()=><Avatar.Image size={50} source={{uri:props.creatorImage}} />}
         titleStyle = {ComponentsStyle.projectCardStyle.titleStyle}
         subtitleStyle = {ComponentsStyle.projectCardStyle.subtitleStyle}
     />

@@ -11,8 +11,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as ImagePicker from "expo-image-picker";
 
 
-const ImageInput = ({ imageUri, onChangeImage }) => {
-  console.log(imageUri)
+const ImageInput = ({ imageUri, onChangeImage,style }) => {
+  // console.log(imageUri)
   useEffect(() => {
     requestPermission();
   }, []);
@@ -45,7 +45,7 @@ const ImageInput = ({ imageUri, onChangeImage }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
-      <View style={styles.container}>
+      <View style={{...styles.container, ...style}}>
         {!imageUri && (
           <MaterialCommunityIcons color="white" name="camera" size={40} />
         )}

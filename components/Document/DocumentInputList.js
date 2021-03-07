@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import DocumentInput from "./DocumentInput";
-// import ImageInput from "./ImageInput";
+import DocumentInput from './DocumentInput';
  
 export default function DocumentInputList({
   docUris = [],
@@ -24,7 +23,6 @@ export default function DocumentInputList({
                 docUri={uri}
                 onChangeDoc={() => onRemoveDoc(uri)}
               />
-              {/* <Text>{uri}</Text> */}
             </View>
           ))}
           <DocumentInput onChangeDoc={(uri) => onAddDoc(uri)} />

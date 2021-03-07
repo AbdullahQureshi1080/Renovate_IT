@@ -4,7 +4,7 @@ import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
 function PickerItem({ label, onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={styles.text}>{label}</Text>
     </TouchableOpacity>
   );
@@ -13,7 +13,14 @@ function PickerItem({ label, onPress }) {
 const styles = StyleSheet.create({
   text: {
     padding: 20,
+    fontFamily:"Poppins-Medium",
+    fontSize:14,
   },
+  container:{
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    marginVertical:5,
+    borderRadius:12,
+  }
 });
 
 export default PickerItem;

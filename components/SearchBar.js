@@ -5,17 +5,17 @@ import {Searchbar } from 'react-native-paper';
 // Styles Imports
 import ComponentsStyle from '../styles/ComponentsStyle';
 const SearchBar = (props) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  // const [searchQuery, setSearchQuery] = React.useState('');
 
-  const onChangeSearch = query => setSearchQuery(query);
+  // const onChangeSearch = query => setSearchQuery(query);
 
   const iconColor = "#1b262c";
   
   return (
     <Searchbar
       placeholder={props.placeholder}
-      onChangeText={onChangeSearch}
-      value={searchQuery}
+      onChangeText={props.onChangeText}
+      // value={searchQuery}
       iconColor = {iconColor}
       style = {ComponentsStyle.searchBarStyle}
       inputStyle = {{

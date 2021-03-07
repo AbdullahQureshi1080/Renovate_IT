@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as DocumentPicker from "expo-document-picker";
 // import DocumentPicker from "react-native-document-picker";
  
@@ -55,7 +55,6 @@ const DocumentInput = ({ docUri, onChangeDoc }) => {
           docUri && (
             <MaterialCommunityIcons color="white" name="pdf-box" size={40} />
           )
-          // <Image source={{ uri: docUri }} style={styles.image} />
         }
       </View>
     </TouchableWithoutFeedback>
@@ -70,7 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 100,
     width: 100,
-    // color: "white",
     overflow: "hidden",
   },
   image: {
