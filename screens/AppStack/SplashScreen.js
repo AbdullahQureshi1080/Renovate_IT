@@ -15,13 +15,16 @@ import storage from '../../auth/storage';
 
 // Redux-Store
 import { loginUser, setUserData } from "../../store/auth";
-import { setProfileData,setUserPosts,setUserPostIds } from '../../store/user';
-import { setAppPosts } from '../../store/data';
+import { setProfileData,setUserPosts,setUserPostIds,setUserProjectIds } from '../../store/user';
+import { setAllUsers, setAppPosts,setAppProjects } from '../../store/data';
 
 const SplashScreen = ({navigation}) =>{
   const userApi = useApi(userAPI.userProfile);
+  const appUsersApi = useApi(dataAPI.getAllUsers);
   const appPostsApi = useApi(dataAPI.getAllPosts)
+  const appProjectsApi = useApi(dataAPI.getAllProjects)
   const userPostsApi = useApi(userAPI.userPosts); 
+  const userProjectsApi = useApi(userAPI.userProjects); 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   console.log(state);
@@ -33,21 +36,31 @@ const SplashScreen = ({navigation}) =>{
          navigation.navigate("Login");
           return;
         }
-      const email = userData.email;
-      console.log(email);
-      const profileData = await userApi.request(email);
-      const userPostsData = await userPostsApi.request(email);
-      const appPosts = await appPostsApi.request();
-      console.log(profileData);
-       console.log(userPostsData)
-      dispatch(loginUser(userToken));
-      dispatch(setUserData(userData));
-      dispatch(setProfileData(profileData));
-      dispatch(setUserPostIds(userPostsData))
-      
-      dispatch(setAppPosts(appPosts.data))
-        // console.log(state);
-        navigation.navigate("Home");
+        try{
+          const email = userData.email;
+          console.log(email);
+          const profileData = await userApi.request(email);
+          const allUsersData = await appUsersApi.request(email);
+          const userPostsData = await userPostsApi.request(email);
+          const userProjectsData = await userProjectsApi.request(email);
+          const appPosts = await appPostsApi.request();
+          const appProjects = await appProjectsApi.request();
+          console.log(profileData);
+           console.log(userPostsData)
+          dispatch(loginUser(userToken));
+          dispatch(setUserData(userData));
+          dispatch(setProfileData(profileData));
+          dispatch(setUserPostIds(userPostsData))
+          dispatch(setUserProjectIds(userProjectsData))
+          dispatch(setAppPosts(appPosts.data))
+          dispatch(setAppProjects(appProjects.data))
+          dispatch(setAllUsers(allUsersData.data));
+            // console.log(state);
+            navigation.navigate("Home");
+        }catch(err){
+          console.log(err);
+          // navigation.navigate("Login")
+        }
       };
       tryLogin();
     }, []);

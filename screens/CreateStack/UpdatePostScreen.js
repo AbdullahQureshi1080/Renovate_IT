@@ -87,40 +87,41 @@ function UpdatePostScreen( {route,navigation}) {
     setSaveData(false);
     setIsLoading(false);
     dispatch(editPost(result.data));
+    dispatch(editPost(result.data));
     navigation.navigate("AppHome");
   };
-  async function uploadAsPromise(file, type) {
-    return new Promise(async function (resolve, reject) {
-      const response = await fetch(file);
-      // console.log(response);
-      const blob = await response.blob();
-      // console.log(blob);
-      var childRoute = null;
-      if (type == "img") {
-        childRoute = "images";
-      } else {
-        childRoute = "documents";
-      }
+  // async function uploadAsPromise(file, type) {
+  //   return new Promise(async function (resolve, reject) {
+  //     const response = await fetch(file);
+  //     // console.log(response);
+  //     const blob = await response.blob();
+  //     // console.log(blob);
+  //     var childRoute = null;
+  //     if (type == "img") {
+  //       childRoute = "images";
+  //     } else {
+  //       childRoute = "documents";
+  //     }
  
-      const childPath = `posts/${userId}/${childRoute}/${Math.random().toString(36)}`;
+  //     const childPath = `posts/${userId}/${childRoute}/${Math.random().toString(36)}`;
  
-      const task = firebase.storage().ref().child(childPath).put(blob);
+  //     const task = firebase.storage().ref().child(childPath).put(blob);
  
-      const taskProgress = (snapshot) => {
-        console.log(`transferred: ${snapshot.bytesTransferred}`);
-      };
-      const taskCompleted = () => {
-        const downloadURL = task.snapshot.ref.getDownloadURL();
-        resolve(downloadURL);
-      };
-      const taskError = (snapshot) => {
-        console.log("An Error Occured", snapshot);
-        reject(err);
-      };
+  //     const taskProgress = (snapshot) => {
+  //       console.log(`transferred: ${snapshot.bytesTransferred}`);
+  //     };
+  //     const taskCompleted = () => {
+  //       const downloadURL = task.snapshot.ref.getDownloadURL();
+  //       resolve(downloadURL);
+  //     };
+  //     const taskError = (snapshot) => {
+  //       console.log("An Error Occured", snapshot);
+  //       reject(err);
+  //     };
  
-      task.on("state_changed", taskProgress, taskError, taskCompleted);
-    });
-  }
+  //     task.on("state_changed", taskProgress, taskError, taskCompleted);
+  //   });
+  // }
  
   const handleFormSubmit = async ({
     title,
@@ -148,8 +149,8 @@ function UpdatePostScreen( {route,navigation}) {
       const arrDocuments = [];
       for (var i = 0; i < images.length; i++) {
         var imageFile = images[i];
-        var type = "img";
-        await uploadAsPromise(imageFile,type).then((res) => {
+        var type = "image";
+        await uploadAsPromise(imageFile,type,uploadType,userId).then((res) => {
           arrImages.push(res);
         });
       }
@@ -158,7 +159,7 @@ function UpdatePostScreen( {route,navigation}) {
       for (var i = 0; i < documents.length; i++) {
         var documentFile = documents[i];
         var type = "doc";
-        await uploadAsPromise(documentFile, type).then((res) => {
+        await uploadAsPromise(documentFile, type,uploadType,userId).then((res) => {
           arrDocuments.push(res);
         });
         console.log("Coming out of loop - Documents ");
@@ -203,20 +204,26 @@ function UpdatePostScreen( {route,navigation}) {
               <View style={{ alignSelf: "center" }}>
             <AppText style={styles.titleText}>Update Post</AppText>
           </View>
-        <AppFormField maxLength={255} name="title"  placeholder={route.params.title} />
+          <AppText style={styles.labelText}>Post Title</AppText>
+
+        <AppFormField maxLength={255} name="title"  placeholder={route.params.title}  style={{marginVertical:10,}} />
         <AppFormField
           keyboardType="numeric"
           maxLength={8}
           name="budget"
           placeholder={route.params.budget}
+          style={{marginVertical:10,}}
         />
+                 <AppText style={styles.labelText}>Post Description</AppText>
+
         <AppFormField
           maxLength={255}
           multiline
           name="description"
           numberOfLines={7}
-          placeholder="Description"
+          // placeholder="Description"
           placeholder={route.params.description}
+          style={{marginVertical:10,}}
         />
         <AppText style={styles.subTitleText}>Images</AppText>
         <FormImagePicker name="images"/>
@@ -249,6 +256,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     // alignSelf: "center",
   },
+  labelText:{fontSize:15,fontFamily:"Poppins-Medium", opacity:0.4,}
 });
 export default UpdatePostScreen;
  

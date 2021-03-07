@@ -14,6 +14,7 @@ const profileAvatar = {
   marginVertival:100,
   border:"none",
   marginVertical:15,
+  justifyContent:"center",
   nameText : {
       fontSize : 14,
       marginTop : 5,
@@ -28,21 +29,50 @@ const profileAvatar = {
   }
 }
 
-const AllProfessionals = ({navigation}) =>{
-    return(
-        <View style={ScreenStyles.allProfessionals}>
-          <SearchBar placeholder = "Search by Name"/>
+
+const AllProfessionals = ({navigation,route}) =>{
+  const [professionals,setProfessionals]=React.useState(route.params.professionals);
+  const [search,setSearch]=React.useState([]);
+  console.log(route.params);
+  // const professionals = route.params.professionals;
+
+  // React.useEffect(() => {
+  //   setState(professionals);
+  // }, [state])
+  const handleSearch = (search) => {
+    if(search == ""){
+      setProfessionals(route.params.professionals);
+      return
+    }
+    const searched = professionals.filter(function (item) {
+      return item.name.includes(search);
+    })
+    setProfessionals(searched)
+    // .map(function ({ Country, Slug, ISO2 }) {
+    //   return { Country, Slug, ISO2 };
+    // });
+
+  }; 
+
+  return(
+    <View style={ScreenStyles.allProfessionals}>
+          {/* <SearchBar placeholder = "Search by name ...."/> */}
           <FlatList 
+          ListHeaderComponent={  
+          <SearchBar placeholder = "Search by name ...."  onChangeText={handleSearch}/>
+        }
             data = {professionals}
+            keyExtractor={item=>item._id}
             numColumns={3}
-            renderItem = {(item) => (
+            renderItem = {({item}) => (
             <View style = {{flex:1, flexDirection:"column", justifyContent:'space-between', marginHorizontal:15}}>
               <ProfessionalAvatar 
-                key = {item.item.key}
-                name = {item.item.name}
-                title = {item.item.title}
+                key = {item._id}
+                name = {item.name}
+                title = {item.jobtitle}
                 style={profileAvatar}
                 size={90}
+                imageUri={item.image}
             />
           </View>
       )}

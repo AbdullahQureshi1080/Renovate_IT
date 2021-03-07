@@ -10,7 +10,7 @@ import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
 // Components Imports
 import ProjectCard from '../../components/Card/ProjectCard';
 import Posts from './PostsScreen';
-import {projectsDummyData} from '../../assets/DummyData';
+// import {projectsDummyData} from '../../assets/DummyData';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -19,20 +19,30 @@ const Projects = ({navigation}) =>{
    // const state = useSelector((state) => state);
    // const user = state.entities.auth.data;
    // console.log(user);
+   const state = useSelector(state=>state);
+   const projects = state.entities.data.projects;
+   // console.log(projects[0].data.thumbnailImage.value)
 return(
    <View>
       <FlatList 
-      data = {projectsDummyData}
-      renderItem = {(item) => (
+      // data = {projects.sort(function(a,b){
+      //    // Turn your strings into dates, and then subtract them
+      //    // to get a value that is either negative, positive, or zero.
+      //    return new Date(b.date) - new Date(a.date);
+      //  })}
+      data={projects}
+      renderItem = {({item}) => (
       <ProjectCard 
-       key = {item.item.key}
-       title = {item.item.title}
-       name = {item.item.name}
-       profileImage = {item.item.profileImage}
-       likes = {item.item.likes}
+      key = {item._id}
+      title = {item.title}
+      creator = {item.creator}
+      description = {item.description}
+      creatorImage = {item.creatorImage}
+      coverImage={item.data.thumbnailImage.value}
+      //  likes = {item.likes}
       //  cover = {}
        onPress = {()=>navigation?.push('Project Details',
-         {item : item.item},
+         {item : item},
          )}
       />
       )}

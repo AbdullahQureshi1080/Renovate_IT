@@ -38,15 +38,15 @@ return(
    <View>
       <FlatList 
       data = {posts}
-      renderItem = {(item) => (
+      renderItem = {({item}) => (
       <PostCard 
-       key = {item.item._id}
-       title = {item.item.title}
-       creator = {item.item.creator}
-       description = {item.item.description}
-       budget = {item.item.budget}
+       key = {item._id}
+       title = {item.title}
+       creator = {item.creator}
+       description = {item.description}
+       budget = {item.budget}
        onPress = {()=>navigation?.push('Post Details',
-       {item : item.item},
+       {item : item},
          )}
       />
       )}

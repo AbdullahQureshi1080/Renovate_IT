@@ -11,7 +11,7 @@ import AppForm from "../../components/AppForm/AppForm";
  
 // import Screen from "../../components/Screen";
 import FormImagePicker from"../../components/AppForm/FormImagePicker";
-import FormDocumentPicker from "../../components/AppForm/FormImagePicker";
+import FormDocumentPicker from "../../components/AppForm/FormDocumentPicker";
  
 import firebase from "firebase";
 import ActivityIndicator from "../../components/ActivityIndicator";
@@ -21,12 +21,14 @@ import userAPI from "../../api/user";
 import useApi from "../../hooks/useApi";
 
 import { addPost } from "../../store/user";
+import { addDataPost } from "../../store/data";
+
 import AppText from "../../components/AppText";
 
-// import ComponentsStyle from "../../styles/ComponentsStyle";
+
 import ScreenStyles from '../../styles/ScreenStyles'
-import ComponentsStyle from "../../styles/ComponentsStyle";
-// import { ScrollView } from "react-native-gesture-handler";
+import uploadAsPromise from "../../api/imageUpload";
+
 require("firebase/firestore");
 require("firebase/firebase-storage");
  
@@ -83,40 +85,10 @@ function CreatePostScreen( {navigation, route}) {
     setSaveData(false);
     setIsLoading(false);
     dispatch(addPost(result.data));
+    dispatch(addDataPost(result.data));
     navigation.navigate("AppHome");
   };
-  async function uploadAsPromise(file, type) {
-    return new Promise(async function (resolve, reject) {
-      const response = await fetch(file);
-      // console.log(response);
-      const blob = await response.blob();
-      // console.log(blob);
-      var childRoute = null;
-      if (type == "img") {
-        childRoute = "images";
-      } else {
-        childRoute = "documents";
-      }
- 
-      const childPath = `posts/${userId}/${childRoute}/${Math.random().toString(36)}`;
- 
-      const task = firebase.storage().ref().child(childPath).put(blob);
- 
-      const taskProgress = (snapshot) => {
-        console.log(`transferred: ${snapshot.bytesTransferred}`);
-      };
-      const taskCompleted = () => {
-        const downloadURL = task.snapshot.ref.getDownloadURL();
-        resolve(downloadURL);
-      };
-      const taskError = (snapshot) => {
-        console.log("An Error Occured", snapshot);
-        reject(err);
-      };
- 
-      task.on("state_changed", taskProgress, taskError, taskCompleted);
-    });
-  }
+  
  
   const handleFormSubmit = async ({
     title,
@@ -129,10 +101,12 @@ function CreatePostScreen( {navigation, route}) {
     console.log("Going In Loop");
     const arrImages = [];
     const arrDocuments = [];
+    const uploadType = "posts";
+
     for (var i = 0; i < images.length; i++) {
       var imageFile = images[i];
-      var type = "img";
-      await uploadAsPromise(imageFile,type).then((res) => {
+      var type = "image";
+      await uploadAsPromise(imageFile,type,uploadType,userId).then((res) => {
         arrImages.push(res);
       });
     }
@@ -141,7 +115,7 @@ function CreatePostScreen( {navigation, route}) {
     for (var i = 0; i < documents.length; i++) {
       var documentFile = documents[i];
       var type = "doc";
-      await uploadAsPromise(documentFile, type).then((res) => {
+      await uploadAsPromise(documentFile, type,uploadType,userId).then((res) => {
         arrDocuments.push(res);
       });
       console.log("Coming out of loop - Documents ");
@@ -174,7 +148,7 @@ function CreatePostScreen( {navigation, route}) {
       >
           <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                 <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
-                  <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
+                  <MaterialCommunityIcons name="backspace" size={40} color="#1b262c"/>
                   </TouchableOpacity>
               <View style={{ alignSelf: "center" }}>
                 <SubmitButton name="Create" />
