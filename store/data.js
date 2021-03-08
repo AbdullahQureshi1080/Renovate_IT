@@ -58,10 +58,14 @@ const data = createSlice({
       data.projects = newProjects;
     },
     addComment:(data,action)=>{
-      const projectId = action.payload.projectId;
+      const _id = action.payload.projectId;
+      console.log("Project Id in Data Store",_id);
       const value = action.payload.value;
-      const findProject = data.projects.filter(project=>project._id == projectId);
-      data.projects[findProject].comments.push(value);
+      console.log("Comment Value in Data Store",value);
+      const projectIndex = data.projects.findIndex(x=>x._id== _id)
+      console.log("Project Found in Data Store",projectIndex);
+      data.projects[projectIndex].comments.push(value);
+      console.log("Addded Comment",data.projects[projectIndex].comments)
     }
   },
 });
@@ -142,12 +146,9 @@ export const editAppProject = (projectId) => ({
   payload: projectId,
 });
 
-export const addNewComment=(value,projectId)=>({
+export const addNewComment=(data)=>({
   type:addComment.type,
-  payload:{
-    value,
-    projectId
-  }
+  payload:data
 })
 // export const getProfileData = ({ email }) => {
 //   const result = dataAPI.getProfile(email);

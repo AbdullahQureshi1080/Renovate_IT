@@ -49,9 +49,9 @@ const ProjectDetailsScreen = ({route,navigation}) =>{
   const deleteApi = useApi(userAPI.deleteProject)
       const [text, setText] = useState("")
 
-  console.log(projectIds);
+  // console.log(projectIds);
   const projectId = route.params.item._id;
-  console.log(projectId);
+  // console.log(projectId);
   useEffect(()=>{
     for (var i =0; i<projectIds.length; i++){
       if(projectId == projectIds[i]){
@@ -220,13 +220,13 @@ const ProjectDetailsScreen = ({route,navigation}) =>{
         <View>
        
         </View>
-        <FloatingAction
+        {/* <FloatingAction
             distanceToEdge = {vertical=15}
             floatingIcon={<Entypo name="thumbs-up" size={30} color="#F4F4F2" style={{alignSelf:"center",}}/>}
             onPressMain ={()=> console.log("Yo")}
             color = "#495464"
             overlayColor = "none"
-        />
+        /> */}
       </ScrollView>
       </MenuProvider>
     );

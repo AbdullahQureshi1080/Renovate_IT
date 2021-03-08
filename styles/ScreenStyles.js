@@ -61,6 +61,7 @@ const ScreenStyle = {
         // fontFamily: 'Poppins-Regular',
         marginHorizontal:10,
         marginVertical: 10,
+        flex:1,
         color:"#495464",
         userAbout:{
           marginVertical:12,

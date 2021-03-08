@@ -22,95 +22,62 @@ const Comment=(props) =>{
     const state = useSelector(state => state);
     const projects = state.entities.data.projects;
     const project = projects.filter(project=>project._id == props.projectId);
-    console.log("Projects in Comment Section",projects);
-    console.log("Selected Project in Comment Section",project);
-    const [comments, setComments] = useState(projectComments);
+
+    const [comments, setComments] = useState(null);
+    const [newComments, setNewComments] = useState(null);
     // const [projectId, setProjectId] = useState(props.projectId)
     const projectComments = project.map(project=>project.comments);
     // setComments(comments);
-    console.log("Project Comments",comments);
-
+    
     const commentApi = useApi(dataAPI.commentOnProject);
     // const [text, setText] = useState("")
     // const users = state.userState.users;
+    
+    useEffect(()=>{
+        // console.log("Projects in Comment Section",projects);
+        // console.log("Selected Project in Comment Section",project);
+        if(newComments == null){
+            setComments(projectComments);
+        }
+        else{
+            if(newComments.length > comments.length){
+                setComments(new Array(newComments));
+            }
+            else{
+                return
+            }
+        }
+        console.log("Project Comments",comments);
+        console.log("New Project Comments",newComments);
 
-    // useEffect(() => {
-    //     // setComments(comments);
-    //     // function matchUserToComment(comments) {
-    //     //     for (let i = 0; i < comments.length; i++) {
-    //     //         if (comments[i].hasOwnProperty('user')) {
-    //     //             continue;
-    //     //         }
-    //     if(comments.length > prevLength)
-    //     //         const user = users.find(x => x.uid === comments[i].creator)
-    //     //         if (user == undefined) {
-    //     //             fetchUsersData(comments[i].creator, false)
-    //     //         } else {
-    //     //             comments[i].user = user
-    //     //         }
-    //     //     }
-    //         setComments(comments)
-    //     // }
-
-    // },[props.projectId,comments])
-    //     function matchUserToComment(comments) {
-    //         for (let i = 0; i < comments.length; i++) {
-    //             if (comments[i].hasOwnProperty('user')) {
-    //                 continue;
-    //             }
-
-    //             const user = users.find(x => x.uid === comments[i].creator)
-    //             if (user == undefined) {
-    //                 fetchUsersData(comments[i].creator, false)
-    //             } else {
-    //                 comments[i].user = user
-    //             }
-    //         }
-    //         setComments(comments)
-    //     }
+},[newComments]);
 
 
-    //     if (props.route.params.project !== postId) {
-    //         firebase.firestore()
-    //             .collection('posts')
-    //             .doc(props.route.params.uid)
-    //             .collection('userPosts')
-    //             .doc(props.route.params.postId)
-    //             .collection('comments')
-    //             .get()
-    //             .then((snapshot) => {
-    //                 let comments = snapshot.docs.map(doc => {
-    //                     const data = doc.data();
-    //                     const id = doc.id;
-    //                     return { id, ...data }
-    //                 })
-    //                 matchUserToComment(comments)
-    //             })
-    //         setPostId(props.route.params.postId)
-    //     } else {
-    //         matchUserToComment(comments)
-    //     }
-    // }, [props.route.params.postId, users])
-
-
-    const onCommentSend = (value) => {
+    const onCommentSend = async (value) => {
         if(value == ""){
             return;
         }
         const userId = props.userId;
         const projectId = props.projectId;
-        const result = commentApi.request(
+        const result = await commentApi.request(
           userId,
      projectId,
         value,
         )
         console.log(result.data)
         if(!result.ok){
-            console.log("Could not post comment")
+            // console.log("Could not post comment")
             return;
         }
-        // setComments(result.data);
-        // dispatch(addNewComment(value,props.projectId))
+        // setComments({comments:result.data});
+        console.log("After adding new",comments)
+        // dispatch(addNewComment(value,projectId));
+        dispatch(addComment({value,projectId}))
+        setNewComments(result.data)
+    }
+
+    if(comments == null){
+        return <View/>
     }
 
     return (
@@ -126,9 +93,9 @@ const Comment=(props) =>{
                 renderItem={({ item }) => (
                     <View>
                         {
-                            item.map(comment=>{
+                            item.map((comment,index)=>{
                                 return(
-                                    <View style={{flexDirection:"row", marginVertical:5, alignContent:"center", }}>
+                                    <View key={index.toString()} style={{flexDirection:"row", marginVertical:5, alignContent:"center", }}>
                                        <Avatar.Image source={{uri:comment.commentorImage}} size={30}/>
                                         <AppText style={{fontFamily:"Poppins-Bold", marginHorizontal:5,}}>{comment.commentor}</AppText>
                                         <AppText style={{flexShrink:1}}>{comment.comment}</AppText>
@@ -149,6 +116,7 @@ const Comment=(props) =>{
              underlineColor="#1b262c"  
              textColor="#1b262c"
              onChangeText={props.onChangeText}
+            //  value={}
              />
             <AppButton name="Comment" onPress={()=>onCommentSend(props.value)}/>
             
