@@ -12,11 +12,13 @@ import ChatStack from './ChatStack';
 import CreateStack from './CreateStack';
 import ProfileStack from './ProfileStack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
  
 const BottomNavigation = ({navigation}) =>{
-   
+  const state = useSelector((state) => state);
+  const userId = state.entities.auth.data._id;
     return ( 
         <Tab.Navigator
         initialRouteName="AppHome"        
@@ -25,7 +27,8 @@ const BottomNavigation = ({navigation}) =>{
           // inactiveTintColor:'#495465',
           showLabel:false,
           style:{
-            backgroundColor:'#F4F4F2'
+            backgroundColor:'#F4F4F2',
+            // marginTop:1000,
           },
         }}
       >
@@ -100,6 +103,11 @@ const BottomNavigation = ({navigation}) =>{
           name="Profile"
         //   Profile stack All screens
           component={ProfileStack}
+          listeners={({ navigation }) => ({
+            tabPress: event => {
+                event.preventDefault();
+                navigation.navigate("Profile",{screen:"User Profile", params:{_id: userId}})
+            }})}
           options = {({route})=>({
             tabBarLabel: 'Profile',
               tabBarIcon: ({ color, size }) => (

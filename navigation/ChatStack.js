@@ -10,6 +10,8 @@ import ChatScreen from '../screens/ChatStack/ChatScreen';
 import AllNotificationScreen from '../screens/ChatStack/AllNotificationScreen';
 import AllMessagesScreen from '../screens/ChatStack/AllMessagesScreen';
 import NewMessageScreen from '../screens/ChatStack/NewMessageScreen'; 
+import CreateNewChat from '../screens/ChatStack/CreateNewChat';
+import UserChatScreen from '../screens/ChatStack/UserChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -38,8 +40,12 @@ const ChatStack = () => {
                 // }}
             /> 
             <Stack.Screen
-                name="New Message"
-                component={NewMessageScreen}
+                name="CreateChat"
+                component={CreateNewChat}
+            />
+            <Stack.Screen
+                name="UserChat"
+                component={UserChatScreen}
             />
         </Stack.Navigator>
     );

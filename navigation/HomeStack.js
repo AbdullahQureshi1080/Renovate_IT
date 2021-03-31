@@ -29,7 +29,8 @@ const HomeStack = ({navigation}) => {
             name="AppHome" 
             component={HomeScreen} 
             options={{
-              header:searchBar ,
+              // header:searchBar ,
+              headerShown:false,
               headerTitle: false,
               headerStyle:{
                 marginHorizontal:20,
