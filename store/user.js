@@ -74,6 +74,10 @@ const user = createSlice({
       const newProjects = user.projects.filter(function(project){return project._id != _id})
       user.projects = newProjects;
     },
+    addChat :(user,action)=>{
+      const id = action.payload;
+      user.profile.chats = [...user.profile.chats,id]; 
+    }
   },
 });
  
@@ -94,6 +98,7 @@ const {
   addNewProject,
   removeProject,
   updateProject,
+  addChat
 } = user.actions;
 export default user.reducer;
  
@@ -161,6 +166,11 @@ export const editProject = (projectId) => ({
   type: updateProject.type,
   payload: projectId,
 });
+
+export const createChat = (chatid)=>({
+  type:addChat.type,
+  payload:chatid,
+}) 
 
 // export const getProfileData = ({ email }) => {
 //   const result = userAPI.getProfile(email);
