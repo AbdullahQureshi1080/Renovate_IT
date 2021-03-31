@@ -1,41 +1,46 @@
-import * as React from 'react';
-import {View,Text,Dimensions, StyleSheet,Image} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { ListItem, Avatar } from "react-native-elements";
+// import  firebase from "firebase";
+import  firebase from "firebase";
+require("firebase/firestore");
+// import { db } from "../../config/firebase";
 
+const ListViewItem = ({ id, chatName, enterChat, style }) => {
+  const [chatMessages, setChatMessages] = useState([]);
 
-const ListViewItem = ({name,image,subtitle}) => {
- return(
-     <View style={styles.container}>
-        <Image style={styles.image} source={image}/>
-       <View>
-        <Text style={styles.titleText}>{name}</Text>
-        <Text style={styles.subtitleText}>{subtitle}</Text>
-       </View>
-     </View>
- );
-}
+  useEffect(() => {
+    const unsubscribe =firebase.firestore()
+      .collection("chats")
+      .doc(id)
+      .collection("messages")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setChatMessages(snapshot.docs.map((doc) => doc.data()))
+      );
+    return unsubscribe; 
+  }, []);
 
-const styles = StyleSheet.create({
-    container:{
-        display:"flex",
-        flexDirection:"row",
-        marginVertical:10,
-    },
-    image:{
-        width:70,
-        height:70,
-        borderRadius:35,
-        marginRight:10,
-    },
-    titleText:{
-        fontFamily:"Poppins-Bold", 
-        // alignSelf:"center",
-        marginLeft:5,
-    },
-    subtileText:{
-        fontFamily:"Poppins-Regular", 
-        // alignSelf:"center",
-        marginLeft:5,
-    }
-})
+  return (
+    <ListItem onPress={() => enterChat(id, chatName)} key={id} bottomDivider>
+      <Avatar
+        rounded
+        source={{
+          uri: chatMessages?.[0]?.photoURL || "https://i.pravatar.cc/300",
+        }}
+      />
+      <ListItem.Content>
+        <ListItem.Title style={{ fontWeight: "800" }}>
+          {chatName}
+        </ListItem.Title>
+        <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
+          {chatMessages?.[0]?.displayName}:{chatMessages?.[0]?.message}
+        </ListItem.Subtitle>
+      </ListItem.Content>
+    </ListItem>
+  );
+};
 
 export default ListViewItem;
+
+const styles = StyleSheet.create({});

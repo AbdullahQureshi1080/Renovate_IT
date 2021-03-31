@@ -6,19 +6,27 @@ import AppButton from '../AppButton';
 import { Button } from 'react-native-paper';
 // const [messageData, setMessageData] = React.useState(messages);
 
+// import firebase from "firebase";
+// import { useSelector } from 'react-redux';
+import ListViewItem from './ListViewItem';
+import CardViewList from './CardViewList';
+// require("firebase/firestore");
+
 const notifications = [
-      {id:"1",name:"Abdullah Najam",descrition:"followed you", image:require('../../assets/p1.jpg')},
-      {id:"2",name:"Abdul Karim",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
-      {id:"3",name:"James Taylor",descrition:"followed you", image:require('../../assets/p1.jpg')},
-      {id:"4",name:"Felicity Smoke",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
+      // {id:"1",name:"Abdullah Najam",descrition:"followed you", image:require('../../assets/p1.jpg')},
+      // {id:"2",name:"Abdul Karim",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
+      // {id:"3",name:"James Taylor",descrition:"followed you", image:require('../../assets/p1.jpg')},
+      // {id:"4",name:"Felicity Smoke",descrition:"apperciated your work", image:require('../../assets/p1.jpg')},
   ]
 
 const messages = [
       
 ]
 
+
+
 export const ListViewNotifications = (props) => (      
-    <View>
+    <View style={{justifyContent:"center", alignContent:"center"}}>
           {
                 notifications.length > 0 ? notifications.map((item,index)=>{
                   return <ProfessionalAvatar
@@ -33,17 +41,14 @@ export const ListViewNotifications = (props) => (
     </View> 
 )
 
-export const ListViewMessages = ({navigation}) => (
+export const ListViewMessages = ({navigation,chats,enterChat}) => (
+      
       <View >
           {
-                messages.length > 0 ? messages.map((item,index)=>{
-                  return <ProfessionalAvatar
-                  key={index}
-                  name={item.name}
-                  title={item.descrition}
-                  style={profileAvatar} 
-                  size={40}
-                />
+                chats.length > 0 ? chats.map((item,index)=>{
+                  return (
+                        <CardViewList id={item.id} enterChat={enterChat} chatName={item.data.recieverChatName}  style ={{backgroundColor:"#e8e8e8"}} />
+                  )
           }) : <Button
                       style={{
                             backgroundColor:"#495464",
@@ -55,7 +60,7 @@ export const ListViewMessages = ({navigation}) => (
                             fontFamily:"Poppins-Medium",
                             fontSize:12,
                       }}
-                      onPress={() => navigation.navigate('New Message')}>Send a Message</Button>
+                      onPress={() => navigation.navigate('CreateChat')}>Send a Message</Button>
           }
     </View> 
   )
