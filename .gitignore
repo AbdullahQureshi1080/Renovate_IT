@@ -62,3 +62,4 @@ buck-out/
 #config
 config/firebase.config.env
 config/config.js
+config/firebase.js

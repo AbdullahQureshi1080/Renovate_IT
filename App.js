@@ -29,11 +29,14 @@ const firebaseConfig = {
   measurementId: MEASUREMENT_ID,
 };
 
+// let app 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }else {
   firebase.app(); // if already initialized, use that one
 }
+
+firebase.firestore().settings({ experimentalForceLongPolling: true });
 
 const fontConfig = {
   default: {
