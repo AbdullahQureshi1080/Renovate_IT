@@ -1,67 +1,140 @@
-// Native Imports
-import React from 'react';
-import {View, StyleSheet,FlatList} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { FloatingAction } from "react-native-floating-action";
-import Entypo from 'react-native-vector-icons/Entypo';
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { Avatar } from "react-native-paper";
+import { useSelector } from "react-redux";
+import ListViewItem from "../../components/List/ListViewItem";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import firebase from "firebase";
+require("firebase/firestore");
+import userAPI from "../../api/user";
+import useApi from "../../hooks/useApi";
+import { Alert } from "react-native";
+// import { v1 as uuidv1 } from 'uuid';
+// import { auth, db } from "../../config/firebase";
+// import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
-// Components Imports
-import ListViewItem from '../../components/List/ListViewItem';
-
-
-const messages = [
-
-    {id:"1",name:"Abdullah Najam",descrition:"The lastest message will be displaye here", image:require('../../assets/p1.jpg')},
-    {id:"2",name:"Abdul Karim",descrition:"The lastest message will be displaye here", image:require('../../assets/p1.jpg')},
-    {id:"3",name:"James Taylor",descrition:"The lastest message will be displaye here", image:require('../../assets/p1.jpg')},
-    {id:"4",name:"Felicity Smoke",descrition:"The lastest message will be displaye here", image:require('../../assets/p1.jpg')},
-]
+const AllMessagesScreen = ({ navigation }) => {
+  const state = useSelector(state=>state);
+  const user = state.entities.user.profile;
+  const chatIds = state.entities.user.profile.chats.map(chat=>chat.id);
+  // const [chatIds, setChatIds] = useState([]);
+  const [chats,setChats]=useState([]);
+  // const [allChats, setAllChats] = useState([]);
+  const chatIdApi = useApi(userAPI.getChatIds);
 
 
 
-const AllMessagesScreen = ({navigation}) => {
-return(
-    <View style={styles.mainContainer}>
-        <FlatList 
-            data = {messages}
-            keyExtractor={message => message.id.toString()}
-            renderItem = {(item) => (
-                <TouchableOpacity>
-                    <ListViewItem
-                        name={item.item.name}
-                        subtitle={item.item.descrition}
-                        image={item.item.image}/>
-                </TouchableOpacity>
-      )}
-      />
-      <FloatingAction
-            distanceToEdge = {vertical=15}
-            floatingIcon={<Entypo name="new-message" size={30} color="#F4F4F2" style={{alignSelf:"center",}}/>}
-            onPressMain ={()=> console.log("Yo")}
-            color = "#495464"
-            overlayColor = "none"
-            position="right"
+//   useEffect(()=>{
+//     getChatIds()
+//    },[])
 
-        />
-    </View>    
-);
-}
+// const getChatIds = async()=>{
+//   const result = await chatIdApi.request(user.email);
+//     if(!result.ok){
+//       return Alert.alert("Error Retriving Chat Ids")
+//     }
+//     setChatIds(result.data);
+// }
 
-const styles = StyleSheet.create({
-    mainContainer : {
-        marginHorizontal:20,
-        marginVertical:10,
-        flex:1,
-    },
-    itemContainer:{
-        flexDirection:"row",
-        display:"flex",
-    },
-    subtitleText:{
-        fontFamily:"Poppins-Regular", 
-        marginLeft:5,
-    }
-})
+
+  useEffect(() => {
+    // getChatIds()
+    // const chatId = uuidv1();
+    console.log("chatIds in  All Messaging Screen", chatIds)
+    const unsubscribe = firebase.firestore().collection("chats").onSnapshot((snapshot) =>{
+      const chat = [] 
+    //  const chat = chatIds.map(chatId=>chatId == snapshot.docs.map(doc=>doc.id))
+      for(var i=0; i<snapshot.docs.length; i++){
+        if(chatIds[i] === snapshot.docs[i].id){
+          chat.push(snapshot.docs[i])
+          // chat.
+        }
+      }
+      console.log("Chat for documents",chat.map((doc)=>({data:doc})))
+    // }
+      setChats(
+        chat.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+        }
+      // setChats(
+      //   snapshot.docs.map((doc) => ({
+      //     id: doc.id,
+      //     data: doc.data(),
+      //   }))
+      // )
+    );
+ 
+    // setChats(filteredChats);
+    return unsubscribe;
+  }, []);
+
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Chats",
+      headerStyle: {
+        backgroundColor: "#e8e8e8",
+      },
+      headerTitleStyle: {
+        color: "#1b262c",
+        // alignSelf: "center",
+      },
+      headerTintColor: "#1b262c",
+      headerRight: () => (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            width: 80,
+            marginRight: 20,
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("CreateChat")}>
+            <MaterialIcons name="create" size={24} color="#1b262c" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const enterChat = (id, chatName) => {
+    navigation.navigate("UserChat", {
+      id: id,
+      chatName: chatName,
+    });
+  };
+
+  return (
+    <SafeAreaView>
+      <ScrollView style={styles.container}>
+        {chats.map(({ id, data: { recieverChatName,senderChatName } }) => (
+          
+          <ListViewItem
+            key={id}
+            id={id}
+            chatName={(recieverChatName === `${user.firstname} ${user.lastname}` ) ?senderChatName: recieverChatName}
+            enterChat={enterChat}
+          />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 export default AllMessagesScreen;
 
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+  },
+});
