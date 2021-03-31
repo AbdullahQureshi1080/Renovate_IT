@@ -99,6 +99,7 @@ const createPost = (email, title, description, budget, images, documents) =>
     data
   });
 
+
   const getUserProjects = (email) =>
   client.post("projects/getUserProjects", {
     email,
@@ -112,6 +113,25 @@ const createPost = (email, title, description, budget, images, documents) =>
     return result.data;
   }
  
+  const createChat = (senderEmail,recieverEmail,chatId)=>
+  client.post("chats/createChat",{
+    senderEmail,
+    recieverEmail,
+    chatId
+  })
+
+  const deleteChat =(senderEmail,recieverEmail,chatId)=>
+  client.post("chats/deleteChat",{
+    senderEmail,
+    recieverEmail,
+    chatId
+  })
+
+  
+  const getChatIds =(email)=>
+  client.post("chats/getChatIds",{
+    email
+  })
 
 export default {
   register,
@@ -125,4 +145,7 @@ export default {
   deleteProject,
   updateProject,
   userProjects,
+  createChat,
+  deleteChat,
+  getChatIds,
 };

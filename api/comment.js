@@ -15,42 +15,60 @@ import client from './client';
 
 import dataAPI from "./data";
 import useApi from "../hooks/useApi";
+import ErrorMessage from '../components/AppForm/ErrorMessage';
 
 
 const Comment=(props) =>{
-    const dispatch = useDispatch();
-    const state = useSelector(state => state);
-    const projects = state.entities.data.projects;
-    const project = projects.filter(project=>project._id == props.projectId);
+    const [error,setError] = useState(null)
+    // const dispatch = useDispatch();
+    // const state = useSelector(state => state);
+    // const projects = state.entities.data.projects;
+    // const project = projects.filter(project=>project._id == props.projectId);
 
     const [comments, setComments] = useState(null);
-    const [newComments, setNewComments] = useState(null);
+    // const [newComments, setNewComments] = useState(null);
     // const [projectId, setProjectId] = useState(props.projectId)
-    const projectComments = project.map(project=>project.comments);
+    // const projectComments = project.map(project=>project.comments);
     // setComments(comments);
     
     const commentApi = useApi(dataAPI.commentOnProject);
+    const getCommentApi = useApi(dataAPI.getProjectComments);
     // const [text, setText] = useState("")
     // const users = state.userState.users;
     
+   
+    const fetchComments= async()=>{
+        // const userId = props.userId;
+        const projectId = props.projectId;
+        const result = await getCommentApi.request(projectId);
+        if(!result.ok){
+           setError("Could not retrive comments at this moment, refresh. ")
+           return;
+        }
+        // console.log(result.data);
+        // console.log("This happens")
+        setComments(new Array(result.data));
+     }
+
     useEffect(()=>{
+        fetchComments();
         // console.log("Projects in Comment Section",projects);
         // console.log("Selected Project in Comment Section",project);
-        if(newComments == null){
-            setComments(projectComments);
-        }
-        else{
-            if(newComments.length > comments.length){
-                setComments(new Array(newComments));
-            }
-            else{
-                return
-            }
-        }
-        console.log("Project Comments",comments);
-        console.log("New Project Comments",newComments);
+        // if(newComments == null){
+        //     setComments(comments);
+        // }
+        // else{
+        //     if(newComments.length > comments.length){
+        //         setComments(new Array(newComments));
+        //     }
+        //     else{
+        //         return
+        //     }
+        // }
+        // console.log("Project Comments",comments);
+        // console.log("New Project Comments",newComments);
 
-},[newComments]);
+},[comments]);
 
 
     const onCommentSend = async (value) => {
@@ -66,14 +84,17 @@ const Comment=(props) =>{
         )
         console.log(result.data)
         if(!result.ok){
-            // console.log("Could not post comment")
+            console.log("Could not post comment")
             return;
         }
         // setComments({comments:result.data});
         console.log("After adding new",comments)
         // dispatch(addNewComment(value,projectId));
-        dispatch(addComment({value,projectId}))
-        setNewComments(result.data)
+        // dispatch(addComment({value,projectId}))
+        setComments(new Array (result.data))
+
+        // value = "",
+        
     }
 
     if(comments == null){
@@ -85,6 +106,7 @@ const Comment=(props) =>{
             {/* <Text>Hihyaaghjdgsjd</Text> */}
            
             <View>
+            <ErrorMessage error={error} visible={error}/>
  <FlatList
                 numColumns={1}
                 horizontal={false}

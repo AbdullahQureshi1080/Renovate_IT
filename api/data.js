@@ -3,7 +3,8 @@ import client from "./client";
 const getAllPosts = () => client.get("posts/getAllPosts");
 const getAllProjects = () => client.get("projects/getAllProjects");
 const getAllUsers = (email) => client.post("user/getAllUsers",{email});
- 
+ const getProjectComments=(projectId)=>
+ client.post("projects/getProjectComments",{projectId})
 // const commentOnProject 
 const commentOnProject = (userId, projectId, value) =>
 client.post("projects/commentOnProject", {
@@ -13,6 +14,7 @@ client.post("projects/commentOnProject", {
 });
 
 export default {
+    getProjectComments,
     commentOnProject,
     getAllPosts,
     getAllProjects,
