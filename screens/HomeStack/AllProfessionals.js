@@ -31,15 +31,16 @@ const profileAvatar = {
 
 
 const AllProfessionals = ({navigation,route}) =>{
+  // console.log("Specific Category Uses",route.params.professionals);
   const [professionals,setProfessionals]=React.useState(route.params.professionals);
   const [search,setSearch]=React.useState([]);
-  console.log(route.params);
   // const professionals = route.params.professionals;
-
+  
   // React.useEffect(() => {
-  //   setState(professionals);
-  // }, [state])
-  const handleSearch = (search) => {
+    //   setState(professionals);
+    // }, [state])
+    const handleSearch = (search) => {
+    // console.log(route.params);
     if(search == ""){
       setProfessionals(route.params.professionals);
       return
@@ -62,7 +63,7 @@ const AllProfessionals = ({navigation,route}) =>{
           <SearchBar placeholder = "Search by name ...."  onChangeText={handleSearch}/>
         }
             data = {professionals}
-            keyExtractor={item=>item._id}
+            keyExtractor={(item, index) => index.toString()}
             numColumns={3}
             renderItem = {({item}) => (
             <View style = {{flex:1, flexDirection:"column", justifyContent:'space-between', marginHorizontal:15}}>
@@ -73,6 +74,7 @@ const AllProfessionals = ({navigation,route}) =>{
                 style={profileAvatar}
                 size={90}
                 imageUri={item.image}
+                onPress={()=>navigation.navigate("Profile",{screen:"User Profile",params:{_id:item._id,user:item,}})}
             />
           </View>
       )}

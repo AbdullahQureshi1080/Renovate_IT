@@ -86,7 +86,10 @@ function CreatePostScreen( {navigation, route}) {
     setIsLoading(false);
     dispatch(addPost(result.data));
     dispatch(addDataPost(result.data));
-    navigation.navigate("AppHome");
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'AppHome'}],
+    });
   };
   
  
@@ -157,13 +160,16 @@ function CreatePostScreen( {navigation, route}) {
               <View style={{ alignSelf: "center" }}>
             <AppText style={styles.titleText}>Create Post</AppText>
           </View>
+          <AppText style={styles.labelText}>Post Title</AppText>
         <AppFormField maxLength={255} name="title" placeholder="Title"   />
+        <AppText style={styles.labelText}>Budget</AppText>
         <AppFormField
           keyboardType="numeric"
           maxLength={8}
           name="budget"
           placeholder="Budget"
         />
+        <AppText style={styles.labelText}>Description</AppText>
         <AppFormField
           maxLength={255}
           multiline
@@ -202,6 +208,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     // alignSelf: "center",
   },
+  labelText:{fontSize:15,fontFamily:"Poppins-Medium", opacity:0.4,}
 });
 export default CreatePostScreen;
  

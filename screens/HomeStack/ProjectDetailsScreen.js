@@ -17,21 +17,22 @@ import { MenuProvider,Menu,
 
 
 // Components Imports
-import AppTextInput from '../../components/AppTextInput';
+// import AppTextInput from '../../components/AppTextInput';
 import AppText from '../../components/AppText';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { FloatingAction } from "react-native-floating-action";
-import ComponentsStyle from "../../styles/ComponentsStyle";
-import AppButton from '../../components/AppButton';
+// import Entypo from 'react-native-vector-icons/Entypo';
+// import { FloatingAction } from "react-native-floating-action";
+// import ComponentsStyle from "../../styles/ComponentsStyle";
+// import AppButton from '../../components/AppButton';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
 import useApi from '../../hooks/useApi';
 import userAPI from "../../api/user";
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
-import { deleteProject } from '../../store/user';
-import { deleteAppProject} from '../../store/data';
+// import { deleteProject } from '../../store/user';
+// import { deleteAppProject} from '../../store/data';
 import Comment from '../../api/comment';
+import ActivityIndicator from '../../components/ActivityIndicator';
 // import { FlatList } from 'react-native-gesture-handler';
 
 var { width, height } = Dimensions.get('window')
@@ -40,21 +41,28 @@ const ProjectDetailsScreen = ({route,navigation}) =>{
   const dispatch = useDispatch();
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
   const state = useSelector(state=>state);
   const userId = state.entities.auth.data._id;
   const userEmail = state.entities.auth.data.email;
-  const  userProjects= state.entities.user.projects;
-  const projectIds = userProjects.map(project=>project._id);
+  // const  userProjects= state.entities.user.projects;
+  // const projectIds = userProjects.map(project=>project._id);
+
+  // const userPostsIdObjs = state.entities.user.postIds;
+  const userProjectsIdObjs = state.entities.user.projectIds;
+ 
+  // const  userPostIds = userPostsIdObjs.map(({ id }) => id);
+  const  userProjectIds = userProjectsIdObjs.map(({ id }) => id);
+  // console.log("Project Ids",)
   const deleteApi = useApi(userAPI.deleteProject)
       const [text, setText] = useState("")
 
-  // console.log(projectIds);
+  console.log(userProjectIds);
   const projectId = route.params.item._id;
-  // console.log(projectId);
+  console.log(projectId);
   useEffect(()=>{
-    for (var i =0; i<projectIds.length; i++){
-      if(projectId == projectIds[i]){
+    for (var i =0; i<userProjectIds.length; i++){
+      if(projectId == userProjectIds[i]){
         setCheckId(false)
       }
     }
@@ -77,13 +85,13 @@ const ProjectDetailsScreen = ({route,navigation}) =>{
         setDeleteError("Error Deleting Project")
       }
       console.log("Project Deleted");
-      dispatch(deleteProject(projectId));
-      dispatch(deleteAppProject(projectId));
-
-      navigation.navigate("AppHome");
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AppHome'}],
+      });
     }
 
-  // console.log(route.params.item);
+
 
   const renderItem = useCallback(
     ({ item, index, drag, isActive }: RenderItemParams<nodeItem>) => {
@@ -122,6 +130,7 @@ const ProjectDetailsScreen = ({route,navigation}) =>{
   }
    return (
     <MenuProvider>
+      <ActivityIndicator visible={deleteApi.loading} />
       <ScrollView style = {ScreenStyles.projectsDetailScreen} showsVerticalScrollIndicator={false}>
           <View style={{flexDirection:"row", justifyContent:"space-between", marginVertical:10}}>
          <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>

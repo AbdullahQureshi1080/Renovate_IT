@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import AppButton from "../../components/AppButton";
 import AppText from "../../components/AppText";
-import CameraInput from "../../components/Image/CameraInput";
+// import CameraInput from "../../components/Image/CameraInput";
 // import ImageInput from "../../components/Image/ImageInput";
 import ImageModal from "../../components/Modal/ImageModal";
 import TextModal from "../../components/Modal/TextModal";
@@ -150,7 +150,7 @@ function CreateProjectScreen({ navigation,route}) {
       return;
     }
     // setId(id + 1);
-    const newkey = Math.round(Math.floor(Math.random()*10)).toString();
+    const newkey = (Math.floor(Math.random()*10)).toString();
     console.log(newkey);
     if (type == "text") {
       const textNode = text;

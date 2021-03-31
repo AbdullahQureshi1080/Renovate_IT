@@ -86,42 +86,14 @@ function UpdatePostScreen( {route,navigation}) {
     }
     setSaveData(false);
     setIsLoading(false);
-    dispatch(editPost(result.data));
-    dispatch(editPost(result.data));
-    navigation.navigate("AppHome");
+    // dispatch(editPost(result.data));
+    // dispatch(editPost(result.data));
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'AppHome'}],
+    });
   };
-  // async function uploadAsPromise(file, type) {
-  //   return new Promise(async function (resolve, reject) {
-  //     const response = await fetch(file);
-  //     // console.log(response);
-  //     const blob = await response.blob();
-  //     // console.log(blob);
-  //     var childRoute = null;
-  //     if (type == "img") {
-  //       childRoute = "images";
-  //     } else {
-  //       childRoute = "documents";
-  //     }
- 
-  //     const childPath = `posts/${userId}/${childRoute}/${Math.random().toString(36)}`;
- 
-  //     const task = firebase.storage().ref().child(childPath).put(blob);
- 
-  //     const taskProgress = (snapshot) => {
-  //       console.log(`transferred: ${snapshot.bytesTransferred}`);
-  //     };
-  //     const taskCompleted = () => {
-  //       const downloadURL = task.snapshot.ref.getDownloadURL();
-  //       resolve(downloadURL);
-  //     };
-  //     const taskError = (snapshot) => {
-  //       console.log("An Error Occured", snapshot);
-  //       reject(err);
-  //     };
- 
-  //     task.on("state_changed", taskProgress, taskError, taskCompleted);
-  //   });
-  // }
+
  
   const handleFormSubmit = async ({
     title,
@@ -194,7 +166,10 @@ function UpdatePostScreen( {route,navigation}) {
         validationSchema={validationSchema}
       >
           <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
+                <TouchableOpacity style={{alignSelf:"center"}} onPress={()=> navigation.reset({
+      index: 0,
+      routes: [{name: 'AppHome'}],
+    })}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#495464"/>
                   </TouchableOpacity>
               <View style={{ alignSelf: "center" }}>

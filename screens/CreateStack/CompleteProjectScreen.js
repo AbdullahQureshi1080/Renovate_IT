@@ -92,7 +92,10 @@ useEffect(() => {
     setIsLoading(false);
     dispatch(addProject(result.data));
     dispatch(addDataProject(result.data));
-    navigation.navigate("AppHome");
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'AppHome'}],
+    });
   };
 
  

@@ -24,7 +24,13 @@ import * as Yup from "yup";
 import authAPI from '../../api/auth';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
+import userAPI from "../../api/user";
+import dataAPI from "../../api/data";
 
+import storage from '../../auth/storage';
+
+import { setProfileData,setUserPosts,setUserPostIds,setUserProjectIds } from '../../store/user';
+import { setAllUsers, setAppPosts,setAppProjects } from '../../store/data';
 import { setUserData, loginUser } from "../../store/auth";
 import AppText from '../../components/AppText';
 
@@ -38,6 +44,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) =>{
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const user = state.entities.auth;
@@ -45,8 +52,15 @@ const LoginScreen = ({navigation}) =>{
   // api calls ---
   const auth = useAuth()
   const loginApi = useApi(authAPI.login);
+  const userApi = useApi(userAPI.userProfile);
+  const appUsersApi = useApi(dataAPI.getAllUsers);
+  // const appPostsApi = useApi(dataAPI.getAllPosts)
+  // const appProjectsApi = useApi(dataAPI.getAllProjects)
+  // const userPostsApi = useApi(userAPI.userPosts); 
+  // const userProjectsApi = useApi(userAPI.userProjects); 
 
   const [loginFailed, setLoginFailed] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false); 
 
 
   const handleSubmit = async ({ email, password }) => {
@@ -55,20 +69,46 @@ const LoginScreen = ({navigation}) =>{
       password: password,
     };
     console.log(user);
+    setIsLoading(true);
     const result = await loginApi.request(email, password);
     if (!result.ok) {
-      return setLoginFailed(true);
+      setIsLoading(false);
+      setLoginFailed(true);
+      return;
     }
     setLoginFailed(false);
     auth.logIn(result.data);
     dispatch(loginUser(result.data));
-    navigation.navigate("Home");
+    const userData = await storage.getUser();
+    // ------------------------------------------
+          const profileData = await userApi.request(email);
+          const allUsersData = await appUsersApi.request(email);
+          // const userPostsData = await userPostsApi.request(email);
+          // const userProjectsData = await userProjectsApi.request(email);
+          // const appPosts = await appPostsApi.request();
+          // const appProjects = await appProjectsApi.request();
+
+          // dispatch(loginUser(userToken));
+          dispatch(setUserData(userData));
+          dispatch(setProfileData(profileData));
+          // dispatch(setUserPostIds(userPostsData))
+          // dispatch(setUserProjectIds(userProjectsData))
+          // dispatch(setAppPosts(appPosts.data))
+          // dispatch(setAppProjects(appProjec0ts.data))
+          dispatch(setAllUsers(allUsersData.data));
+    // -------------------------------------------
+    setIsLoading(false);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+    // navigation.navigate("Home");
   };
 
 
 return(
     <View style={styles.container}>
-         <ActivityIndicator visible = {loginApi.loading}/>
+         <ActivityIndicator visible = {isLoading}/>
         <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
         <View style={styles.child}> 
         <View style={{alignSelf:"center"}}>  

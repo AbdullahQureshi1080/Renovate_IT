@@ -1,25 +1,25 @@
 // Native Imports
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import {View, Text, Image, ScrollView, Dimensions,StyleSheet, Button,TouchableOpacity,Pressable,Alert} from 'react-native';
+import {View, Linking,Text, Image, ScrollView, Dimensions,StyleSheet, Button,TouchableOpacity,Pressable,Alert, Touchable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Paragraph,Avatar,} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import PopUpModal from '../../components/PopUpModal';
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
 // Components Imports
 import AppButton from '../../components/AppButton';
 import { MenuProvider,Menu,
   MenuOptions,
   MenuOption,
   MenuTrigger, } from 'react-native-popup-menu';
-
+import GallaryModal from "../../components/Modal/GallaryModal";
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
 import { useSelector } from 'react-redux';
 import PopUpModal from '../../components/PopUpModal';
-import { model } from 'mongoose';
+// import { model } from 'mongoose';
 import useApi from '../../hooks/useApi';
 import userAPI from "../../api/user";
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
@@ -27,30 +27,47 @@ import { deletePost } from '../../store/user';
 import { deleteAppPost } from '../../store/data';
 // var { width, height } = Dimensions.get('window')
 
+import Pdf from 'react-native-pdf';
+
+
 const PostDetailsScreen = ({navigation,route}) =>{
   const dispatch = useDispatch();
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const state = useSelector(state=>state);
   const userEmail = state.entities.auth.data.email;
   const  userPosts= state.entities.user.posts;
   const postsIds = userPosts.map(post=>post._id);
   const deleteApi = useApi(userAPI.deletePost)
-  console.log(postsIds);
   const postId = route.params.item._id;
-  console.log(postId);
+
+  const userPostsIdObjs = state.entities.user.postIds;
+  // const userProjectsIdObjs = state.entities.user.projectIds;
+ 
+  const  userPostIds = userPostsIdObjs.map(({ id }) => id);
+  // const  userProjectIds = userProjectsIdObjs.map(({ id }) => id);
+
   useEffect(()=>{
-    for (var i =0; i<postsIds.length; i++){
-      if(postId == postsIds[i]){
+    console.log("Item Params", route.params.item)
+    console.log(userPostIds);
+    console.log(postId);
+    for (var i =0; i<userPostIds.length; i++){
+      if(postId == userPostIds[i]){
         setCheckId(false)
       }
     }
+    // console.log(route.params.item.images)
   }
   ,[])
 
   const handleUpdate=()=>{
   //  Update Post
   navigation.navigate("Add", { screen: "UpdatePost", params:route.params.item});
+  }
+
+  const  loadInBrowser = (url) => {
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   }
 
   const handleDelete=()=>{
@@ -61,15 +78,18 @@ const PostDetailsScreen = ({navigation,route}) =>{
       setDeleteError("Error Deleting Post")
     }
     console.log("PostDeleted");
-    dispatch(deletePost(postId));
-    dispatch(deleteAppPost(postId));
+    // dispatch(deletePost(postId));
+    // dispatch(deleteAppPost(postId));
 
       // let routeName = getFocusedRouteNameFromRoute(route);
       // console.log(routeName);
       // if (routeName == 'Profile' || routeName ==="User Profile") return true;
       // else return false;
       // (route),
-    navigation.navigate("AppHome");
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AppHome'}],
+      });
   }
 
 
@@ -133,7 +153,7 @@ const PostDetailsScreen = ({navigation,route}) =>{
         {/* <AppButton name="Message"  onPress={()=>console.log("Message Button")}/> */}
         </View>
         </View>
-
+        <GallaryModal isVisible={isVisible} images={route.params.item.images} onPressClose={()=>setIsVisible(false)}/>
         <View style={{
           marginVertical:15,}}>
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>{route.params.item.title}</Text>
@@ -147,11 +167,22 @@ const PostDetailsScreen = ({navigation,route}) =>{
         </View>
 
           <Text style = {ScreenStyles.postsDetailScreen.viewBox.titleText}>Attachments</Text>
+        <View style={{flexDirection:"row", marginVertical:10,}}>
+          {route.params.item.images.map(image=>
+            // <View style={styles.container}>
+              <TouchableOpacity style={styles.container} onPress={()=>setIsVisible(true)}>
+                 <Image source = {{uri:image}} style={styles.image} />
+              </TouchableOpacity>
+          //  </View>
+          )}
+        </View>
         <View style={{flexDirection:"row"}}>
-          {route.params.item.images.concat(route.params.item.documents).map(image=>
-            <View style={styles.container}>
-            <Image source = {{uri:image}} style={styles.image}/>
-           </View>
+          {route.params.item.documents.map(image=>
+            // <View style={styles.container}>
+              <TouchableOpacity style={styles.container} onPress={()=>loadInBrowser(image)}>
+                 <MaterialCommunityIcons color="white" name="pdf-box" size={40} />
+              </TouchableOpacity>
+          //  </View>
           )}
         </View>
       </ScrollView>

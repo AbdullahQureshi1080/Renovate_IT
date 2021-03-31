@@ -23,9 +23,15 @@ import authAPI from '../../api/auth';
 import userAPI from '../../api/user';
 import useAuth from '../../auth/useAuth';
 import useApi from '../../hooks/useApi';
+// import userAPI from "../../api/user";
+import dataAPI from "../../api/data";
 
 import {loginUser } from "../../store/auth";
 
+import { setProfileData,setUserPosts,setUserPostIds,setUserProjectIds } from '../../store/user';
+import { setAllUsers, setAppPosts,setAppProjects } from '../../store/data';
+
+import storage from '../../auth/storage';
 
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
 import AppText from '../../components/AppText';
@@ -47,13 +53,30 @@ const SignUpScreen = ({navigation}) =>{
   const auth = useAuth()
   const registerApi = useApi(userAPI.register);
   const loginApi = useApi(authAPI.login);
+
+// --------------------------------------------
+  // const loginApi = useApi(authAPI.login);
+  const userApi = useApi(userAPI.userProfile);
+  const appUsersApi = useApi(dataAPI.getAllUsers);
+  const appPostsApi = useApi(dataAPI.getAllPosts)
+  const appProjectsApi = useApi(dataAPI.getAllProjects)
+  const userPostsApi = useApi(userAPI.userPosts); 
+  const userProjectsApi = useApi(userAPI.userProjects); 
+
+  // --------------------------------
+
   const [error, setError] = useState(); 
+  const [isLoading, setIsLoading] = useState(false); 
+
+
   const handleSubmit = async ({firstname,lastname,email,password}) =>{
     const result = await registerApi.request(firstname,lastname,email,password);
+    setIsLoading(true);
   if(!result.ok) {
     if(result.data) setError(result.data.error);
     else{
       setError("An unexpected error occured");
+      setIsLoading(false);
       console.log(result)
     }
   return;
@@ -64,12 +87,37 @@ const SignUpScreen = ({navigation}) =>{
   )
   auth.logIn(getNewToken.data);
   dispatch(loginUser(result.data));
-  navigation.navigate("Home");
+  const userData = await storage.getUser();
+  // ------------------------------------------
+  const profileData = await userApi.request(email);
+  const allUsersData = await appUsersApi.request(email);
+  // const userPostsData = await userPostsApi.request(email);
+  // const userProjectsData = await userProjectsApi.request(email);
+  // const appPosts = await appPostsApi.request();
+  // const appProjects = await appProjectsApi.request();
+
+  // dispatch(loginUser(userToken));
+  dispatch(setUserData(userData));
+  dispatch(setProfileData(profileData));
+  // dispatch(setUserPostIds(userPostsData))
+  // dispatch(setUserProjectIds(userProjectsData))
+  // dispatch(setAppPosts(appPosts.data))
+  // dispatch(setAppProjects(appProjects.data))
+  dispatch(setAllUsers(allUsersData.data));
+// -------------------------------------------
+
+// setIsLoading(false);
+
+setIsLoading(false);
+navigation.reset({
+  index: 0,
+  routes: [{name: 'Home'}],
+});
 }
     return(
         // <ScrollView style={styles.container}>
             <ImageBackground source={require('../../assets/splashscreen.jpg')} style={styles.image}>
-              <ActivityIndicator visible = {registerApi.loading || loginApi.loading}/>
+              <ActivityIndicator visible = {isLoading}/>
             <View style={styles.child}> 
                 <View style={{alignSelf:"center"}}>  
                 <AppText style = {styles.titleText}>Sign Up</AppText>

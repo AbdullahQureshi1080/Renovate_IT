@@ -5,14 +5,14 @@ import {View, Text, ScrollView,Dimensions} from 'react-native';
 
 // Components Imports
 import ProfessionalAvator from '../../components/ProfessionalAvatar';
-import LocationBar from '../../components/LocationBar';
+// import LocationBar from '../../components/LocationBar';
 import CategoryCard from '../../components/Card/CategoryCard';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
 import { useSelector } from 'react-redux';
 
-      
+
 
 const profileAvatar = {
    border:"none",
@@ -40,11 +40,11 @@ const profileAvatar = {
       const [data,setData ] = useState([])
       const state = useSelector(state=>state);
       const professionals = state.entities.data.allusers;
-      console.log("All Professional",professionals);
+      // console.log("All Professional",professionals);
       
       const categoryScreen = (category)=>{
          // if(category == "Architecture"){
-            console.log("Category:",category)
+            // console.log("Category:",category)
             // const result = professionals.map((user)=>{
             //    if(user.jobcategory == category){
             //       return user;
@@ -57,7 +57,7 @@ const profileAvatar = {
                }
             }
             // setData(arrProfessionals);
-            console.log("Specific Category Professionals ",arrProfessionals);
+            // console.log("Specific Category Professionals ",arrProfessionals);
             navigation.navigate("All Professionals", {title:category, professionals:arrProfessionals},);
          // }
       }
@@ -69,13 +69,10 @@ const profileAvatar = {
          {
             professionals.slice(0,3).map((user)=>{
                  return  (    
-                     <ProfessionalAvator name = {user.name} title ={user.jobtitle} style={profileAvatar} size={90} imageUri={user.image}/>
+                     <ProfessionalAvator key={user._id} name = {user.name} title ={user.jobtitle} style={profileAvatar} size={90} imageUri={user.image}/>
                  )
             })
          }
-         {/* <ProfessionalAvator name = "Abdul Karim" title = "Interior Designer" style={profileAvatar} size={90}/> */}
-         {/* <ProfessionalAvator name = "Danish Baba" title = "Renovator" style={profileAvatar}  size={90} /> */}
-         {/* <ProfessionalAvator name = "Baig Sahab"  title = "Builder" style={profileAvatar}  size={90}/> */}
       </View>
       <Text style = {ScreenStyles.professionalsScreen.headTitle}>Select By Category</Text>
       <View>
@@ -85,11 +82,11 @@ const profileAvatar = {
                <CategoryCard title = "Architect" source = {require('../../assets/architecture.jpg')} onPress={()=>categoryScreen("Architecture")}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Renovators" source = {require('../../assets/renovation.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Renovators"})}/>
-               <CategoryCard title = "Builders" source = {require('../../assets/builder.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Builders"})}/>
+               <CategoryCard title = "Renovators" source = {require('../../assets/renovation.jpg')}onPress={()=>categoryScreen("Renovator")}/>
+               <CategoryCard title = "Builders" source = {require('../../assets/builder.jpg')} onPress={()=>categoryScreen("Builder")}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-               <CategoryCard title = "Suppliers" source = {require('../../assets/supplier.jpg')} onPress={(props)=>navigation.navigate('All Professionals',{title:"Suppliers"})}/>
+               <CategoryCard title = "Suppliers" source = {require('../../assets/supplier.jpg')} onPress={()=>categoryScreen("Supplier")}/>
             </View>
       </View>
       </View>

@@ -10,47 +10,105 @@ import PostCard from '../../components/Card/PostCard';
 import dataAPI from '../../api/data';
 import useApi from '../../hooks/useApi';
 import { setAppPosts } from '../../store/data';
+import AppButton from '../../components/AppButton';
+import AppText from '../../components/AppText';
+import SearchBar from '../../components/SearchBar';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
 // import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 
 
 const Posts = ({navigation,route}) =>{
-   // console.log(routeName);
-//   const routeName = getFocusedRouteNameFromRoute(route);
-   // const [AllPosts,setAllPosts]=useState([]);
-   // const [counterCheck,setCounterCheck]=useState(0);
-   // const dataApi = useApi(dataAPI.getAllPosts)
-   const state = useSelector(state=>state);
-   const posts = state.entities.data.posts;
+   const [error,setError] = useState(null)
+   const postsApi = useApi(dataAPI.getAllPosts)
+
+
+   const [posts,setPosts]=useState([]);
+   const [refresh,setRefresh]=useState(false);
    
+   const fetchPosts = async()=>{
+      const result = await postsApi.request();
+      if(!result.ok){
+         setError("Could not retrive posts at this moment, refresh. ")
+         return;
+      }
+      // console.log(result.data);
+      // console.log("This happens")
+      setPosts(result.data);
+   }
+
    useEffect(()=>{
-      // setCounterCheck(counterCheck+1)
-      // const allPosts = async()=>{
-      //    const posts = await dataApi.request();
-      //    if(!posts.ok) return console.log("No Posts")
-      //       setAllPosts(posts.data)
-      //       setAppPosts(posts.data);
-      //    }
-      //    allPosts();
+      fetchPosts();
+
    },[])
+
+   const handleSearch = (search) => {
+      // console.log(route.params);
+      if(search == ""){
+      //   setPosts(posts);
+      fetchPosts();
+        return
+      }
+      const searched = posts.filter(function (item) {
+        return item.title.includes(search);
+      })
+      setPosts(searched)
+      // .map(function ({ Country, Slug, ISO2 }) {
+      //   return { Country, Slug, ISO2 };
+      // });
+  
+    }; 
+
+    const refreshPosts=()=>{
+       if(posts !== []){
+          setRefresh(true)
+          fetchPosts();
+          setRefresh(false);
+       }
+    }
    
 return(
-   <View>
-      <FlatList 
-      data = {posts}
-      renderItem = {({item}) => (
-      <PostCard 
-       key = {item._id}
-       title = {item.title}
-       creator = {item.creator}
-       description = {item.description}
-       budget = {item.budget}
-       onPress = {()=>navigation?.push('Post Details',
-       {item : item},
-         )}
-      />
-      )}
-      />
+   <View style={{flex:1}} >
+      {/* {
+         posts == [] ? 
+      (    */}
+         
+            <View style={{flex:1}}>
+             <SearchBar placeholder = "Post search ...."  onChangeText={handleSearch}/>
+            
+             <FlatList 
+            // style={{marginVertical:50}}
+            // inverted
+            ListEmptyComponent ={
+               () => (
+                  <View style={{flex:1, justifyContent:"center", alignItems:"center", alignSelf:"center"}}>
+                     <ErrorMessage error={error} visible={error}/>
+                     <AppText  style={{fontSize:14,}}>
+                          No Posts 
+                     </AppText>
+                     <AppButton name="reload" onPress={fetchPosts}/>
+                  </View>
+              )
+            } 
+            refreshing={refresh}
+            onRefresh={refreshPosts}
+            // data = {posts}
+            data={ posts.sort((a, b) => {return new Date(b.date) - new Date(a.date);         })}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem = {({item}) => (
+            <PostCard 
+             key = {item._id}
+             title = {item.title}
+             creator = {item.creator}
+             description = {item.description}
+             budget = {item.budget}
+             onPress = {()=>navigation?.push('Post Details',
+             {item : item},
+               )}
+            />
+            )}
+            />
+                  </View>
    </View>
 );
 }

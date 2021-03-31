@@ -11,14 +11,23 @@ import AppButton from '../../components/AppButton';
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles'
 import AppText from '../../components/AppText';
+import { useEffect } from 'react';
 
 
-const AboutUser = ({navigation}) =>{
+const AboutUser = ({navigation,route}) =>{
     const state =useSelector((state)=>state);
-    const profile = state.entities.user.profile;
-    console.log(profile);
+    // const [userProfile,setUserProfile] = useState(null);
+    const profile = route.params;
+    // console.log("From User Screen",profile);
+    // const profile = state.entities.user.profile;
+    useEffect(()=>{
+        console.log("From User Screen",profile);
+        // if(route.params !== null){
+        //     setUserProfile(profile);
+        // }
+    },[route.params])
     return(
-        <ScrollView>
+        <View>
             {/* <View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
                 <InfoCard subtitle="Thumb-Ups" value={300} />
                 <InfoCard subtitle="Following" value={50} />
@@ -51,7 +60,7 @@ const AboutUser = ({navigation}) =>{
                 </View>
             )}
             
-        </ScrollView>
+        </View>
     );
 }
 

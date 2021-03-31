@@ -21,20 +21,16 @@ const HomeScreen = ({navigation,route}) =>{
  const projects = state.entities.data.projects;
  const userPostsIdObjs = state.entities.user.postIds;
  const userProjectsIdObjs = state.entities.user.projectIds;
- console.log(userPostsIdObjs);
- console.log(userProjectsIdObjs);
+
  const  userPostIds = userPostsIdObjs.map(({ id }) => id);
  const  userProjectIds = userProjectsIdObjs.map(({ id }) => id);
- console.log("Post Ids",userPostIds);
- console.log("All Post",posts);
- console.log("Project Ids",userProjectIds);
- console.log("All Projects",projects);
+
 //  const _id = action.payload;
 //  const userPosts = posts.filter(function(post){return post._id != _id})
 const userPosts = posts.filter((post) => userPostIds.includes(post._id))
- console.log("UserPosts",userPosts);
+
  const userProjects = projects.filter((project) => userProjectIds.includes(project._id))
- console.log("UserProjects",userProjects);
+
 
 // //  For Exiting App
 //  function handleBackButtonClick() {
@@ -54,6 +50,14 @@ const userPosts = posts.filter((post) => userPostIds.includes(post._id))
 //   }
 
 useEffect(()=>{
+    console.log("User Post Ids Obj",userPostsIdObjs);
+    console.log("User Project Ids Obj",userProjectsIdObjs);
+    console.log("Post Ids",userPostIds);
+    console.log("All Post",posts);
+    console.log("Project Ids",userProjectIds);
+    console.log("All Projects",projects);
+    console.log("UserPosts",userPosts);
+    console.log("UserProjects",userProjects);
      dispatch(setUserPosts(userPosts));
      dispatch(setUserProjects(userProjects));
     
