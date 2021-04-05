@@ -12,6 +12,7 @@ import ImageGallaryScreen from '../screens/CreateStack/ImageGallaryScreen';
 import CompleteProjectScreen from '../screens/CreateStack/CompleteProjectScreen';
 import UpdateProjectScreen from '../screens/CreateStack/UpdateProjectScreen';
 import UpdateCompleteScreen from '../screens/CreateStack/UpdateCompleteScreen';
+import CreateFirmScreen from '../screens/CreateStack/CreateFirmScreen';
 
 // import PopUpModal from '../components/PopUpModal';
 // import AppModal from '../components/AppModal';
@@ -23,6 +24,7 @@ const Options = ({ navigation }) => (
     <View style={styles.option}>
       <AppButton name="Create Post" onPress={()=>navigation.navigate("CreatePost")} /> 
       <AppButton name="Create Project" onPress={()=>navigation.navigate("CreateProject")} /> 
+      <AppButton name="Create Firm" onPress={()=>navigation.navigate("CreateFirm")} /> 
     </View>
 )
   
@@ -55,6 +57,9 @@ const CreateStack = ({navigation}) => {
               headerShown:false
             }} />
               <Stack.Screen name="UpdateComplete" component={UpdateCompleteScreen} options={{
+              headerShown:false
+            }} />
+              <Stack.Screen name="CreateFirm" component={CreateFirmScreen} options={{
               headerShown:false
             }} />
         </Stack.Navigator>
