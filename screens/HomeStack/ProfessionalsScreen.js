@@ -12,7 +12,7 @@ import CategoryCard from '../../components/Card/CategoryCard';
 import ScreenStyles from '../../styles/ScreenStyles'
 import { useSelector } from 'react-redux';
 
-
+import Builder  from '../../assets/svg/builder.svg';
 
 const profileAvatar = {
    border:"none",
@@ -35,6 +35,12 @@ const profileAvatar = {
        alignSelf: 'center',
    }
  }
+
+// const builder = ()=>{
+//    return(
+//       <Builder />
+//    )
+// }
 
    const Professionals = ({navigation}) =>{
       const [data,setData ] = useState([])
@@ -83,7 +89,7 @@ const profileAvatar = {
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                <CategoryCard title = "Renovators" source = {require('../../assets/renovation.jpg')}onPress={()=>categoryScreen("Renovator")}/>
-               <CategoryCard title = "Builders" source = {require('../../assets/builder.jpg')} onPress={()=>categoryScreen("Builder")}/>
+               <CategoryCard title = "Builders" source = {require("../../assets/builder.jpg")} onPress={()=>categoryScreen("Builder")}/>
             </View>
             <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                <CategoryCard title = "Suppliers" source = {require('../../assets/supplier.jpg')} onPress={()=>categoryScreen("Supplier")}/>

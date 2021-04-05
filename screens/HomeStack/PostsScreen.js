@@ -53,9 +53,6 @@ const Posts = ({navigation,route}) =>{
         return item.title.includes(search);
       })
       setPosts(searched)
-      // .map(function ({ Country, Slug, ISO2 }) {
-      //   return { Country, Slug, ISO2 };
-      // });
   
     }; 
 

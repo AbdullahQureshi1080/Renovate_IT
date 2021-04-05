@@ -99,7 +99,7 @@ const getImageUri=()=>{
         return <View/>
     }
 return(
-    <ScrollView style={ScreenStyles.userprofileScreen}>
+    <SafeAreaView style={ScreenStyles.userprofileScreen}>
         {!checkId?
         (
             <View style={{marginHorizontal:0}}> 
@@ -120,18 +120,6 @@ return(
         <View/>
         )
         }
-        {/* <View style={{marginHorizontal:0}}> 
-            <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-between",}}>
-                <Button 
-                    icon={()=> <MaterialComunityIcons name="logout" size={30} color="#1B262C"/>} 
-                    onPress={logOut}/>        
-                <Button 
-                    icon={()=> <MaterialComunityIcons name="account-edit" size={30} 
-                    color="#1B262C"/>}
-                    onPress={()=>navigation.navigate("Edit Profile",{profile:profile})}
-                    />
-           </View>
-        </View> */}
         <View>
             <ProfessionalAvator 
             imageUri={imgUri}
@@ -152,7 +140,7 @@ return(
                    <Tab.Screen name = "Design a room" component = {display}/>
                </Tab.Navigator>
            </View>
-    </ScrollView>
+    </SafeAreaView>
 );
 
 }
