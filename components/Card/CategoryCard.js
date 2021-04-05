@@ -2,7 +2,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { Card } from 'react-native-paper';
-
 // Styles Imports
 import ComponentsStyle from '../../styles/ComponentsStyle';
 

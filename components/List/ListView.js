@@ -43,11 +43,11 @@ export const ListViewNotifications = (props) => (
 
 export const ListViewMessages = ({navigation,chats,enterChat}) => (
       
-      <View >
+      <View>
           {
                 chats.length > 0 ? chats.map((item,index)=>{
                   return (
-                        <CardViewList id={item.id} enterChat={enterChat} chatName={item.data.recieverChatName}  style ={{backgroundColor:"#e8e8e8"}} />
+                        <CardViewList key={item.id} id={item.id} enterChat={enterChat} chatName={item.data.recieverChatName}  style ={{backgroundColor:"#e8e8e8"}} />
                   )
           }) : <Button
                       style={{
