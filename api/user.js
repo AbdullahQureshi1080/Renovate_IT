@@ -113,6 +113,8 @@ const createPost = (email, title, description, budget, images, documents) =>
     return result.data;
   }
  
+
+  // Chats --------------------------------
   const createChat = (senderEmail,recieverEmail,chatId)=>
   client.post("chats/createChat",{
     senderEmail,
@@ -133,6 +135,17 @@ const createPost = (email, title, description, budget, images, documents) =>
     email
   })
 
+// Remote Firms ---------------------------
+
+const createFirm = (email,title,description,members)=>
+client.post("remoteFirm/createFirm",{
+  email,
+  title,
+  description,
+  members,  
+})
+
+
 export default {
   register,
   updateProfile,
@@ -148,4 +161,5 @@ export default {
   createChat,
   deleteChat,
   getChatIds,
+  createFirm
 };
