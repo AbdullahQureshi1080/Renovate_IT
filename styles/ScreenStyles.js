@@ -3,6 +3,11 @@ import { Dimensions } from 'react-native'
 
 const marginHorizontal = 20;
 const ScreenStyle = {
+      createFirmScreen:{
+        fontFamily: 'Poppins-Regular',
+        marginHorizontal: 15,
+        marginVertical:10,
+      },
       // fontFamily:"Poppins-Regular" ,
       createProjectScreen:{
         fontFamily: 'Poppins-Regular',
