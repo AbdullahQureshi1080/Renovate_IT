@@ -124,10 +124,10 @@ function CreateProjectScreen({ navigation,route}) {
   const handleRemove = (item) => {
     const key = item.key;
     console.log("Data in Handle Remove - Key", key);
-    const allItems = [...dataNode];
-    console.log("All Items in array", allItems);
-    const filteredItems = allItems.filter((item) => item.key !== key);
-    console.log(filteredItems);
+    // const allItems = [...dataNode];
+    // console.log("All Items in array", allItems);
+    const filteredItems = dataNode.filter(item => item.key !== key);
+    console.log("filtered items",filteredItems);
     setDataNodes(filteredItems);
   };
 
@@ -232,7 +232,8 @@ function CreateProjectScreen({ navigation,route}) {
       <DraggableFlatList
         data={dataNode}
         renderItem={renderItem}
-        keyExtractor={(item, index) => `draggable-item-${item.key}`}
+        // keyExtractor={(item, index) => `draggable-item-${item.key}`}
+        keyExtractor={(item, index) =>item.key}
         onDragEnd={({ data }) => setDataNodes(data)}
       />
       }

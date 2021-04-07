@@ -99,7 +99,7 @@ const getImageUri=()=>{
         return <View/>
     }
 return(
-    <SafeAreaView style={ScreenStyles.userprofileScreen}>
+    <ScrollView style={ScreenStyles.userprofileScreen}>
         {!checkId?
         (
             <View style={{marginHorizontal:0}}> 
@@ -129,6 +129,7 @@ return(
             style={profileAvatar} 
             disabled={true} 
             size={90}
+            placeholdertext={"Update profile to set title"}
             />
             </View>
         <View>
@@ -140,7 +141,7 @@ return(
                    <Tab.Screen name = "Design a room" component = {display}/>
                </Tab.Navigator>
            </View>
-    </SafeAreaView>
+    </ScrollView>
 );
 
 }

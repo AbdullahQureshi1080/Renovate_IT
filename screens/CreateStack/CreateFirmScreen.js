@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text,View, TouchableOpacity,ScrollView,KeyboardAvoidingView} from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { StyleSheet, Text,View, TouchableOpacity,ScrollView,KeyboardAvoidingView,Image} from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -29,9 +29,11 @@ import AppText from "../../components/AppText";
 
 import ScreenStyles from '../../styles/ScreenStyles'
 import uploadAsPromise from "../../api/imageUpload";
-import ImageInput from "../../components/List/AvatarList/ImageInput";
+import ProfessionalAvatar from '../../components/ProfessionalAvatar';
+// import ImageInput from "../../components/List/AvatarList/ImageInput";
 import SelectUserModal from "../../components/Modal/SelectUserModal";
 import AppButton from "../../components/AppButton";
+import { Dimensions } from "react-native";
 
 require("firebase/firestore");
 require("firebase/firebase-storage");
@@ -43,14 +45,22 @@ const validationSchema = Yup.object().shape({
  
  
 function CreateFirmScreen( {navigation, route}) {
-    const [visible,setVisible] = useState(false);
+    const [modalVisible1,setModalVisible1] = useState(false);
+    const [modalVisible2,setModalVisible2] = useState(false);
+    const [modalVisible3,setModalVisible3] = useState(false);
     // const [imageUri, setImageUri]=useState(null)
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const email = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
-  const [imageUri, setImageUri] = useState(undefined);
+  // const [imageUri, setImageUri] = useState(undefined);
   const [users,setUsers]=useState([]);
+  const [allArchitects, setAllArchitects]=useState([]);
+  const [allBuilders, setAllBuilders]=useState([]);
+  const [allSuppliers, setAllSuppliers]=useState([]);
+  const [selectedArchitect,setSelectedArchitect]=useState(null);
+  const [selectedBuilder,setSelectedBuilder]=useState(null);
+  const [selectedSupplier,setSelectedSupplier]=useState(null);
 //   console.log(userId);
 //  console.log(route.params)
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +68,7 @@ function CreateFirmScreen( {navigation, route}) {
   const [error, setError] = useState();
   const [Images, setImages] = useState([]);
   const usersApi = useApi(dataAPI.getAllUsers);
-  const createApi = useApi(userAPI.createPost);
+  const createApi = useApi(userAPI.createFirm);
 
   const fetchUsers = async()=>{
     const result = await usersApi.request(email);
@@ -66,125 +76,133 @@ function CreateFirmScreen( {navigation, route}) {
        setError("Could not retrive posts at this moment, refresh. ")
        return;
     }
-    // console.log(result.data);
-    // console.log("This happens")
     let allusers = result.data.filter(user=>user.email !== email)
     setUsers(allusers);
  }
 
  useEffect(()=>{
     fetchUsers();
-    console.log(users);
-},[users])
-//   const handleSubmit = async ({
-//     title,
-//     description,
-//     budget,
-//     images,
-//     documents,
-//   }) => {
-//     console.log("Handle Submit", title, description, budget, images, documents);
-//     // setIsLoading(false);
-//     const result = await createApi.request(
-//       email,
-//       title,
-//       description,
-//       budget,
-//       images,
-//       documents
-//     );
-//     // console.log(result.data);
-//     console.log(result);
-//     if (!result.ok) {
-//       // console.log(result.data);
-//       setError(result.data);
-//       setIsLoading(false);
-//       return setSaveData(true);
-//     }
-//     setSaveData(false);
-//     setIsLoading(false);
-//     dispatch(addPost(result.data));
-//     dispatch(addDataPost(result.data));
-//     navigation.reset({
-//       index: 0,
-//       routes: [{name: 'AppHome'}],
-//     });
-//   };
-  
- 
-//   const handleFormSubmit = async ({
-//     title,
-//     budget,
-//     description,
-//     images,
-//     documents,
-//   }) => {
-//     setIsLoading(true);
-//     console.log("Going In Loop");
-//     const arrImages = [];
-//     const arrDocuments = [];
-//     const uploadType = "posts";
+    // console.log(users);
+},[])
 
-//     for (var i = 0; i < images.length; i++) {
-//       var imageFile = images[i];
-//       var type = "image";
-//       await uploadAsPromise(imageFile,type,uploadType,userId).then((res) => {
-//         arrImages.push(res);
-//       });
-//     }
-//     console.log("Coming out of loop - Images");
-//     console.log(arrImages);
-//     for (var i = 0; i < documents.length; i++) {
-//       var documentFile = documents[i];
-//       var type = "doc";
-//       await uploadAsPromise(documentFile, type,uploadType,userId).then((res) => {
-//         arrDocuments.push(res);
-//       });
-//       console.log("Coming out of loop - Documents ");
-//       console.log(arrDocuments);
-//     }
-//     const postData = {
-//       title,
-//       budget,
-//       description,
-//       images: arrImages,
-//       documents: arrDocuments,
-//     };
-//     handleSubmit(postData);
-//   };
+const dataForModal = (type)=>{
+  console.log("Hiya",type)
+  let allUsers = [...users];
+  if(type == "architect"){
+    let specificUsers  = allUsers.filter(user=>user.jobcategory == "Architecture") 
+    setAllArchitects(specificUsers)
+  }
+  else if(type == "builder"){
+    let specificUsers  = allUsers.filter(user=>user.jobcategory == "Builder") 
+    setAllBuilders(specificUsers)
 
-const handleSearch = (search) => {
+ }
+ if(type == "supplier"){
+  let specificUsers  = allUsers.filter(user=>user.jobcategory == "Supplier") 
+  setAllSuppliers(specificUsers);
+ }
+}
+  const handleSubmit = async ({
+    title,
+    description,
+  }) => {
+    // setIsLoading(true);
+    const members = {
+      "architect":selectedArchitect,
+      "builder":selectedBuilder,
+      "supplier":selectedSupplier,
+    }
+    console.log("Handle Submit", title, description,members);
+    const result = await createApi.request(
+      email,
+      title,
+      description,
+      members,
+    );
+    // // console.log(result.data);
+    if (!result.ok) {
+      // console.log(result.data);
+      setError(result.data);
+      setIsLoading(false);
+      return setSaveData(true);
+    }
+    setSaveData(false);
+    // setIsLoading(false);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'User Profile'}],
+    });
+  };
+
+const handleSearch = (search,type) => {
     // console.log(route.params);
+    let allUsers = [...users];
     const query = search.toLowerCase();
     if(query == ""){
-        // Fetch Users
-        fetchUsers()
+        // Fetch Users for Modal
+        if(type == "architect"){
+          let specificUsers  = allUsers.filter(user=>user.jobcategory == "Architecture") 
+          setAllArchitects(specificUsers)
+        }
+        else if(type == "builder"){
+          let specificUsers  = allUsers.filter(user=>user.jobcategory == "Builder") 
+          setAllBuilders(specificUsers)
+       }
+       if(type == "supplier"){
+        let specificUsers  = allUsers.filter(user=>user.jobcategory == "Supplier") 
+        setAllSuppliers(specificUsers);
+       }
       return
     }
-    const searched = users.filter(function (item) {
-      return item.email.includes(query.toLowerCase());
-    })
-    setUsers(searched)
+    else if( query !== ""){
+         if(type == "architect"){
+         let searched = allArchitects.filter(function (item) {
+        return item.email.includes(query.toLowerCase());
+      })
+      setAllArchitects(searched)
+        }
+        else if(type == "builder"){
+          let searched = allBuilders.filter(function (item) {
+            return item.email.includes(query.toLowerCase());
+          })
+          setAllBuilders(searched)
+       }
+       if(type == "supplier"){
+        let searched = allSuppliers.filter(function (item) {
+          return item.email.includes(query.toLowerCase());
+        })
+        setAllSuppliers(searched)
+       }
+    }
 
   }; 
 
- const onPressAdd = (user)=>{
-     console.log("Add the Member selected")
+ const onPressAdd = (user,type)=>{ 
      console.log("Selected User from Modal of Users",user)
-    setVisible(false);
+     if(type == "architect"){
+       setModalVisible1(false);
+      setSelectedArchitect(user);
+     }
+     else if(type == "builder"){
+      setModalVisible2(false);
+      setSelectedBuilder(user);
+    }
+    if(type == "supplier"){
+      setModalVisible3(false);
+      setSelectedSupplier(user);
+    }
  } 
 
   return (
     <KeyboardAvoidingView style={{flex:1,}}>
       <ActivityIndicator visible={isLoading} />
-    <ScrollView style={ScreenStyles.createPostScreen} showsVerticalScrollIndicator={false}>
+    <ScrollView style={ScreenStyles.createFirmScreen} showsVerticalScrollIndicator={false}>
       <AppForm
         initialValues={{
           title: "",
           description:"",
-
         }}
-        onSubmit={()=>console.log("Handle Submit for remote firm")}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
           <View style={{flexDirection:"row", justifyContent:"space-between"}}>
@@ -210,8 +228,51 @@ const handleSearch = (search) => {
         />
          <AppText style={styles.labelText}>Add Members</AppText>
         <View style={styles.addMember}>
-            <SelectUserModal btnName="Add" btnCloseName="Cancel" isVisible={visible} onChangeText={(value) => handleSearch(value)} onPressAdd={(user) => onPressAdd(user)} onPressCancel={() => setVisible(false)} data={users} />
-            <AppButton name="Modal Visible" onPress={()=>setVisible(true)}/>
+            <SelectUserModal btnName="Add" btnCloseName="Cancel" isVisible={modalVisible1} onChangeText={(value) => handleSearch(value,"architect")} onPressAdd={(user) => onPressAdd(user,"architect")} onPressCancel={() => setModalVisible1(false)} data={allArchitects} />
+            <SelectUserModal btnName="Add" btnCloseName="Cancel" isVisible={modalVisible2} onChangeText={(value) => handleSearch(value,"builder")} onPressAdd={(user) => onPressAdd(user,"builder")} onPressCancel={() => setModalVisible2(false)} data={allBuilders} />
+            <SelectUserModal btnName="Add" btnCloseName="Cancel" isVisible={modalVisible3} onChangeText={(value) => handleSearch(value,"supplier")} onPressAdd={(user) => onPressAdd(user,"supplier")} onPressCancel={() => setModalVisible3(false)} data={allSuppliers} />
+            {/* <AppButton name="Modal Visible" onPress={()=>setVisible(true)}/> */}
+        </View>
+        <View style={{flexDirection:"row", justifyContent:"space-between", marginHorizontal:10,marginVertical:10,}}>
+          <View>
+          <AppText style={styles.labelText}>Architect</AppText>
+        <ProfessionalAvatar 
+                key = {selectedArchitect?._id}
+                name = {selectedArchitect?.name}
+                title = {selectedArchitect?.jobtitle}
+                style={profileAvatar}
+                size={90}
+                imageUri={selectedArchitect?.image}
+                placeholdertext = {"add user"}
+                onPress={()=>{setModalVisible1(true); dataForModal("architect");}}    
+            />
+          </View>
+          <View>
+             <AppText style={styles.labelText}>Builder</AppText>
+              <ProfessionalAvatar 
+                key = {selectedBuilder?._id}
+                name = {selectedBuilder?.name}
+                title = {selectedBuilder?.jobtitle}
+                style={profileAvatar}
+                size={90}
+                imageUri={selectedBuilder?.image}
+                placeholdertext = {"add user"}
+                onPress={()=>{setModalVisible2(true); dataForModal("builder");}}    
+                />
+          </View>
+          <View>
+              <AppText style={styles.labelText}>Supplier</AppText>
+              <ProfessionalAvatar 
+                key = {selectedSupplier?._id}
+                name = {selectedSupplier?.name}
+                title = {selectedSupplier?.jobtitle}
+                style={profileAvatar}
+                size={90}
+                imageUri={selectedSupplier?.image}
+                placeholdertext = {"add user"}
+                onPress={()=>{setModalVisible3(true); dataForModal("supplier");}}    
+            />
+          </View>
         </View>
       </AppForm>
     </ScrollView>
@@ -219,6 +280,25 @@ const handleSearch = (search) => {
   );
 }
  
+const profileAvatar = {
+  // marginVertival:100,
+  border:"none",
+  marginVertical:15,
+  justifyContent:"center",
+  nameText : {
+      fontSize : 14,
+      marginTop : 5,
+      color:"#495464",
+      fontFamily: 'Poppins-Bold',
+  },
+  titleText : {
+      fontSize : 12,
+      color:"#495464",
+      // width:Dimensions.get('window').width/3,
+      fontFamily: 'Poppins-Medium',
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     padding: 10,
