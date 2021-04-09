@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text,View, TouchableOpacity,ScrollView,KeyboardAvoidingView,Image} from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { TabActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
  
@@ -21,7 +22,7 @@ import userAPI from "../../api/user";
 import dataAPI from "../../api/data";
 import useApi from "../../hooks/useApi";
 
-import { addPost } from "../../store/user";
+import user, { addPost } from "../../store/user";
 import { addDataPost } from "../../store/data";
 
 import AppText from "../../components/AppText";
@@ -102,17 +103,37 @@ const dataForModal = (type)=>{
   setAllSuppliers(specificUsers);
  }
 }
+
+const getData = (data)=>{
+  if(data == undefined) return;
+  let user = {
+    _id:data?._id,
+    name:data?.name,
+    email:data?.email,
+    image:data?.image,
+    jobcategory:data?.jobcategory,
+    jobtitle:data?.jobtitle,
+  }
+  return user;
+}
   const handleSubmit = async ({
     title,
     description,
+    resetForm
   }) => {
     // setIsLoading(true);
-    const members = {
-      "architect":selectedArchitect,
-      "builder":selectedBuilder,
-      "supplier":selectedSupplier,
-    }
-    console.log("Handle Submit", title, description,members);
+    // const members ={
+    //   "architect":getData(selectedArchitect),
+    //   "builder":getData(selectedBuilder),
+    //   "supplier":getData(selectedSupplier),
+    // };
+    const members =[
+      getData(selectedArchitect),
+     getData(selectedBuilder),
+      getData(selectedSupplier),
+     ];
+    // const emails = members.map(user=>user.email);
+    console.log("Handle Submit", title, description,members,);
     const result = await createApi.request(
       email,
       title,
@@ -128,10 +149,12 @@ const dataForModal = (type)=>{
     }
     setSaveData(false);
     // setIsLoading(false);
+    
     navigation.reset({
       index: 0,
-      routes: [{name: 'User Profile'}],
+      routes: [{name:"AppHome"}],
     });
+    // resetForm();
   };
 
 const handleSearch = (search,type) => {

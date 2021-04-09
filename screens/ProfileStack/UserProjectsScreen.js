@@ -21,43 +21,6 @@ export default UserProjectsScreen =({navigation,route})=> {
     const state = useSelector(state=>state);
     const userProjectsIdObjs = state.entities.user.projectIds;
     const  userProjectIds = userProjectsIdObjs.map(({ id }) => id);
-//  const userProjects = projects.filter((project) => userProjectIds.includes(project._id))
-//     const projects = state.entities.user.projects;
-//     // const projects = route.params;
-
-//     return (
-//            projects.length === 0 ? (
-//             <View style={{flex:1, justifyContent:"center"}}>
-//                 <AppText style={{alignSelf: 'center', fontSize:15,}}>You have no projects</AppText>
-//                 <AppButton name="Create Project" onPress={()=>navigation.navigate("CreateProject")}/>
-//             </View>
-            
-//             ) : (
-//                 <View>
-//       <FlatList 
-//       inverted
-//       data = {projects}
-//       keyExtractor={(item, index) => index.toString()}
-//       renderItem = {({item}) => (
-//       <ProjectCard 
-//       key = {item._id}
-//       title = {item.title}
-//       creator = {item.creator}
-//       description = {item.description}
-//       creatorImage = {item.creatorImage}
-//       coverImage={item.data.thumbnailImage.value}
-//       //  likes = {item.likes}
-//       //  cover = {}
-//        onPress = {()=>navigation.navigate('Project Details',
-//          {item : item},
-//          )}
-//       />
-//       )}
-//       />
-//    </View>
-                
-//             )     
-//     )
 const [error,setError] = useState(null)
 const projectsApi = useApi(dataAPI.getAllProjects);
 // const state = useSelector((state) => state);
@@ -86,21 +49,6 @@ fetchProjects();
 // return unsubscribe;
 },[])
 
-// -----------------------------------------------------------------
-// const handleSearch = (search) => {
-//    // console.log(route.params);
-//    if(search == ""){
-//      setProjects(projects);
-//      return
-//    }
-//    const searched = projects.filter(function (item) {
-//      return item.title.includes(search);
-//    })
-//    setProjects(searched)
-//  }; 
-
-
-//  const 
 
 const refreshProjects=()=>{
    if(projects !== []){

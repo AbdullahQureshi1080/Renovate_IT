@@ -27,6 +27,7 @@ import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
 import { setUserData } from '../../store/auth';
 import { setProfileData } from '../../store/user';
+import RemoteFirmScreen from './RemoteFirmScreen';
 // import { useEffect } from 'react';
 
 
@@ -63,7 +64,7 @@ const UserProfileScreen = ({navigation,route}) =>{
     
     
     useEffect(()=>{
-    console.log("Avator Data from All Professional",route.params);
+    console.log("Avator Data from All Professional",route?.params);
     console.log("All Users of the App",allUsers)
     const updateAuthData = {email:profile.email,firstname:profile.firstname,lastname:profile.lastname,_id:userId}
     dispatch(setUserData(updateAuthData));
@@ -137,7 +138,7 @@ return(
                tabBarOptions = {TabNavigatorStyle.userProfileTab}>
                    <Tab.Screen name = "About" component = {AboutUser} initialParams={userProfile}/>
                    <Tab.Screen name = "Projects" component = {UserProjects}/>
-                   <Tab.Screen name = "Remote Firm" component = {display}/>
+                   <Tab.Screen name = "Remote Firm" component = {RemoteFirmScreen}/>
                    <Tab.Screen name = "Design a room" component = {display}/>
                </Tab.Navigator>
            </View>

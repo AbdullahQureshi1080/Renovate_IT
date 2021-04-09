@@ -26,11 +26,11 @@ import useApi from '../../hooks/useApi';
 // import userAPI from "../../api/user";
 import dataAPI from "../../api/data";
 
-import {loginUser } from "../../store/auth";
+// import {loginUser } from "../../store/auth";
 
 import { setProfileData,setUserPosts,setUserPostIds,setUserProjectIds } from '../../store/user';
 import { setAllUsers, setAppPosts,setAppProjects } from '../../store/data';
-
+import { setUserData, loginUser } from "../../store/auth";
 import storage from '../../auth/storage';
 
 import ErrorMessage from '../../components/AppForm/ErrorMessage';

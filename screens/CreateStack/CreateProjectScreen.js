@@ -211,7 +211,7 @@ function CreateProjectScreen({ navigation,route}) {
         </TouchableOpacity>
         <AppButton name="next" disabled={dataNode.length==0} onPress={onNextScreen} />
       </View>
-      <TextModal btnName="Add" btnCloseName="Cancel" isVisible={textModalVisible} onChangeText={(value) => handleText(value)} onPressAdd={() => onPressAdd("text")} onPressCancel={() => setTextModalVisible(false)} />
+      <TextModal btnName="Add" btnCloseName="Cancel" isVisible={textModalVisible} onChangeText={(value) => handleText(value)} onPressAdd={() => onPressAdd("text")} onPressCancel={() => setTextModalVisible(false)}   titleMessage={"Enter details about the project"}/>
       <ImageModal btnName="Add" btnCloseName="Cancel" isVisible={imageModalVisible} imageUri={imageUri} onChangeImage={(imageUri) => setImageUri(imageUri)} onPressAdd={() => onPressAdd("image")} onPressCancel={() => setImageModalVisible(false)} />
       <CameraModal btnName="Add" btnCloseName="Cancel" isVisible={cameraModalVisible} imageUri={imageUri} onChangeImage={(imageUri) => setImageUri(imageUri)} onPressAdd={() => onPressAdd('image')} onPressCancel={() => setCameraModalVisible(false)} />
       {

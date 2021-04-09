@@ -51,23 +51,6 @@ const UserPostsScreen =({navigation})=> {
 
    },[])
 
-//    const handleSearch = (search) => {
-//       // console.log(route.params);
-//       if(search == ""){
-//       //   setPosts(posts);
-//       fetchPosts();
-//         return
-//       }
-//       const searched = posts.filter(function (item) {
-//         return item.title.includes(search);
-//       })
-//       setPosts(searched)
-//       // .map(function ({ Country, Slug, ISO2 }) {
-//       //   return { Country, Slug, ISO2 };
-//       // });
-  
-//     }; 
-
     const refreshPosts=()=>{
        if(posts !== []){
           setRefresh(true)
@@ -78,16 +61,7 @@ const UserPostsScreen =({navigation})=> {
    
 return(
    <View style={{flex:1}} >
-      {/* {
-         posts == [] ? 
-      (    */}
-         
-        
-             {/* <SearchBar placeholder = "Post search ...."  onChangeText={handleSearch}/> */}
-            
              <FlatList 
-            // style={{marginVertical:50}}
-            // inverted
             ListEmptyComponent ={
                () => (
                   <View style={{flex:1, justifyContent:"center", alignItems:"center", alignSelf:"center"}}>
@@ -119,36 +93,6 @@ return(
             />
    </View>
    )
-   // return (
-    //        posts.length === 0 ? (
-    //         <View style={{flex:1, justifyContent:"center"}}>
-    //             <AppText style={{alignSelf: 'center' , fontSize:15,}}>You have no posts</AppText>
-    //             <AppButton name="Create Post" onPress={()=>navigation.navigate("CreatePost")}/>
-    //         </View>
-            
-    //         ) : (
-    //             <View style={{flex: 1,marginVertical:10,} }>
-    //             <FlatList 
-    //             inverted
-    //             data = {posts}
-    //             keyExtractor={(item, index) => index.toString()}
-    //             renderItem = {({item}) => (
-    //              //    console.log(item)
-    //              <PostCard 
-    //              key = {item._id}
-    //              title = {item.title}
-    //              creator = {item.creator}
-    //              description = {item.description}
-    //              budget = {item.budget}
-    //              onPress = {()=>navigation.navigate('Post Details',
-    //              {item : item},
-    //                )}
-    //             />
-    //              )} />
-    //          </View>
-                
-    //         )     
-    // )
 }
 
 const styles = StyleSheet.create({})

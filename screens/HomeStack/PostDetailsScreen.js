@@ -38,7 +38,7 @@ const PostDetailsScreen = ({navigation,route}) =>{
   const state = useSelector(state=>state);
   const userEmail = state.entities.auth.data.email;
   const  userPosts= state.entities.user.posts;
-  const postsIds = userPosts.map(post=>post._id);
+  // const postsIds = userPosts.map(post=>post._id);
   const deleteApi = useApi(userAPI.deletePost)
   const postId = route.params.item._id;
 
@@ -78,14 +78,6 @@ const PostDetailsScreen = ({navigation,route}) =>{
       setDeleteError("Error Deleting Post")
     }
     console.log("PostDeleted");
-    // dispatch(deletePost(postId));
-    // dispatch(deleteAppPost(postId));
-
-      // let routeName = getFocusedRouteNameFromRoute(route);
-      // console.log(routeName);
-      // if (routeName == 'Profile' || routeName ==="User Profile") return true;
-      // else return false;
-      // (route),
       navigation.reset({
         index: 0,
         routes: [{name: 'AppHome'}],
@@ -101,14 +93,6 @@ const PostDetailsScreen = ({navigation,route}) =>{
                   <MaterialCommunityIcons name="backspace" size={40} color="#1b262c"/>
          </TouchableOpacity>
                   {!idCheck?(
-                    // <TouchableOpacity style={{alignSelf:"center"}}  onPress={() => YourComponent()}>
-                    // <MaterialIcons name="more-vert"  size={40} color="#495464"/>
-                    //   </TouchableOpacity>   
-                  // <MenuProvider>
-                  // <View>
-                  //   <PopUpModal options={['Update',"Delete"]} onPress={handlePopup()}/>
-                  // </View>
-                  // </MenuProvider>
                         <View >
                           <Menu>
                             <MenuTrigger text={<MaterialIcons name="more-vert"  size={40}  color="#1b262c"/>} />
