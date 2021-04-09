@@ -145,6 +145,46 @@ client.post("remoteFirm/createFirm",{
   members,  
 })
 
+const getUserFirms= (email) =>
+client.post("remoteFirm/getUserFirms", {
+  email,
+});
+const getAllFirms = () => client.get("remoteFirm/getAllFirms");
+const userFirms = async (email)=>{
+  const userFirms = await getUserFirms(email);
+  const allFirms = await getAllFirms();
+  if (!userFirms.ok && !allFirms.ok) {
+    console.log("User Firms API call failed", userFirms.data);
+    console.log("All Firms API call failed", allFirms.data);
+    return;
+  }
+  if(userFirms.data == []){
+    console.log("User Firms in user api", userFirms.data);
+    return;
+  }
+  else{
+    const firms = allFirms.data.filter(firm => firm.id == userFirms.data.id)
+    return firms;
+  }
+}
+
+const createNote = (firmId,note,email)=>
+client.post("remoteFirm/createNote",{
+  email,
+  note,
+  firmId,
+})
+
+const getNotes=(firmId)=>
+client.post("remoteFirm/getNotes",{firmId})
+
+const deleteNote = (email,noteId,firmId)=>
+client.post("remoteFirm/deleteNote",{
+  email,
+  noteId,
+  firmId,
+})
+
 
 export default {
   register,
@@ -161,5 +201,9 @@ export default {
   createChat,
   deleteChat,
   getChatIds,
-  createFirm
+  createFirm,
+  userFirms,
+  createNote,
+  getNotes,
+  deleteNote
 };

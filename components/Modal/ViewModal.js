@@ -3,28 +3,33 @@ import { View, Text, Modal,StyleSheet,Dimensions } from 'react-native'
 import AppButton from '../AppButton';
 import AppText from '../AppText';
 import AppTextInput from '../AppTextInput';
-
+import {Avatar } from "react-native-elements";
 const { width, height } = Dimensions.get("screen");
-export default function TextModal({onChangeText,btnName, btnCloseName, isVisible,onPressAdd, onPressCancel,titleMessage}) {
+export default function ViewModal({btnName,btnCloseName, onPressCancel,onPressDelete,isVisible, data}) {
      
     return (
         <Modal visible={isVisible} presentationStyle="formSheet">
         <View style={styles.modalView}>
         <View style={{ marginVertical: 10, flexDirection:"row" , justifyContent:"space-between" }}>
             <AppButton name={btnCloseName}onPress={onPressCancel} />
-            <AppButton name={btnName} onPress={onPressAdd} />
+            <AppButton name={btnName} onPress={onPressDelete} />
           </View>
           <View style={{ marginVertical: 10 }}>
-            <AppText style={{ marginVertical: 10, fontSize:14, fontFamily:"Poppins-Bold", color:"#495464"}}>{titleMessage}</AppText>
-            <AppTextInput
-              placeholder="text comes here ..."
-              onChangeText={onChangeText}
-              multiline={true}
-              numberOfLines={10}
-              underlineColor="#495464"
-              textColor="#495464"
-              // value={text==""?"":value}
-            />
+              <View style={{flexDirection:"row"}}> 
+              <Avatar
+               rounded
+               source={{
+                    uri: data.noterImage,
+                 }}
+                 containerStyle={{
+                     marginHorizontal:5,
+                    //  alignSelf:"center",
+                 }}
+                 />
+            <AppText style={{ marginVertical: 10, fontSize:18, fontFamily:"Poppins-Bold", color:"#495464", alignSelf: 'center',}}>{data.noter}</AppText>
+              </View>
+          
+            <AppText style={{ marginVertical: 10, fontSize:20, fontFamily:"Poppins-Regular", color:"#495464"}}>{data.note}</AppText>
           </View>
           
         </View>
@@ -40,7 +45,7 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       padding: 35,
       // alignItems: "center",
-      shadowColor: "#000",
+      shadowColor: "#e5e5e5",
       shadowOffset: {
         width: 0,
         height: 2,
