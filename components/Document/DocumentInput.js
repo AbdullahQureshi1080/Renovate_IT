@@ -53,7 +53,7 @@ const DocumentInput = ({ docUri, onChangeDoc }) => {
         )}
         {
           docUri && (
-            <MaterialCommunityIcons color="white" name="pdf-box" size={40} />
+            <MaterialCommunityIcons color="white" name="pdf-box" size={50} />
           )
         }
       </View>
