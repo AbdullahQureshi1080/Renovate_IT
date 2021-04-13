@@ -27,7 +27,7 @@ import { deletePost } from '../../store/user';
 import { deleteAppPost } from '../../store/data';
 // var { width, height } = Dimensions.get('window')
 
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 
 
 const PostDetailsScreen = ({navigation,route}) =>{

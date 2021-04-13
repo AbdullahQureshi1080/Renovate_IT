@@ -168,11 +168,13 @@ const userFirms = async (email)=>{
   }
 }
 
-const createNote = (firmId,note,email)=>
+const createNote = (firmId,note,email,images,documents)=>
 client.post("remoteFirm/createNote",{
   email,
   note,
   firmId,
+  images,
+  documents,
 })
 
 const getNotes=(firmId)=>
@@ -184,6 +186,9 @@ client.post("remoteFirm/deleteNote",{
   noteId,
   firmId,
 })
+
+const deleteFirm = (email,firmId,members) =>
+client.post("remoteFirm/deleteFirm", {email,firmId,members});
 
 
 export default {
@@ -205,5 +210,6 @@ export default {
   userFirms,
   createNote,
   getNotes,
-  deleteNote
+  deleteNote,
+  deleteFirm,
 };

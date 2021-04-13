@@ -33,35 +33,41 @@ import NoteViewList from "../../components/List/NoteViewList";
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 import ViewModal from "../../components/Modal/ViewModal";
-// import AppButton from "../../components/AppButton";
+import uploadAsPromise from "../../api/imageUpload";
+import NoteModal from "../../components/Modal/NoteModal";
 
-// const UserProjects = () =>{
-//   return(
-//       <Tab.Navigator tabBarOptions = {TabNavigatorStyle.userProjectsTab} >
-//           <Tab.Screen name = "Notes" component={Notes}/>
-//           <Tab.Screen name = "Posts" component={UserPostsScreen}/>
-//       </Tab.Navigator>
-//   )
-// }
+import ActivityIndicator from "../../components/ActivityIndicator";
+import ErrorMessage from "../../components/AppForm/ErrorMessage";
+
 
 export default function FirmManageScreen({navigation,route}) {
   const [text,setText]=useState("");
+  // const [addStatus,setAddStatus]=useState(true);
   const [isVisible,setIsVisible]=useState(false)
   const [isVisible2,setIsVisible2]=useState(false)
   const state = useSelector(state=>state)
+  const userId = state.entities.auth.data._id;
   const firms = state.entities.user.profile.firms;
   const email = state.entities.user.profile.email;
   const [notes,setNotes]=useState([]);
   const [modalData,setModalData]=useState("");
+  const [images,setImages] = useState([]);
+  const [documents,setDocuments] = useState([]);
+  const[isLoading,setIsLoading]=useState(false);
+  const [value,setValue] = useState([]);
     // const [input, setInput] = useState("");
     const [idCheck, setCheckId] = useState(true);
     const  userfirmIds = firms.map(({ id }) => id);
     const firmId = route.params.item._id;
+    const firmMembers = route.params.item.members;
     const noteApi = useApi(userAPI.createNote);
     const notesApi = useApi(userAPI.getNotes);
     const deleteNoteApi = useApi(userAPI.deleteNote);
+    const deleteFirmApi = useApi(userAPI.deleteFirm);
+    const [deleteError, setDeleteError] = useState(null);
+
     useEffect(()=>{
-      console.log("Item Params", route.params.item)
+      console.log("Members Params", route.params.item.members)
       // console.log(userPostIds);
       // console.log(postId);
       for (var i =0; i<userfirmIds.length; i++){
@@ -95,19 +101,49 @@ export default function FirmManageScreen({navigation,route}) {
     };
 
     const handleAdd = async()=>{ 
-      setIsVisible(false)
       console.log("Add Note")
       if(text =="" ){
+        Alert.alert("Cannot have empty note")
         return;
       }
+      // setAddStatus(false)
+      setIsLoading(true)
+    const arrImages = [];
+    const arrDocuments = [];
+    const uploadType="note";
+    for (var i = 0; i < images.length; i++) {
+      var imageFile = images[i];
+      var type = "image";
+      await uploadAsPromise(imageFile,type,uploadType,userId).then((res) => {
+        arrImages.push(res);
+      });
+    }
+    console.log("Coming out of loop - Images");
+    console.log(arrImages);
+    for (var i = 0; i < documents.length; i++) {
+      var documentFile = documents[i];
+      var type = "doc";
+      await uploadAsPromise(documentFile, type,uploadType,userId).then((res) => {
+        arrDocuments.push(res);
+      });
+      console.log("Coming out of loop - Documents ");
+      console.log(arrDocuments);
+    }
       const note = text;
-      const result = await noteApi.request(firmId,note,email);     
+      const data = {firmId,note,email,arrImages,arrDocuments}
+      console.log("Data in add note",data);
+      setIsVisible(false)
+      const result = await noteApi.request(firmId,note,email,arrImages,arrDocuments);     
       if(!result.ok){
         Alert.alert("Unable to add note, try again")
         console.log("Unable to add note, try again")
+        setIsLoading(false);
         return 
       } 
       setNotes(new Array(result.data))
+      setIsLoading(false);
+      setImages([])
+      setDocuments([])
     }
 
     // const handleLike = ()=>{
@@ -138,6 +174,16 @@ export default function FirmManageScreen({navigation,route}) {
 
     const handleFirmDelete=()=>{
       console.log("Handle firm delete")
+      const result = deleteFirmApi.request(email,firmId,firmMembers);
+    if(!result.ok) {
+      console.log("Could Not Delete Firm")
+      setDeleteError("Error Deleting Firm")
+    }
+    console.log("Firm Deleted");
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AppHome'}],
+      });
     }
 
     const handleViewModal = (note)=>{
@@ -145,10 +191,27 @@ export default function FirmManageScreen({navigation,route}) {
       setModalData(note)
     }
 
+    const handleAddImage = (uri) => {
+      setImages([...images, uri]);
+    };
+    const handleRemoveImage = (uri) => {
+      setImages(images.filter((imageUri) => imageUri !== uri));
+    };
+
+    const handleAddDocument = (uri) => {
+      setDocuments([...documents, uri]);
+    };
+    const handleRemoveDocument = (uri) => {
+      setDocuments(documents.filter((documentUri) => documentUri !== uri));
+    };
+    
+
     return (
       <MenuProvider>
+        <ActivityIndicator visible={isLoading} />
         <SafeAreaView style={styles.container}>
             <>
+            <ErrorMessage error = {deleteError}/>
             <View style={{flexDirection:"row", justifyContent:"space-between", marginVertical:10}}>
          <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#1b262c"/>
@@ -197,7 +260,7 @@ export default function FirmManageScreen({navigation,route}) {
                 width: Dimensions.get("screen").width - 20,
               }}>
         </View>
-        <TextModal 
+        <NoteModal 
         btnName="Add" 
         btnCloseName="Cancel" 
         isVisible={isVisible} 
@@ -205,6 +268,13 @@ export default function FirmManageScreen({navigation,route}) {
         onPressAdd={handleAdd} 
         onPressCancel={() => setIsVisible(false)}
         titleMessage={"Add note details"}
+        images={images}
+        documents={documents}
+        handleAddImage = {handleAddImage}
+        handleRemoveImage = {handleRemoveImage}
+        handleAddDocument = {handleAddDocument}
+        handleRemoveDocument = {handleRemoveDocument}
+        addStatus={!text}
          />
          <ViewModal 
          isVisible={isVisible2} 
@@ -221,15 +291,15 @@ export default function FirmManageScreen({navigation,route}) {
        <FlatList
                 numColumns={1}
                 horizontal={false}
-                data={notes}
+                data={notes.sort((a, b) => {return new Date(b.date) - new Date(a.date);      })}
                 keyExtractor={note=> note.noterId}
                 renderItem={({ item,index }) => (
-                    <View key={index} >
+                    <View key={index.toString()} >
                         {
                             item.map((note,index)=>{
                                 return(
                                   <NoteViewList 
-                                  id ={note.id} 
+                                  id ={note._id} 
                                   noterName={note.noter}
                                    note={note.note} 
                                    creator ={route.params.item.creator} 
