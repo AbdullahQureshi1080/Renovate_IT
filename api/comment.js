@@ -68,7 +68,7 @@ const Comment=(props) =>{
         // console.log("Project Comments",comments);
         // console.log("New Project Comments",newComments);
 
-},[comments]);
+},[]);
 
 
     const onCommentSend = async (value) => {

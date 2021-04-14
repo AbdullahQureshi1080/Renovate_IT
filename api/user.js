@@ -177,6 +177,17 @@ client.post("remoteFirm/createNote",{
   documents,
 })
 
+
+const updateNote= (email,noteId,firmId,note,images,documents) =>
+client.post("remoteFirm/updateNote", {
+email,
+noteId,
+firmId,
+note,
+images,
+documents
+});
+
 const getNotes=(firmId)=>
 client.post("remoteFirm/getNotes",{firmId})
 
@@ -189,6 +200,8 @@ client.post("remoteFirm/deleteNote",{
 
 const deleteFirm = (email,firmId,members) =>
 client.post("remoteFirm/deleteFirm", {email,firmId,members});
+
+
 
 
 export default {
@@ -212,4 +225,5 @@ export default {
   getNotes,
   deleteNote,
   deleteFirm,
+  updateNote
 };
