@@ -14,7 +14,9 @@ const FirmCard = (props) => (
 <Card style = {
       ComponentsStyle.postCardStyle
   }
-  onPress={props.onPress}>
+  onPress={props.onPress} 
+  // key={props.key}
+  >
     <Card.Title 
         title={props.title} 
         titleStyle = {ComponentsStyle.postCardStyle.titleStyle}

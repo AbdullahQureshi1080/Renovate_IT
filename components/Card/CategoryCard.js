@@ -7,7 +7,9 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 
 const CategoryCard = (props) => (
 <Card style = {ComponentsStyle.categoryCardStyle}
-  onPress={props.onPress}>
+  onPress={props.onPress}
+  // key={props.key}
+  >
     <Card.Cover source={props.source} style ={ComponentsStyle.categoryCardStyle.cardCover} />
     <Card.Title 
         title={props.title} 

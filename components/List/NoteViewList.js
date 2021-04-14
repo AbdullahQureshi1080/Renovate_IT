@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 // require("firebase/firestore");
 // import { db } from "../../config/firebase";
 
-const NoteViewList = ({ id, noterName, note, statusLike , creator, handleDelete, noterImage, onPress}) => {
+const NoteViewList = ({ id,noterId, noterName, note, statusLike , creator, handleDelete, noterImage, onPress}) => {
 //   const [chatMessages, setChatMessages] = useState([]);
 const [idCheck, setCheckId] = useState(true);
 const state = useSelector(state=>state)
@@ -19,7 +19,7 @@ const noteId = id;
 const name  = `${state.entities.user.profile.firstname} ${state.entities.user.profile.lastname}`; 
 useEffect(()=>{
   console.log("name",name);
-  if(userId == id || name == creator ){ 
+  if(userId == noterId || name == creator ){ 
         setCheckId(false)
       }
   }
@@ -65,19 +65,6 @@ useEffect(()=>{
         <ListItem.Subtitle ellipsizeMode="tail" numberOfLines={2}style={{fontSize:16, fontFamily:"Poppins-Regular"}}>
          {note}
         </ListItem.Subtitle>
-        {/* <View 
-        style={{ 
-          position: "absolute",
-          bottom: -15,
-          right: -5,}}
-          >
-          {
-            !statusLike &&  (<Entypo name="thumbs-up" size={25} color={"#1b262c"}/>)
-          }
-         {
-            statusLike &&  (<Entypo name="thumbs-up" size={25} color={"#1b262c"}/>)
-          }
-        </View> */}
       </ListItem.Content>
     </ListItem>
   );

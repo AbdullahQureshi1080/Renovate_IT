@@ -8,7 +8,9 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 
 const ProjectCard = (props) => (
 <Card style = {ComponentsStyle.projectCardStyle}
-  onPress={props.onPress}>
+  onPress={props.onPress} 
+  // key={props.key}
+  >
     <Card.Cover source={{uri:props.coverImage}} />
     <Card.Title 
         title={props.title} 
