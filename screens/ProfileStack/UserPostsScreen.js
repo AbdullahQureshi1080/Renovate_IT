@@ -85,7 +85,7 @@ return(
              creator = {item.creator}
              description = {item.description}
              budget = {item.budget}
-             onPress = {()=>navigation?.push('Post Details',
+             onPress = {()=>navigation.navigate('Post Details',
              {item : item},
                )}
             />

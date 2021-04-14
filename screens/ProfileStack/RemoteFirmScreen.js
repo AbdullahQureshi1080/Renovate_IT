@@ -46,7 +46,7 @@ export default function RemoteFirmScreen({navigation}) {
             // onRefresh={refreshPosts}
             // data = {posts}
             data={ firms.sort((a, b) => {return new Date(b.date) - new Date(a.date);         })}
-            keyExtractor={(item, index) => index.toString()}
+            // keyExtractor={(item, index) => index.toString()}
             renderItem = {({item}) => (
             <FirmCard 
              key = {item._id}

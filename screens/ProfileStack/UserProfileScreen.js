@@ -28,6 +28,7 @@ import AboutUser from './AboutScreen';
 import { setUserData } from '../../store/auth';
 import { setProfileData } from '../../store/user';
 import RemoteFirmScreen from './RemoteFirmScreen';
+import { FlatList } from 'react-native-gesture-handler';
 // import { useEffect } from 'react';
 
 
@@ -100,6 +101,56 @@ const getImageUri=()=>{
         return <View/>
     }
 return(
+    // <FlatList
+    // ListHeaderComponent={
+    //     <View>
+    //          {!checkId?
+    //     (
+    //         <View style={{marginHorizontal:0}}> 
+    //         <View style = {{display:"flex", flexDirection:"row", justifyContent:"space-between",}}>
+    //             <Button 
+    //                 icon={()=> <MaterialComunityIcons name="logout" size={30} color="#1B262C"/>} 
+    //                 onPress={logOut}/>        
+    //             <Button 
+    //                 icon={()=> <MaterialComunityIcons name="account-edit" size={30} 
+    //                 color="#1B262C"/>}
+    //                 onPress={()=>navigation.navigate("Edit Profile",{profile:profile})}
+    //                 />
+    //        </View>
+    //     </View>
+    //     )
+    //     :
+    //     (
+    //     <View/>
+    //     )
+    //     }
+    //      <View>
+    //          <ProfessionalAvator 
+    //         imageUri={imgUri}
+    //         name={(userProfile.firstname == undefined && userProfile.lastname == undefined)?userProfile.name:`${userProfile.firstname} ${userProfile.lastname}`}
+    //         title = {userProfile.jobtitle} 
+    //         email={userProfile.email} 
+    //         style={profileAvatar} 
+    //         disabled={true} 
+    //         size={90}
+    //         placeholdertext={"Update profile to set title"}
+    //         />
+    //   </View>
+    //     </View>
+    // }
+    // ListFooterComponent={
+    //         <View>
+    //         <Tab.Navigator  
+    //            tabBarOptions = {TabNavigatorStyle.userProfileTab}>
+    //                <Tab.Screen name = "About" component = {AboutUser} initialParams={userProfile}/>
+    //                <Tab.Screen name = "Projects" component = {UserProjects}/>
+    //                <Tab.Screen name = "Remote Firm" component = {RemoteFirmScreen}/>
+    //                <Tab.Screen name = "Design a room" component = {display}/>
+    //            </Tab.Navigator>
+    //        </View>
+    // }
+    
+    // />
     <ScrollView style={ScreenStyles.userprofileScreen}>
         {!checkId?
         (

@@ -121,7 +121,7 @@ const getData = (data)=>{
     description,
     resetForm
   }) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     // const members ={
     //   "architect":getData(selectedArchitect),
     //   "builder":getData(selectedBuilder),
@@ -148,7 +148,7 @@ const getData = (data)=>{
       return setSaveData(true);
     }
     setSaveData(false);
-    // setIsLoading(false);
+    setIsLoading(false);
     
     navigation.reset({
       index: 0,

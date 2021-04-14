@@ -88,7 +88,7 @@ return(
    coverImage={item.data.thumbnailImage.value}
    //  likes = {item.likes}
    //  cover = {}
-    onPress = {()=>navigation?.push('Project Details',
+    onPress = {()=>navigation.navigate('Project Details',
       {item : item},
       )}
    />
