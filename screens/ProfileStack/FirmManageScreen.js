@@ -281,7 +281,7 @@ export default function FirmManageScreen({navigation,route}) {
          <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
                   <MaterialCommunityIcons name="backspace" size={40} color="#1b262c"/>
          </TouchableOpacity>
-                  {/* {!idCheck?( */}
+                  {!idCheck?(
                         <View>
                          
                           <Menu>
@@ -290,7 +290,7 @@ export default function FirmManageScreen({navigation,route}) {
                             <MenuOption onSelect={()=>setIsVisible3(true)} text={"See Details"} 
                             // customStyles={{flexDirection:"row", justifyContent:"flex-end",alignSelf: "flex-end"}}
                             />
-                            {!idCheck?
+                            {/* {!idCheck? */}
                              <MenuOption 
                              onSelect={
                                
@@ -305,17 +305,25 @@ export default function FirmManageScreen({navigation,route}) {
                        ],
                        { cancelable: false })}  
                        text={"Delete"} />
-                           :(<View/>) }
+                           {/* :(<View/>) } */}
                               {/* <MenuOption onSelect={()=>console.log("Handle Update")} text={"Edit Details"} /> */}
                                  
                             </MenuOptions>
                           </Menu>
                         
         </View>
-
-                  {/* ):( */}
-                    <View></View>
-                  {/* )} */}
+                  )
+                  :
+                  <View>
+                         
+                  <Menu>
+                    <MenuTrigger text={<MaterialIcons name="more-vert"  size={40}  color="#1b262c"/>} />
+                    <MenuOptions customStyles={optionsStyles}>
+                    <MenuOption onSelect={()=>setIsVisible3(true)} text={"See Details"}   />
+                    </MenuOptions>
+                  </Menu>
+                  </View>
+                  } 
               </View>
               <View style={styles.firmDetails}>
                 <AppText style={styles.titleText}>{route.params.item.title}</AppText>

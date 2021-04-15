@@ -15,13 +15,25 @@ export default function RemoteFirmScreen({navigation}) {
     const [firms,setFirms]=useState([]);
     const [error,setError] = useState(null)
     const firmApi = useApi(userAPI.userFirms);    
+    const firmsfromProfile = state.entities.user.profile.firms;
+    const  userfirmIds = firmsfromProfile.map(({ id }) => id);
+    // console.log("User firm Ids from profile", userfirmIds)
     const retrivingFirms = async ()=>{
         const result = await firmApi.request(email);
         if(result == []){
             console.log("Error retrieving the firms")
            return setError("Could not retrive firms at this moment, refresh. ")
         }
-        setFirms(result);
+        let userfirms = [];
+        for (var i=0; i<result.length; i++){
+            if(userfirmIds[i] == result[i]._id){
+                userfirms.push(result[i]);
+            }
+        } 
+        // const  userfirms = result.filter(firm=>firm.id === userfirmIds);
+        // console.log("Api call firms", result)
+        // console.log("User Firms looping",userfirms);
+        setFirms(userfirms);
     }
     useEffect(()=>{
         retrivingFirms()

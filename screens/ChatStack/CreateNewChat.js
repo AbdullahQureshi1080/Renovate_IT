@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Button, Input, Image, Avatar, Icon } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
-import {addChat} from '../../store/user';
+import {createNewChat,addChat} from '../../store/user';
 import AppButton from "../../components/AppButton";
 // import { db } from "../../config/firebase";
 import  firebase from "firebase";
@@ -104,7 +104,7 @@ return console.log("Its the same user, can have chat with the same account id")
       })
       .catch((error) => alert(error));
 
-     dispatch(addChat(chatId))
+     dispatch(createNewChat(chatId))
       
   };
 

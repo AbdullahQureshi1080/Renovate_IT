@@ -75,8 +75,8 @@ const user = createSlice({
       user.projects = newProjects;
     },
     addChat :(user,action)=>{
-      const id = action.payload;
-      user.profile.chats = [...user.profile.chats,id]; 
+      // const id = action.payload;
+      user.profile.chats = [...user.profile.chats,action.payload]; 
     }
   },
 });
@@ -167,7 +167,7 @@ export const editProject = (projectId) => ({
   payload: projectId,
 });
 
-export const createChat = (chatid)=>({
+export const createNewChat = (chatid)=>({
   type:addChat.type,
   payload:chatid,
 }) 
