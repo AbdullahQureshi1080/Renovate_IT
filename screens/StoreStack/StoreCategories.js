@@ -91,7 +91,7 @@ export default function StoreCategories({navigation}) {
   };
 
   const handleCategory = (category) => {
-    navigation.navigate('CategoryScreen', {category: category});
+    navigation.navigate('Category Screen', {category: category});
   };
   return (
     <View style={styles.container}>
