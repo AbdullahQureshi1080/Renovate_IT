@@ -1,12 +1,12 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React,{useState,useEffect,useRef} from 'react';
-import {DefaultTheme,NavigationContainer } from '@react-navigation/native'; 
+import React, {useState, useEffect, useRef} from 'react';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 // import { NavigationActions } from 'react-navigation';
 
 // Navigation Imports
 // import BottomNavigation from './BottomNavigation';
-import AppStack from './AppStack';
+import AuthStack from './AuthStack';
 // import { useSelector } from 'react-redux';
 
 // Auth Imports
@@ -14,16 +14,15 @@ import AppStack from './AppStack';
 // import authStorage from '../auth/storage';
 
 const MyTheme = {
-    ...DefaultTheme,
-    dark:true,
-    colors: {
-      ...DefaultTheme.colors,
-      background:'#F4F4F2',
-      primary:"#30475E",
-      text:"#495464",
-    },
-  };
-
+  ...DefaultTheme,
+  dark: true,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#FFFFFF',
+    primary: '#30475E',
+    text: '#495464',
+  },
+};
 
 // const ContainerNavigation = () =>{
 //   const [user,setUser] = useState();
@@ -47,13 +46,13 @@ const MyTheme = {
 //     );
 // };
 
-const ContainerNavigation = ({navigation}) =>{
-    return(
-           <NavigationContainer theme = {MyTheme}>
-           {/* {user?  <BottomNav/> : <AppStack/> } */}
-           <AppStack/>
-        </NavigationContainer>
-    );
+const ContainerNavigation = ({navigation}) => {
+  return (
+    <NavigationContainer theme={MyTheme}>
+      {/* {user?  <BottomNav/> : <AppStack/> } */}
+      <AuthStack />
+    </NavigationContainer>
+  );
 };
 
 export default ContainerNavigation;
