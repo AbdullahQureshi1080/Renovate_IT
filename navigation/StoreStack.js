@@ -4,6 +4,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import StoreHome from '../screens/StoreStack/StoreHome';
 import CategoryScreen from '../screens/StoreStack/CategoryScreen';
 import ProductDetailScreen from '../screens/StoreStack/ProductDetailScreen';
+import ProductPurchaseScreen from '../screens/StoreStack/ProductPurchaseScreen';
+import DeliveryDetailScreen from '../screens/StoreStack/DeliveryDetailScreen';
+import OrderConfirmationScreen from '../screens/StoreStack/OrderConfirmationScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,27 @@ const StoreStack = () => {
       <Stack.Screen
         name="Product Details"
         component={ProductDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Purchase Product"
+        component={ProductPurchaseScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Delivery Detail"
+        component={DeliveryDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Order Confirmation"
+        component={OrderConfirmationScreen}
         options={{
           headerShown: false,
         }}

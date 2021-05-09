@@ -57,12 +57,7 @@ const styles = StyleSheet.create({
     width: width,
     height: 55,
     alignSelf: 'center',
-    // marginHorizontal: 20,
-    // marginVertical: 5,
-    // borderRadius: 30,
     justifyContent: 'center',
-    // borderColor: '#ffffff',
-    // backgroundColor: '#f2f2f2',
   },
   indicatorStyle: {
     height: '10%',
