@@ -1,3 +1,4 @@
+//  Native Imports
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
@@ -9,8 +10,16 @@ import {
 } from 'react-native-popup-menu';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AppText from './AppText';
 
-export default function Header({navigation, idCheck}) {
+export default function Header({
+  navigation,
+  idCheck,
+  name,
+  next,
+  onPressNext,
+  renderButton,
+}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -19,6 +28,19 @@ export default function Header({navigation, idCheck}) {
       >
         <MaterialCommunityIcons name="backspace" size={40} color="#1b262c" />
       </TouchableOpacity>
+      <AppText style={styles.screenName}>{name}</AppText>
+      {renderButton ? (
+        <View style={styles.renderContainer}>{renderButton}</View>
+      ) : next ? (
+        <View style={styles.buttonContainer}>
+          <AppText style={styles.nextButtonText} onPress={onPressNext}>
+            {next}
+          </AppText>
+        </View>
+      ) : (
+        <View />
+      )}
+
       {idCheck ? (
         <View>
           <Menu>
@@ -60,8 +82,29 @@ export default function Header({navigation, idCheck}) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 10,
+    // justifyContent: 'space-between',
+    marginVertical: 5,
+    paddingTop: 18,
     marginHorizontal: 20,
+  },
+  screenName: {
+    fontSize: 16,
+    alignSelf: 'center',
+    marginHorizontal: 15,
+  },
+  buttonContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    // paddingHorizontal: 5,
+  },
+  renderContainer: {
+    width: '70%',
+    alignSelf: 'flex-end',
+  },
+  nextButtonText: {
+    fontSize: 18,
+    alignSelf: 'center',
+    marginHorizontal: 15,
+    fontFamily: 'Poppins-Medium',
   },
 });

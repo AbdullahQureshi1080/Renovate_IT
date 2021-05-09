@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,22 +7,24 @@ import {
   Button,
   FlatList,
   Text,
-} from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import AppText from "./AppText";
-import Screen from "./Screen";
+import Screen from './Screen';
 // import defaultStyles from "../config/styles";
-import PickerItem from "./PickerItem";
-import AppButton from "./AppButton";
+import PickerItem from './PickerItem';
+import AppButton from './AppButton';
 
-function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
+function AppPicker({icon, items, onSelectItem, placeholder, selectedItem}) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-        <View style={{...styles.container,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+        <View
+          style={{...styles.container, backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
+        >
           {icon && (
             <MaterialCommunityIcons
               name={icon}
@@ -37,16 +39,20 @@ function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
             <Text style={styles.placeholder}>{placeholder}</Text>
           )}
 
-          <MaterialCommunityIcons name="chevron-down" size={20} color="#1B262C" />
+          <MaterialCommunityIcons
+            name="chevron-down"
+            size={20}
+            color="#1B262C"
+          />
         </View>
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
-          <AppButton name="Close" onPress={() => setModalVisible(false)} />
+          {/* <AppButton name="Close" onPress={() => setModalVisible(false)} /> */}
           <FlatList
             data={items}
             keyExtractor={(item) => item.value.toString()}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <PickerItem
                 label={item.label}
                 onPress={() => {
@@ -66,8 +72,8 @@ const styles = StyleSheet.create({
   container: {
     // backgroundColor: "red",
     borderRadius: 25,
-    flexDirection: "row",
-    width: "100%",
+    flexDirection: 'row',
+    width: '100%',
     padding: 15,
     marginVertical: 10,
   },
@@ -75,15 +81,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   placeholder: {
-    color: "grey",
+    color: 'grey',
     flex: 1,
-    fontFamily:"Poppins-Medium",
-    color:"#495464"
+    fontFamily: 'Poppins-Medium',
+    color: '#495464',
   },
   text: {
     flex: 1,
-    fontFamily:"Poppins-Medium",
-    color:"#495464"
+    fontFamily: 'Poppins-Medium',
+    color: '#495464',
   },
 });
 

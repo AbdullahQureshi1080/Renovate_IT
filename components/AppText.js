@@ -1,18 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-export default function AppText({style, children}) {
+export default function AppText({style, children, onPress}) {
   return (
-    // <View>
-    <Text style={[styles.appText, style]}>{children}</Text>
-    // </View>
+    <Text style={[styles.appText, style]} onPress={onPress}>
+      {children}
+    </Text>
   );
 }
 
 const styles = StyleSheet.create({
   appText: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 12,
+    fontSize: 14,
     color: '#495464',
   },
 });
