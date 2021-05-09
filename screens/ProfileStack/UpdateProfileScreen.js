@@ -333,7 +333,6 @@ const UpdateProfileScreen = ({ navigation, route }) => {
               items={locations}
               name="location"
               placeholder="Location"
-              
               /> 
               <AppText style={styles.labelText}>About</AppText>
               <AppFormField

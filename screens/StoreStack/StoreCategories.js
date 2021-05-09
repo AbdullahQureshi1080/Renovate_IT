@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   headText: {
+    paddingLeft: 5,
     fontSize: 18,
     marginVertical: 10,
     fontFamily: 'Poppins-Medium',
