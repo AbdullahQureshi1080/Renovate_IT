@@ -2,17 +2,15 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {StyleSheet, Dimensions} from 'react-native';
 
 // Screen Imports
-import ProjectsScreen from '../screens/HomeStack/ProjectsScreen';
-import ProfessionalsScreen from '../screens/HomeStack/ProfessionalsScreen';
 import StoreCategories from '../screens/StoreStack/StoreCategories';
+import OrdersScreen from '../screens/StoreStack/OrdersScreen';
+import PreviousOrdersScreen from '../screens/StoreStack/PreviousOrdersScreen';
 
 // Styles Imports
-// import TabNavigatorStyle from '../styles/TabNavigatorStyle';
-
+// ...
 const Tab = createMaterialTopTabNavigator();
 const {width, height} = Dimensions.get('screen');
 
@@ -40,12 +38,12 @@ const StoreNavigator = ({navigation}) => {
       />
       <Tab.Screen
         name="Orders"
-        component={StoreCategories}
+        component={OrdersScreen}
         navigation={navigation}
       />
       <Tab.Screen
         name="History"
-        component={StoreCategories}
+        component={PreviousOrdersScreen}
         navigation={navigation}
       />
     </Tab.Navigator>
