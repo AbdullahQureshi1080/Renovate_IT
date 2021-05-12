@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React,{useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -16,85 +16,94 @@ import AppText from '../../components/AppText';
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
 // import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
+const UserPostsScreen = ({navigation}) => {
+  const state = useSelector((state) => state);
+  const userPostsIdObjs = state.entities.user.postIds;
 
-const UserPostsScreen =({navigation})=> {
-    const state = useSelector(state=>state);
-    const userPostsIdObjs = state.entities.user.postIds;
-   
-    const  userPostIds = userPostsIdObjs.map(({ id }) => id);
-   
-   //  const _id = action.payload;
-   //  const userPosts = posts.filter(function(post){return post._id != _id})
-  
-      
-   const [error,setError] = useState(null)
-   const postsApi = useApi(dataAPI.getAllPosts)
+  const userPostIds = userPostsIdObjs.map(({id}) => id);
 
+  //  const _id = action.payload;
+  //  const userPosts = posts.filter(function(post){return post._id != _id})
 
-   const [posts,setPosts]=useState([]);
-   const [refresh,setRefresh]=useState(false);
-   
-   const fetchPosts = async()=>{
-      const result = await postsApi.request();
-      if(!result.ok){
-         setError("Could not retrive posts at this moment, refresh. ")
-         return;
-      }
-      // console.log(result.data);
-      // console.log("This happens")
-      const userPosts = result.data.filter((post) => userPostIds.includes(post._id))
-      setPosts(userPosts);
-   }
+  const [error, setError] = useState(null);
+  const postsApi = useApi(dataAPI.getAllPosts);
 
-   useEffect(()=>{
-      fetchPosts();
+  const [posts, setPosts] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
-   },[])
-
-    const refreshPosts=()=>{
-       if(posts !== []){
-          setRefresh(true)
-          fetchPosts();
-          setRefresh(false);
-       }
+  const fetchPosts = async () => {
+    const result = await postsApi.request();
+    if (!result.ok) {
+      setError('Could not retrive posts at this moment, refresh. ');
+      return;
     }
-   
-return(
-   <View style={{flex:1}} >
-             <FlatList 
-            ListEmptyComponent ={
-               () => (
-                  <View style={{flex:1, justifyContent:"center", alignItems:"center", alignSelf:"center"}}>
-                     <ErrorMessage error={error} visible={error}/>
-                     <AppText  style={{fontSize:14,}}>
-                          No Posts 
-                     </AppText>
-                     <AppButton name="reload" onPress={fetchPosts}/>
-                  </View>
-              )
-            } 
-            refreshing={refresh}
-            onRefresh={refreshPosts}
-            // data = {posts}
-            data={ posts.sort((a, b) => {return new Date(b.date) - new Date(a.date);         })}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem = {({item}) => (
-            <PostCard 
-             key = {item._id}
-             title = {item.title}
-             creator = {item.creator}
-             description = {item.description}
-             budget = {item.budget}
-             onPress = {()=>navigation.navigate('Post Details',
-             {item : item},
-               )}
-            />
-            )}
-            />
-   </View>
-   )
-}
+    // console.log(result.data);
+    // console.log("This happens")
+    const userPosts = result.data.filter((post) =>
+      userPostIds.includes(post._id),
+    );
+    setPosts(userPosts);
+  };
 
-const styles = StyleSheet.create({})
+  useEffect(() => {
+    fetchPosts();
+    console.log(
+      'User Posts from User Slice PostIds',
+      state.entities.user.postIds,
+    );
+    console.log(
+      'User Posts from Auth Data Posts',
+      state.entities.auth.data,
+    );
+  }, []);
+
+  const refreshPosts = () => {
+    if (posts !== []) {
+      setRefresh(true);
+      fetchPosts();
+      setRefresh(false);
+    }
+  };
+
+  return (
+    <View style={{flex: 1}}>
+      <FlatList
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}
+          >
+            <ErrorMessage error={error} visible={error} />
+            <AppText style={{fontSize: 14}}>No Posts</AppText>
+            <AppButton name="reload" onPress={fetchPosts} />
+          </View>
+        )}
+        refreshing={refresh}
+        onRefresh={refreshPosts}
+        // data = {posts}
+        data={posts.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        })}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => (
+          <PostCard
+            key={item._id}
+            title={item.title}
+            creator={item.creator}
+            description={item.description}
+            budget={item.budget}
+            onPress={() => navigation.navigate('Post Details', {item: item})}
+          />
+        )}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({});
 
 export default UserPostsScreen;

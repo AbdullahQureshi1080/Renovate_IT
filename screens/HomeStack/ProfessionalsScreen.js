@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
 
 // Components Imports
@@ -12,7 +12,9 @@ import CategoryCard from '../../components/Card/CategoryCard';
 import ScreenStyles from '../../styles/ScreenStyles';
 import {useSelector} from 'react-redux';
 
-import Builder from '../../assets/svg/builder.svg';
+// Api Imports
+import useApi from '../../hooks/useApi';
+import dataAPI from '../../api/data';
 
 const profileAvatar = {
   border: 'none',
@@ -24,7 +26,6 @@ const profileAvatar = {
     fontWeight: 'bold',
     color: '#495464',
     fontFamily: 'Poppins-Bold',
-    //  alignSelf: 'center',
   },
   titleText: {
     fontSize: 14,
@@ -36,39 +37,35 @@ const profileAvatar = {
   },
 };
 
-// const builder = ()=>{
-//    return(
-//       <Builder />
-//    )
-// }
-
 const Professionals = ({navigation}) => {
-  const [data, setData] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
   const state = useSelector((state) => state);
-  const professionals = state.entities.data.allusers;
-  // console.log("All Professional",professionals);
+  const email = state.entities.auth.data.email;
+  const professionalsApi = useApi(dataAPI.getAllUsers);
+
+  useEffect(() => {
+    fetchProfessionals();
+  }, []);
+
+  const fetchProfessionals = async () => {
+    const result = await professionalsApi.request(email);
+    if (!result.ok) {
+      console.log('Error Fetching Data');
+    }
+    setProfessionals(result.data);
+  };
 
   const categoryScreen = (category) => {
-    // if(category == "Architecture"){
-    // console.log("Category:",category)
-    // const result = professionals.map((user)=>{
-    //    if(user.jobcategory == category){
-    //       return user;
-    //    }
-    // });
     const arrProfessionals = [];
     for (var i = 0; i < professionals.length; i++) {
       if (professionals[i].jobcategory == category) {
         arrProfessionals.push(professionals[i]);
       }
     }
-    // setData(arrProfessionals);
-    // console.log("Specific Category Professionals ",arrProfessionals);
     navigation.navigate('All Professionals', {
       title: category,
       professionals: arrProfessionals,
     });
-    // }
   };
 
   return (

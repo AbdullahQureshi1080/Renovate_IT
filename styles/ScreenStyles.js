@@ -111,7 +111,7 @@ const ScreenStyle = {
   },
   projectsDetailScreen: {
     fontFamily: 'Poppins-Regular',
-    marginHorizontal: marginHorizontal,
+    // marginHorizontal: marginHorizontal,
     imageStyle: {
       marginVertical: 15,
       height: Dimensions.get('window').height / 2,
@@ -119,17 +119,18 @@ const ScreenStyle = {
     },
     viewBox: {
       marginTop: 10,
+      marginHorizontal: 20,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
       titleText: {
         fontSize: 18,
-        // fontWeight: "800",
         fontFamily: 'Poppins-Bold',
         color: '#495464',
       },
     },
     AvatarBox: {
+      marginHorizontal: 20,
       display: 'flex',
       flexDirection: 'row',
       nameText: {
@@ -159,6 +160,7 @@ const ScreenStyle = {
     infoBox: {
       display: 'flex',
       flexDirection: 'row',
+      marginHorizontal: 20,
     },
   },
   postsDetailScreen: {

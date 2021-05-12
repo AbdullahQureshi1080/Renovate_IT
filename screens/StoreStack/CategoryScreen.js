@@ -31,16 +31,16 @@ export default function CategoryScreen({route, navigation}) {
     const query = search.toLowerCase();
     // console.log(route.params);
     if (query == '') {
-      setCategories(ProductCategories);
+      setProducts(products);
       return;
     }
-    const searched = ProductCategories.filter(function (item) {
-      if (!item.value.includes(query)) {
-        return item.value.includes('others');
-      }
+    const searched = products.filter(function (item) {
+      // if (!item.value.includes(query)) {
+      //   return item.value.includes('others');
+      // }
       return item.value.includes(query);
     });
-    setCategories(searched);
+    setProducts(searched);
   };
 
   const handleCategory = (product) => {

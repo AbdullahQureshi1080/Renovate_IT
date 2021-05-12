@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,25 +10,25 @@ import {
   Alert,
   Image,
   Dimensions,
-} from "react-native";
+} from 'react-native';
 import DraggableFlatList, {
   RenderItemParams,
-} from "react-native-draggable-flatlist";
+} from 'react-native-draggable-flatlist';
 // import { ScrollView } from "react-native-gesture-handler";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
-import AppButton from "../../components/AppButton";
-import AppText from "../../components/AppText";
+import AppButton from '../../components/AppButton';
+import AppText from '../../components/AppText';
 // import CameraInput from "../../components/Image/CameraInput";
 // import ImageInput from "../../components/Image/ImageInput";
-import ImageModal from "../../components/Modal/ImageModal";
-import TextModal from "../../components/Modal/TextModal";
+import ImageModal from '../../components/Modal/ImageModal';
+import TextModal from '../../components/Modal/TextModal';
 import CameraModal from '../../components/Modal/CameraModal';
 import AddSvg from '../../assets/svg/addToProject.svg';
 
-const { width, height } = Dimensions.get("screen");
+const {width, height} = Dimensions.get('screen');
 type nodeItem = {
   key: string,
   value: string,
@@ -36,7 +36,7 @@ type nodeItem = {
   //   styles:string,
 };
 
-function CreateProjectScreen({ navigation,route}) {
+function CreateProjectScreen({navigation, route}) {
   const flatlist = useRef();
   const [dataNode, setDataNodes] = useState([]);
   // useEffect(() => {
@@ -56,65 +56,74 @@ function CreateProjectScreen({ navigation,route}) {
   const [textModalVisible, setTextModalVisible] = useState(false);
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   //   console.log(data);
 
- 
   const renderItem = useCallback(
-    ({ item, index, drag, isActive }: RenderItemParams<nodeItem>) => {
+    ({item, index, drag, isActive}: RenderItemParams<nodeItem>) => {
       return (
         <TouchableOpacity
           style={{
             flex: 1,
-            backgroundColor: isActive ? "#e8e8e8" : item.backgroundColor,
-            alignItems: "center",
-            justifyContent: "center",
+            backgroundColor: isActive ? '#e8e8e8' : item.backgroundColor,
+            alignItems: 'center',
+            justifyContent: 'center',
             marginVertical: 5,
           }}
           onLongPress={drag}
         >
           <View>
-            {item.type == "image" ? (
-              <View style={{ width: width - 15 }}>
-                <View style={{ alignSelf: "flex-end" }}>
+            {item.type == 'image' ? (
+              <View style={{width: width - 15}}>
+                <View style={{alignSelf: 'flex-end'}}>
                   <TouchableOpacity onPress={() => handleRemove(item)}>
-                    <MaterialCommunityIcons name="delete" size={25} color="#1b262c" />
+                    <MaterialCommunityIcons
+                      name="delete"
+                      size={25}
+                      color="#1b262c"
+                    />
                   </TouchableOpacity>
                 </View>
                 <Image
-                  source={{ uri: item.value }}
-                  style={{ width: width - 15, height: height / 2 }}
+                  source={{uri: item.value}}
+                  style={{width: width - 15, height: height / 2}}
                 />
               </View>
             ) : (
-                <View style={{ width: width - 15 }}>
-                  <View style={{ flexDirection:"row", justifyContent:"flex-end" }}>
+              <View style={{width: width - 15}}>
+                <View
+                  style={{flexDirection: 'row', justifyContent: 'flex-end'}}
+                >
                   {/* <TouchableOpacity onPress={() => handleUpdate(item.key)}>
                       <MaterialIcons name="edit" size={30} color="#1b262c" />
                     </TouchableOpacity> */}
-                    <TouchableOpacity onPress={() => handleRemove(item)}>
-                      <MaterialCommunityIcons name="delete" size={30} color="#1b262c" />
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{backgroundColor:"#e5e5e5"}}>
-                    <AppText
-                      style={{
-                        // fontWeight: "bold",
-                        // color: "#495464",
-                        fontSize: 16,
-                      }}
-                    >
-                      {item.value}
-                    </AppText>
-                  </View>
+                  <TouchableOpacity onPress={() => handleRemove(item)}>
+                    <MaterialCommunityIcons
+                      name="delete"
+                      size={30}
+                      color="#1b262c"
+                    />
+                  </TouchableOpacity>
                 </View>
-              )}
+
+                <View style={{backgroundColor: '#e5e5e5'}}>
+                  <AppText
+                    style={{
+                      // fontWeight: "bold",
+                      // color: "#495464",
+                      fontSize: 16,
+                    }}
+                  >
+                    {item.value}
+                  </AppText>
+                </View>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       );
     },
-    []
+    [],
   );
 
   const handleText = (value) => {
@@ -123,11 +132,11 @@ function CreateProjectScreen({ navigation,route}) {
 
   const handleRemove = (item) => {
     const key = item.key;
-    console.log("Data in Handle Remove - Key", key);
+    console.log('Data in Handle Remove - Key', key);
     // const allItems = [...dataNode];
     // console.log("All Items in array", allItems);
-    const filteredItems = dataNode.filter(item => item.key !== key);
-    console.log("filtered items",filteredItems);
+    const filteredItems = dataNode.filter((item) => item.key !== key);
+    console.log('filtered items', filteredItems);
     setDataNodes(filteredItems);
   };
 
@@ -146,29 +155,29 @@ function CreateProjectScreen({ navigation,route}) {
 
   const onPressAdd = (type) => {
     if ((text || imageUri) == null) {
-      Alert.alert("No Content to Add");
+      Alert.alert('No Content to Add');
       return;
     }
     // setId(id + 1);
-    const newkey = (Math.floor(Math.random()*10)).toString();
+    const newkey = uuidv4();
     console.log(newkey);
-    if (type == "text") {
+    if (type == 'text') {
       const textNode = text;
       const newNode = {
         key: newkey,
         value: textNode,
-        type:"text"
+        type: 'text',
       };
       console.log(textNode);
       setDataNodes([...dataNode, newNode]);
       setTextModalVisible(false);
-      setText("");
-    } else if (type == "image") {
+      setText('');
+    } else if (type == 'image') {
       const imageNode = imageUri;
       const newNode = {
         key: newkey,
         value: imageNode,
-        type:"image"
+        type: 'image',
       };
       console.log(imageNode);
       setDataNodes([...dataNode, newNode]);
@@ -179,18 +188,18 @@ function CreateProjectScreen({ navigation,route}) {
     // console.log(dataNode);
   };
 
-  const onNextScreen = ()=>{
+  const onNextScreen = () => {
     // if(route.params == null){
-      console.log("New Data to Gallary")
-      const gallaryImages = dataNode.filter(item=>item.type == "image");
-      const dataToScreen = {data:dataNode,gallaryImages}
-      navigation.navigate("Gallery",{projectData:dataToScreen})
+    console.log('New Data to Gallary');
+    const gallaryImages = dataNode.filter((item) => item.type == 'image');
+    const dataToScreen = {data: dataNode, gallaryImages};
+    navigation.navigate('Gallery', {projectData: dataToScreen});
     // }
     // else{
 
     //   const newGallaryImages = dataNode.filter(item=>item.type == "image");
     //   const formData = {
-    //     _id:route.params._id, 
+    //     _id:route.params._id,
     //     title:route.params.title,
     //     description:route.params.description,
     //     creator:route.params.creator,
@@ -201,48 +210,88 @@ function CreateProjectScreen({ navigation,route}) {
     //   console.log(" Updated Data to Gallary", dataFormToScreen)
     //   navigation.navigate("Gallery",{projectData:dataFormToScreen})
     // }
-  }
+  };
 
   return (
-    <View style={{ flex: 1, }}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 10, marginVertical: 10 }}>
-        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="backspace" size={40} color="#1b262c" />
-        </TouchableOpacity>
-        <AppButton name="next" disabled={dataNode.length==0} onPress={onNextScreen} />
-      </View>
-      <TextModal btnName="Add" btnCloseName="Cancel" isVisible={textModalVisible} onChangeText={(value) => handleText(value)} onPressAdd={() => onPressAdd("text")} onPressCancel={() => setTextModalVisible(false)}   titleMessage={"Enter details about the project"}/>
-      <ImageModal btnName="Add" btnCloseName="Cancel" isVisible={imageModalVisible} imageUri={imageUri} onChangeImage={(imageUri) => setImageUri(imageUri)} onPressAdd={() => onPressAdd("image")} onPressCancel={() => setImageModalVisible(false)} />
-      <CameraModal btnName="Add" btnCloseName="Cancel" isVisible={cameraModalVisible} imageUri={imageUri} onChangeImage={(imageUri) => setImageUri(imageUri)} onPressAdd={() => onPressAdd('image')} onPressCancel={() => setCameraModalVisible(false)} />
-      {
-        dataNode.length == 0 ? 
-          <View style={{flex:1, justifyContent:"center", }}>
-            <View style={{alignSelf:"center", opacity:0.6}}>
-            <AddSvg width={width/2} height={height/4.5}/>
-            </View>
-            <AppText 
-            style={{
-              fontSize:16,
-              fontFamily:"Poppins-Medium",
-              opacity:0.6,
-              alignSelf: 'center',
-            }}>
-              Add Items to your project</AppText>
-          </View>:
-      <DraggableFlatList
-        data={dataNode}
-        renderItem={renderItem}
-        // keyExtractor={(item, index) => `draggable-item-${item.key}`}
-        keyExtractor={(item, index) =>item.key}
-        onDragEnd={({ data }) => setDataNodes(data)}
-      />
-      }
+    <View style={{flex: 1}}>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: 10,
+          marginVertical: 10,
+        }}
+      >
+        <TouchableOpacity
+          style={{alignSelf: 'center'}}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialCommunityIcons name="backspace" size={40} color="#1b262c" />
+        </TouchableOpacity>
+        <AppButton
+          name="next"
+          disabled={dataNode.length == 0}
+          onPress={onNextScreen}
+        />
+      </View>
+      <TextModal
+        btnName="Add"
+        btnCloseName="Cancel"
+        isVisible={textModalVisible}
+        onChangeText={(value) => handleText(value)}
+        onPressAdd={() => onPressAdd('text')}
+        onPressCancel={() => setTextModalVisible(false)}
+        titleMessage={'Enter details about the project'}
+      />
+      <ImageModal
+        btnName="Add"
+        btnCloseName="Cancel"
+        isVisible={imageModalVisible}
+        imageUri={imageUri}
+        onChangeImage={(imageUri) => setImageUri(imageUri)}
+        onPressAdd={() => onPressAdd('image')}
+        onPressCancel={() => setImageModalVisible(false)}
+      />
+      <CameraModal
+        btnName="Add"
+        btnCloseName="Cancel"
+        isVisible={cameraModalVisible}
+        imageUri={imageUri}
+        onChangeImage={(imageUri) => setImageUri(imageUri)}
+        onPressAdd={() => onPressAdd('image')}
+        onPressCancel={() => setCameraModalVisible(false)}
+      />
+      {dataNode.length == 0 ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={{alignSelf: 'center', opacity: 0.6}}>
+            <AddSvg width={width / 2} height={height / 4.5} />
+          </View>
+          <AppText
+            style={{
+              fontSize: 16,
+              fontFamily: 'Poppins-Medium',
+              opacity: 0.6,
+              alignSelf: 'center',
+            }}
+          >
+            Add Items to your project
+          </AppText>
+        </View>
+      ) : (
+        <DraggableFlatList
+          data={dataNode}
+          renderItem={renderItem}
+          // keyExtractor={(item, index) => `draggable-item-${item.key}`}
+          keyExtractor={(item, index) => item.key}
+          onDragEnd={({data}) => setDataNodes(data)}
+        />
+      )}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           //   marginHorizontal: 10,
-          backgroundColor: "rgba(232, 232, 232, 1)",
+          backgroundColor: 'rgba(232, 232, 232, 1)',
           //   margin:0,
           height: 70,
           paddingHorizontal: 15,
@@ -250,30 +299,30 @@ function CreateProjectScreen({ navigation,route}) {
       >
         <TouchableOpacity
           style={{
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           onPress={() => setImageModalVisible(true)}
         >
-          <MaterialCommunityIcons name="image" size={40} color={"#1b262c"} />
+          <MaterialCommunityIcons name="image" size={40} color={'#1b262c'} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           onPress={() => setCameraModalVisible(true)}
         >
-          <MaterialCommunityIcons name="camera" size={40} color={"#1b262c"} />
+          <MaterialCommunityIcons name="camera" size={40} color={'#1b262c'} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           onPress={() => setTextModalVisible(true)}
         >
-          <MaterialCommunityIcons name="text" size={40} color={"#1b262c"} />
+          <MaterialCommunityIcons name="text" size={40} color={'#1b262c'} />
         </TouchableOpacity>
       </View>
     </View>
@@ -300,4 +349,3 @@ function CreateProjectScreen({ navigation,route}) {
 //   },
 // });
 export default CreateProjectScreen;
-
