@@ -8,6 +8,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 import StoreCategories from '../screens/StoreStack/StoreCategories';
 import OrdersScreen from '../screens/StoreStack/OrdersScreen';
 import PreviousOrdersScreen from '../screens/StoreStack/PreviousOrdersScreen';
+import CartScreen from '../screens/StoreStack/CartScreen';
 
 // Styles Imports
 // ...
@@ -46,6 +47,7 @@ const StoreNavigator = ({navigation}) => {
         component={PreviousOrdersScreen}
         navigation={navigation}
       />
+      <Tab.Screen name="Cart" component={CartScreen} navigation={navigation} />
     </Tab.Navigator>
   );
 };

@@ -7,12 +7,21 @@ import ComponentsStyle from '../../styles/ComponentsStyle';
 import AppText from '../AppText';
 
 const ProductCard = ({title, source, onPress, shopName, productPrice}) => {
-  const rendersubtitle = () => (
-    <View style={styles.subtitle}>
-      <AppText style={styles.subtitleText}>{`By ${shopName}`}</AppText>
-      <AppText style={styles.priceText}>{`RS ${productPrice}`}</AppText>
-    </View>
-  );
+  // const rendersubtitle = () => (
+  //   <View style={styles.subtitle}>
+  //     <AppText style={styles.subtitleText}>{`By ${shopName}`}</AppText>
+  //     <AppText style={styles.priceText}>{`RS ${productPrice}`}</AppText>
+  //   </View>
+  // );
+
+  // const getSubtitle = async () => {
+  //   rendersubtitle();
+  // };
+
+  // React.useEffect(() => {
+  //   getSubtitle();
+  // }, [shopName, productPrice]);
+
   return (
     <Card style={ComponentsStyle.categoryCardStyle} onPress={onPress}>
       <Card.Cover
@@ -21,12 +30,16 @@ const ProductCard = ({title, source, onPress, shopName, productPrice}) => {
       />
       <Card.Title
         title={title}
-        subtitle={rendersubtitle()}
+        // subtitle={rendersubtitle()}
         titleStyle={[
           ComponentsStyle.categoryCardStyle.titleStyle,
           styles.title,
         ]}
       />
+      <View style={styles.subtitle}>
+        <AppText style={styles.subtitleText}>{`By ${shopName}`}</AppText>
+        <AppText style={styles.priceText}>{`RS ${productPrice}`}</AppText>
+      </View>
     </Card>
   );
 };
@@ -38,9 +51,10 @@ const styles = StyleSheet.create({
     // marginHorizontal: 2,
   },
   subtitle: {
-    width: '100%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 5,
     // backgroundColor: 'red',
   },
   subtitleText: {

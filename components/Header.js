@@ -1,5 +1,5 @@
 //  Native Imports
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {
   MenuProvider,
@@ -10,18 +10,34 @@ import {
 } from 'react-native-popup-menu';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useSelector} from 'react-redux';
 import AppText from './AppText';
-
+import CartModal from './Modal/CartModal.js';
 export default function Header({
   navigation,
   idCheck,
   name,
   next,
-  onPressNext,
+  onAddToCart,
   renderButton,
+  cart,
 }) {
+  const cartStore = useSelector((state) => state.entities.cart);
+  const [cartVisible, setCartVisible] = useState(false);
+  const counter = cartStore.counter;
+
+  const checkoutHandler = () => {
+    navigation.navigate('Cart');
+  };
   return (
     <View style={styles.container}>
+      <CartModal
+        isVisible={cartVisible}
+        btnCloseName="Close"
+        onPressClose={() => setCartVisible(false)}
+        counter={counter}
+        onPressCheckout={() => checkoutHandler()}
+      />
       <TouchableOpacity
         style={{alignSelf: 'center'}}
         onPress={() => navigation.goBack()}
@@ -33,14 +49,40 @@ export default function Header({
         <View style={styles.renderContainer}>{renderButton}</View>
       ) : next ? (
         <View style={styles.buttonContainer}>
-          <AppText style={styles.nextButtonText} onPress={onPressNext}>
+          <AppText style={styles.nextButtonText} onPress={onAddToCart}>
             {next}
           </AppText>
         </View>
       ) : (
         <View />
       )}
-
+      {cart ? (
+        <TouchableOpacity
+          onPress={() => setCartVisible(true)}
+          style={{
+            width: '80%',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            flexDirection: 'row',
+          }}
+        >
+          <AppText
+            style={{
+              fontFamily: 'Poppins-Bold',
+              backgroundColor: '#1b262c',
+              width: '8%',
+              borderRadius: 10,
+              textAlign: 'center',
+              color: '#e8e8e8',
+            }}
+          >
+            {counter}
+          </AppText>
+          <MaterialCommunityIcons name="cart" size={30} color="#1b262c" />
+        </TouchableOpacity>
+      ) : (
+        <View />
+      )}
       {idCheck ? (
         <View>
           <Menu>
@@ -93,9 +135,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   buttonContainer: {
-    width: '90%',
+    width: '75%',
     alignSelf: 'center',
-    // paddingHorizontal: 5,
   },
   renderContainer: {
     width: '70%',
@@ -106,5 +147,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 15,
     fontFamily: 'Poppins-Medium',
+    borderBottomWidth: 1.5,
   },
 });

@@ -12,21 +12,53 @@ import {
 } from 'react-native';
 import {Avatar, Divider} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useDispatch, useSelector} from 'react-redux';
+
 //  Component Imports
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
+import {addItem} from '../../store/cart';
 
 const {width, height} = Dimensions.get('screen');
 
 export default function ProductPurchaseScreen({navigation, route}) {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.entities.cart);
   const product = route.params.product;
   const [counter, setCounter] = useState(1);
   const [total, setTotal] = useState(parseInt(product.productPrice));
-  const nextHandler = () => {
-    console.log('Delivery Detail');
-    navigation.navigate('Delivery Detail', {
-      data: {product: product, quantity: counter, totalOrderPrice: total},
-    });
+
+  const addToCartHandler = () => {
+    const cartItemIds = cart.cart.map(({_id}) => _id);
+    console.log('Cart Item Ids', cartItemIds);
+    console.log('Cart Handler');
+
+    const check = cartItemIds.filter((_id) => _id == product._id);
+    if (check.length > 0) {
+      console.log('Item Already Exists in Cart');
+      Alert.alert('Product already in cart');
+      // navigation.navigate('Product Details');
+      return;
+    }
+    // navigation.navigate('Delivery Detail', {
+    //   data: {product: product, quantity: counter, totalOrderPrice: total},
+    // });
+    // let data = {product: product, quantity: counter, totalPrice: total};
+    let data = {
+      _id: product._id,
+      productName: product.productName,
+      productDescription: product.productDescription,
+      productCategory: product.productCategory,
+      productPrice: product.productPrice,
+      productImage: product.productImage,
+      shopName: product.shopName,
+      shopImage: product.shopImage,
+      shopId: product.shopId,
+      quantity: counter,
+      totalProductPrice: total,
+    };
+    dispatch(addItem(data));
+    navigation.navigate('Product Details');
   };
 
   const StepperButton = ({name, onPress}) => {
@@ -64,8 +96,8 @@ export default function ProductPurchaseScreen({navigation, route}) {
         navigation={navigation}
         idCheck={false}
         name={'Buy Store Item'}
-        next={'Next'}
-        onPressNext={nextHandler}
+        next={'Add To Cart'}
+        onAddToCart={addToCartHandler}
       />
       <ScrollView>
         <View style={styles.imageContainer}>
