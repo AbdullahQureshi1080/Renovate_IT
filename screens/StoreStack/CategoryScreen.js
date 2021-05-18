@@ -18,37 +18,7 @@ export default function CategoryScreen({route, navigation}) {
   const userId = useSelector((state) => state.entities.auth.data._id);
   const category = route.params.category;
   const categoryProductsApi = useApi(storeAPI.getCategoryProducts);
-  const [products, setProducts] = useState([
-    // {
-    //   id: uuidv4(),
-    //   productName: 'Morris Chair',
-    //   productDescription:
-    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.',
-    //   productPrice: '12000',
-    //   productImage:
-    //     'https://images.unsplash.com/photo-1611464908623-07f19927264e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-    //   shopName: 'Kenwood',
-    //   shopImage:
-    //     'https://images.unsplash.com/photo-1594809512566-021e8369702a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
-    //   shopId: uuidv4(),
-    // },
-  ]);
-
-  const handleSearch = (search) => {
-    const query = search.toLowerCase();
-    // console.log(route.params);
-    if (query == '') {
-      setProducts(products);
-      return;
-    }
-    const searched = products.filter(function (item) {
-      // if (!item.value.includes(query)) {
-      //   return item.value.includes('others');
-      // }
-      return item.value.includes(query);
-    });
-    setProducts(searched);
-  };
+  const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
     const result = await categoryProductsApi.request(userId, category);
@@ -68,6 +38,17 @@ export default function CategoryScreen({route, navigation}) {
     fetchProducts();
   }, []);
 
+  const handleSearch = (search) => {
+    const query = search.toLowerCase();
+    if (query == '') {
+      fetchProducts();
+      return;
+    }
+    const searched = products.filter(function (item) {
+      return item.productName.toLowerCase().includes(query);
+    });
+    setProducts(searched);
+  };
   return (
     <>
       <Header navigation={navigation} idCheck={false} cart={true} />

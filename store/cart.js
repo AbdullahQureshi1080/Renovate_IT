@@ -26,18 +26,17 @@ const cart = createSlice({
       cart.cart = newCart;
       cart.counter = cart.counter - 1;
     },
-    // updateInCart: (cart, action) => {
-    //   // cart.posts = [...cart.posts, action.payload];
-    //   const _id = action.payload.itemId;
-    //   const updatedItem = cart.cart.filter(function (item) {
-    //     // return item._id != _id;
-    //     if (item._id == _id) {
-    //       item.quantity = action.payload.itemData.quantity;
-    //       item.totalProductPrice = action.payload.itemData.price;
-    //     }
-    //   });
-    //   //  cart.cart = [...cart.cart, action.payload];
-    // },
+    updateInCart: (cart, action) => {
+      console.log('In Update Cart Redux Store');
+      console.log('Action Payload of Updated Item', action.payload);
+      const _id = action.payload.itemId;
+      cart.cart.filter(function (item) {
+        if (item._id == _id) {
+          item.quantity = action.payload.itemData.quantity;
+          item.totalProductPrice = action.payload.itemData.price;
+        }
+      });
+    },
     clearCart: (cart, action) => {
       cart.cart = [];
       counter = 0;

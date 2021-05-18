@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
 
-//  Cpmponent Imports
+//  Component Imports
 import AppButton from '../../components/AppButton';
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
@@ -25,7 +25,11 @@ export default function ProductDetailScreen({navigation, route}) {
   };
   return (
     <>
-      <Header navigation={navigation} idCheck={false} name={'Product Detail'} />
+      <Header
+        navigation={navigation}
+        idCheck={false}
+        screenName={'Product Detail'}
+      />
       <ScrollView>
         <View style={styles.imageContainer}>
           <Image
@@ -110,7 +114,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    // backgroundColor: 'red',
     alignSelf: 'flex-end',
   },
 });

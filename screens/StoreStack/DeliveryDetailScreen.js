@@ -12,8 +12,7 @@ import {
   View,
 } from 'react-native';
 import * as Yup from 'yup';
-// import {Avatar, Divider} from 'react-native-paper';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
+
 //  Component Imports
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
@@ -22,7 +21,6 @@ import AppFormField from '../../components/AppForm/AppFormField';
 import AppFormPicker from '../../components/AppForm/AppFormPicker';
 
 //  Styles Import
-import ScreenStyles from '../../styles/ScreenStyles';
 import {Divider} from 'react-native-paper';
 import SubmitButton from '../../components/AppForm/SubmitButton';
 
@@ -62,9 +60,6 @@ const provinces = [
 ];
 
 export default function DeliveryDetailScreen({navigation, route}) {
-  const {product, totalOrderPrice, quantity} = route.params.data;
-  //   const [counter, setCounter] = useState(1);
-  //   const [total, setTotal] = useState(parseInt(product.productPrice));
   const nextHandler = (data) => {
     const {address, city, province, zipCode, phoneNumber} = data;
     console.log(
@@ -75,17 +70,8 @@ export default function DeliveryDetailScreen({navigation, route}) {
       zipCode,
       phoneNumber,
     );
-    console.log(
-      'Data from product details ',
-      quantity,
-      product,
-      totalOrderPrice,
-    );
     navigation.navigate('Order Confirmation', {
       data: {
-        product: product,
-        quantity: quantity,
-        totalOrderPrice: totalOrderPrice,
         deliveryDetails: data,
       },
     });
@@ -130,9 +116,9 @@ export default function DeliveryDetailScreen({navigation, route}) {
             <Header
               navigation={navigation}
               idCheck={false}
-              name={'Delivery Detail'}
-              next={'Next'}
-              onPressNext={nextHandler}
+              screenName={'Delivery Detail'}
+              buttonName={'Next'}
+              buttonHandler={nextHandler}
               renderButton={<SubmitButton name="Next" />}
             />
             <View

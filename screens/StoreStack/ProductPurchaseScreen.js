@@ -37,13 +37,8 @@ export default function ProductPurchaseScreen({navigation, route}) {
     if (check.length > 0) {
       console.log('Item Already Exists in Cart');
       Alert.alert('Product already in cart');
-      // navigation.navigate('Product Details');
       return;
     }
-    // navigation.navigate('Delivery Detail', {
-    //   data: {product: product, quantity: counter, totalOrderPrice: total},
-    // });
-    // let data = {product: product, quantity: counter, totalPrice: total};
     let data = {
       _id: product._id,
       productName: product.productName,
@@ -58,7 +53,7 @@ export default function ProductPurchaseScreen({navigation, route}) {
       totalProductPrice: total,
     };
     dispatch(addItem(data));
-    navigation.navigate('Product Details');
+    navigation.navigate('Category Screen');
   };
 
   const StepperButton = ({name, onPress}) => {
@@ -95,9 +90,9 @@ export default function ProductPurchaseScreen({navigation, route}) {
       <Header
         navigation={navigation}
         idCheck={false}
-        name={'Buy Store Item'}
-        next={'Add To Cart'}
-        onAddToCart={addToCartHandler}
+        screenName={'Buy Store Item'}
+        buttonName={'Add To Cart'}
+        buttonHandler={addToCartHandler}
       />
       <ScrollView>
         <View style={styles.imageContainer}>
@@ -150,7 +145,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: width,
     height: height / 2.5,
-    // backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -170,7 +164,6 @@ const styles = StyleSheet.create({
   stepperButtonContainer: {
     width: '80%',
     flexDirection: 'row',
-    // backgroundColor: 'red',
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
@@ -190,9 +183,7 @@ const styles = StyleSheet.create({
     paddingLeft: 50,
   },
   productInfoContainer: {
-    // marginVertical: 5,
     flexDirection: 'row',
-    // justifyContent: 'flex-start',
   },
   shopText: {
     fontSize: 16,
@@ -207,7 +198,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    // backgroundColor: 'red',
     alignSelf: 'flex-end',
   },
   divider: {

@@ -33,70 +33,42 @@ export default function CartModal({
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const cart = useSelector((state) => state.entities.cart);
-  //   const cartData = useState(cart);
-  const [stepCounter, setStepCounter] = useState(1);
-  // const [total, setTotal] = useState(parseInt(item.productPrice));
+
+  const [stepCounter, setStepCounter] = useState(0);
+
+  const [total, setTotal] = useState(0);
+  // const [item, setItem] = useState(null);
 
   const handleRemove = (item) => {
     console.log('Handle Remove Item');
     dispatch(removeItem(item._id));
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (item) => {
     console.log('Handle Update Item');
+    console.log('Update Item Id', item._id);
+    setStepCounter(parseInt(item.quantity));
+    setTotal(parseInt(item.totalProductPrice));
     setVisible(true);
   };
 
-  //   const StepperButton = ({name, onPress}) => {
-  //     return (
-  //       <TouchableOpacity onPress={onPress}>
-  //         <AntDesign name={name} size={30} color={'#1B262C'} />
-  //       </TouchableOpacity>
-  //     );
-  //   };
+  const handleUpdateQuantity = (item) => {
+    console.log('Close Update Item');
+    let data = {
+      itemId: item._id,
+      itemData: {price: total, quantity: stepCounter},
+    };
 
-  //   const plusHandler = (item) => {
-  //     let quantity = parseInt(item.quantity);
-  //     console.log('Quantity from Cart', quantity);
-  //     setStepCounter(quantity + 1);
-  //     priceHandler('plus', item);
-  //   };
-  //   const minusHandler = (item) => {
-  //     if (stepCounter === 1) return Alert.alert('Minimun one product quantity');
-  //     let quantity = parseInt(item.quantity);
-  //     setStepCounter(quantity - 1);
-  //     priceHandler('minus', item);
-  //   };
+    dispatch(updateItem(data));
+    setStepCounter(0);
+    setTotal(0);
+    // setItem(null);
+    setVisible(false);
+  };
 
-  //   const priceHandler = (type, item) => {
-  //     const productPrice = parseInt(item.totalProductPrice);
-  //     console.log(stepCounter);
-  //     if (type == 'plus') {
-  //       const price = (stepCounter + 1) * parseInt(item.productPrice);
-  //       let data = {itemId: item._id, itemData: {price, quantity: stepCounter}};
-  //       dispatch(updateItem(data));
-  //       //   setStepCounter(item.quantity);
-  //     } else if (type == 'minus') {
-  //       if (productPrice === parseInt(item.productPrice))
-  //         return Alert.alert('Minimun one product quantity');
-  //       const price = productPrice - parseInt(item.productPrice);
-  //       let data = {
-  //         itemId: item._id,
-  //         itemData: {price, quantity: stepCounter},
-  //       };
-  //       dispatch(updateItem(data));
-  //       //   setStepCounter(item.quantity);
-  //     }
-  //   };
-
-  // useEffect(() => {
-  //   handleCounter(item);
-  // }, []);
-
-  //   const counterHandler
-  //   const handleCounter = (item) => {
-  //     setStepCounter(item.quantity);
-  //   };
+  useEffect(() => {
+    console.log('Cart from Redux Store', cart.cart);
+  }, [cart]);
 
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
@@ -107,7 +79,6 @@ export default function CartModal({
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
-            // backgroundColor: 'red',
             alignContent: 'center',
           }}
         >
@@ -120,7 +91,6 @@ export default function CartModal({
             style={{
               justifyContent: 'center',
               alignSelf: 'flex-end',
-              //   width: '100%',
             }}
             onPress={onPressClose}
           >
@@ -165,17 +135,20 @@ export default function CartModal({
             data={cart.cart}
             horizontal={true}
             snapToAlignment="end"
-            // numColumns={2}
             keyExtractor={(item) => item._id}
             renderItem={({item, index}) => (
               <>
                 <QuantityModal
                   isVisible={visible}
                   item={item}
-                  onPressClose={() => setVisible(false)}
+                  onPressClose={() => handleUpdateQuantity(item)}
+                  counter={stepCounter}
+                  total={total}
+                  onChangePrice={(total) => setTotal(total)}
+                  onPlusCounter={(count) => setStepCounter(count)}
+                  onMinusCounter={(count) => setStepCounter(count)}
                 />
                 <View style={styles.imageContainer}>
-                  {/* {handleCounter(item)} */}
                   <Image
                     source={{
                       uri: item.productImage,
@@ -211,23 +184,9 @@ export default function CartModal({
                   </View>
                   <View style={styles.headContainer}>
                     <AppText style={styles.nameText}>Quantity</AppText>
-                    <AppText style={styles.nameText}>
-                      x{!item.quantity ? stepCounter : item.quantity}
-                    </AppText>
+                    <AppText style={styles.nameText}>x{item.quantity}</AppText>
                   </View>
-                  {/* <View style={styles.stepperButtonContainer}>
-                    <StepperButton
-                      name={'pluscircle'}
-                      onPress={() => plusHandler(item)}
-                    />
-                    <AppText style={styles.counterText}>
-                      {item.quantity}
-                    </AppText>
-                    <StepperButton
-                      name={'minuscircle'}
-                      onPress={() => minusHandler(item)}
-                    />
-                  </View> */}
+
                   <View style={styles.headContainer}>
                     <AppText style={styles.nameText}>Price</AppText>
                     <AppText style={styles.nameText}>

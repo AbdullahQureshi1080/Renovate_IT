@@ -13,7 +13,23 @@ const getCategoryProducts = (userId, category) =>
     category,
   });
 
+const orderFromStore = (
+  userId,
+  shopId,
+  products,
+  totalOrderCost,
+  deliveryDetails,
+) =>
+  client.post('store/placeOrder', {
+    userId,
+    shopId,
+    products,
+    totalOrderCost,
+    deliveryDetails,
+  });
+
 export default {
   getProducts,
   getCategoryProducts,
+  orderFromStore,
 };

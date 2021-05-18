@@ -16,9 +16,9 @@ import CartModal from './Modal/CartModal.js';
 export default function Header({
   navigation,
   idCheck,
-  name,
-  next,
-  onAddToCart,
+  screenName,
+  buttonName,
+  buttonHandler,
   renderButton,
   cart,
 }) {
@@ -44,13 +44,13 @@ export default function Header({
       >
         <MaterialCommunityIcons name="backspace" size={40} color="#1b262c" />
       </TouchableOpacity>
-      <AppText style={styles.screenName}>{name}</AppText>
+      <AppText style={styles.screenName}>{screenName}</AppText>
       {renderButton ? (
         <View style={styles.renderContainer}>{renderButton}</View>
-      ) : next ? (
+      ) : buttonName ? (
         <View style={styles.buttonContainer}>
-          <AppText style={styles.nextButtonText} onPress={onAddToCart}>
-            {next}
+          <AppText style={styles.nextButtonText} onPress={buttonHandler}>
+            {buttonName}
           </AppText>
         </View>
       ) : (
@@ -124,7 +124,6 @@ export default function Header({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     marginVertical: 5,
     paddingTop: 18,
     marginHorizontal: 20,

@@ -1,36 +1,59 @@
 //  Native Imports
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, Image, StyleSheet, View, FlatList} from 'react-native';
+
+import {useDispatch, useSelector} from 'react-redux';
+
 import {Avatar, Divider} from 'react-native-paper';
 
 //  Component Imports
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
 
+// Api Imports
+import useApi from '../../hooks/useApi';
+import storeAPI from '../../api/store';
+import {Alert} from 'react-native';
+
 const {width, height} = Dimensions.get('screen');
 
 export default function OrderConfirmationScreen({navigation, route}) {
-  const {
-    product,
-    quantity,
-    totalOrderPrice,
-    deliveryDetails,
-  } = route.params.data;
-  console.log(deliveryDetails);
-  const orderHandler = () => {
+  const state = useSelector((state) => state);
+  const userId = state.entities.auth.data._id;
+  console.log('User Id', userId);
+  const cart = useSelector((state) => state.entities.cart);
+  const {deliveryDetails} = route.params.data;
+  const shopId = cart.cart[0].shopId;
+  const products = cart.cart;
+  const productPriceArray = cart.cart.map(
+    ({totalProductPrice}) => totalProductPrice,
+  );
+
+  const totalOrderCost = productPriceArray.reduce(function (
+    accumulator,
+    current,
+  ) {
+    return accumulator + current;
+  });
+  const orderApi = useApi(storeAPI.orderFromStore);
+  const orderHandler = async () => {
     console.log('Order handler');
-    // navigation.navigate('Delivery Detail', {
-    //   data: {product: product, quantity: counter, totalOrderPrice: total},
-    // });
+    console.log(userId, shopId, products, totalOrderCost, deliveryDetails);
+    const result = await orderApi.request(
+      userId,
+      shopId,
+      products,
+      totalOrderCost,
+      deliveryDetails,
+    );
+    if (!result.ok) {
+      console.log('Result', result.data);
+      console.log('Error placing order');
+      Alert.alert('Error placing order');
+      return;
+    }
+    console.log('Order Placed');
+    navigation.navigate('Store Home');
   };
 
   return (
@@ -38,50 +61,73 @@ export default function OrderConfirmationScreen({navigation, route}) {
       <Header
         navigation={navigation}
         idCheck={false}
-        name={'Confirm Order'}
-        next={'Order'}
-        order
-        onPressNext={orderHandler}
+        screenName={'Confirm Order'}
+        buttonName={'Order'}
+        buttonHandler={() => orderHandler()}
       />
-      <ScrollView>
-        <View style={styles.imageContainer}>
-          <Image
-            source={{
-              uri: product.productImage,
-            }}
-            style={styles.productImage}
-          />
-          <AppText style={styles.nameText}>{product.productName}</AppText>
-          <View style={styles.productInfoContainer}>
-            <Avatar.Image source={{uri: product.shopImage}} size={35} />
-            <AppText style={styles.shopText}>By {product.shopName}</AppText>
-          </View>
-          <View style={styles.headContainer}>
-            <AppText style={styles.nameText}>Quantity</AppText>
-            <AppText style={styles.nameText}>x{quantity}</AppText>
-          </View>
-          <View style={styles.headContainer}>
-            <AppText style={styles.nameText}>Price</AppText>
-            <AppText style={styles.nameText}>{totalOrderPrice} RS</AppText>
-          </View>
+      <View style={{marginVertical: 10}}>
+        <FlatList
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <AppText>No Item in cart</AppText>
+            </View>
+          }
+          data={cart.cart}
+          horizontal={true}
+          snapToAlignment="end"
+          keyExtractor={(item) => item._id}
+          renderItem={({item, index}) => (
+            <>
+              <View style={styles.imageContainer}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    backgroundColor: '#e8e8e8',
+                    borderRadius: 20,
+                    width: '70%',
+                  }}
+                >
+                  <Image
+                    source={{
+                      uri: item.productImage,
+                    }}
+                    style={styles.productImage}
+                  />
+                  <AppText style={styles.nameText}>{item.productName}</AppText>
+                  <View style={styles.productInfoContainer}>
+                    <Avatar.Image source={{uri: item.shopImage}} size={35} />
+                    <AppText style={styles.shopText}>
+                      By {item.shopName}
+                    </AppText>
+                  </View>
+                  <View style={styles.headContainer}>
+                    <AppText style={styles.nameText}>Quantity</AppText>
+                    <AppText style={styles.nameText}>x{item.quantity}</AppText>
+                  </View>
+
+                  <View style={styles.headContainer}>
+                    <AppText style={styles.nameText}>Price</AppText>
+                    <AppText style={styles.nameText}>
+                      {item.totalProductPrice} RS
+                    </AppText>
+                  </View>
+                </View>
+              </View>
+            </>
+          )}
+        />
+      </View>
+      <Divider style={styles.divider} />
+      <View style={styles.container}>
+        <View style={styles.shippingContainer}>
+          <AppText style={styles.nameText}>Shipping</AppText>
+          <AppText style={styles.priceText}>{deliveryDetails.address}</AppText>
+          <AppText style={styles.priceText}>
+            {deliveryDetails.city.label}, {deliveryDetails.province.label}
+          </AppText>
+          <AppText style={styles.priceText}>{deliveryDetails.zipCode}</AppText>
         </View>
-        <Divider style={styles.divider} />
-        {/* Screen Component Here, If refactored the code */}
-        <View style={styles.container}>
-          <View style={styles.shippingContainer}>
-            <AppText style={styles.nameText}>Shipping</AppText>
-            <AppText style={styles.priceText}>
-              {deliveryDetails.address}
-            </AppText>
-            <AppText style={styles.priceText}>
-              {deliveryDetails.city.label}, {deliveryDetails.province.label}
-            </AppText>
-            <AppText style={styles.priceText}>
-              {deliveryDetails.zipCode}
-            </AppText>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     </>
   );
 }
@@ -100,7 +146,6 @@ const styles = StyleSheet.create({
   headContainer: {
     marginTop: 5,
     flexDirection: 'row',
-    width: '50%',
     justifyContent: 'space-between',
   },
   shippingContainer: {
@@ -108,17 +153,19 @@ const styles = StyleSheet.create({
   },
 
   productImage: {
-    width: width / 1.75,
+    width: width / 2,
     height: height / 4,
     borderRadius: 10,
+    marginTop: 25,
   },
   nameText: {
     marginVertical: 5,
+    marginHorizontal: 15,
     fontSize: 18,
     fontFamily: 'Poppins-Medium',
   },
   priceText: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 17,
     fontFamily: 'Poppins-Regular',
     paddingLeft: 35,
