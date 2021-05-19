@@ -8,6 +8,7 @@ import ProductPurchaseScreen from '../screens/StoreStack/ProductPurchaseScreen';
 import DeliveryDetailScreen from '../screens/StoreStack/DeliveryDetailScreen';
 import OrderConfirmationScreen from '../screens/StoreStack/OrderConfirmationScreen';
 import ViewOrderScreen from '../screens/StoreStack/ViewOrderScreen';
+import LoadingScreen from '../screens/StoreStack/LoadingScreen';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,13 @@ const StoreStack = () => {
       <Stack.Screen
         name="View Order"
         component={ViewOrderScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Loading"
+        component={LoadingScreen}
         options={{
           headerShown: false,
         }}

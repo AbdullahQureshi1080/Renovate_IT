@@ -39,7 +39,7 @@ const cart = createSlice({
     },
     clearCart: (cart, action) => {
       cart.cart = [];
-      counter = 0;
+      cart.counter = 0;
     },
   },
 });
@@ -53,7 +53,7 @@ export default cart.reducer;
 
 // ()=>{} signature function
 
-export const emptyCqrt = () => ({
+export const emptyCart = () => ({
   type: clearCart.type,
 });
 export const addItem = (item) => ({

@@ -14,16 +14,18 @@ import Header from '../../components/Header';
 import useApi from '../../hooks/useApi';
 import storeAPI from '../../api/store';
 import {Alert} from 'react-native';
+// import {emptyCart} from '../../store/cart';
 
 const {width, height} = Dimensions.get('screen');
 
 export default function OrderConfirmationScreen({navigation, route}) {
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   console.log('User Id', userId);
   const cart = useSelector((state) => state.entities.cart);
   const {deliveryDetails} = route.params.data;
-  const shopId = cart.cart[0].shopId;
+  const shopId = cart.cart[0].shopId ? cart.cart[0].shopId : '';
   const products = cart.cart;
   const productPriceArray = cart.cart.map(
     ({totalProductPrice}) => totalProductPrice,
@@ -53,7 +55,14 @@ export default function OrderConfirmationScreen({navigation, route}) {
       return;
     }
     console.log('Order Placed');
-    navigation.navigate('Store Home');
+    clearCartHandler();
+    // setTimeout(() => {
+    // }, 1000);
+  };
+
+  const clearCartHandler = () => {
+    // dispatch(emptyCart());
+    navigation.navigate('Loading');
   };
 
   return (

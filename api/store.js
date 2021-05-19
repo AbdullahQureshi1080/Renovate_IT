@@ -28,8 +28,21 @@ const orderFromStore = (
     deliveryDetails,
   });
 
+const userStoreOrders = (userId) =>
+  client.post('store/getUserOrders', {
+    userId,
+  });
+
+const cancelStoreOrder = (userId, orderId) =>
+  client.post('store/cancelOrder', {
+    userId,
+    orderId,
+  });
+
 export default {
   getProducts,
   getCategoryProducts,
   orderFromStore,
+  userStoreOrders,
+  cancelStoreOrder,
 };
