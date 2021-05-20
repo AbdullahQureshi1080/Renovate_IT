@@ -45,7 +45,7 @@ import ActivityIndicator from '../../components/ActivityIndicator';
 var {width, height} = Dimensions.get('screen');
 
 const ProjectDetailsScreen = ({route, navigation}) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
 
@@ -57,15 +57,14 @@ const ProjectDetailsScreen = ({route, navigation}) => {
   const userId = state.entities.auth.data._id;
   const userEmail = state.entities.auth.data.email;
 
-  const userProjectsIdObjs = state.entities.user.projectIds;
+  // const userProjectsIdObjs = state.entities.user.projectIds;
 
-  const userProjectIds = userProjectsIdObjs.map(({id}) => id);
+  // const userProjectIds = userProjectsIdObjs.map(({id}) => id);
+
   const deleteApi = useApi(userAPI.deleteProject);
   const likeApi = useApi(userAPI.likeProject);
   const getLikesApi = useApi(userAPI.getLikes);
   const [text, setText] = useState('');
-
-  // useEffect(() => {}, []);
 
   const likeProject = async () => {
     //  Call api
@@ -103,6 +102,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
   };
 
   const projectId = route.params.item._id;
+  const userProjectIds = route.params.userProjectIds;
   useEffect(() => {
     getLikes();
     for (var i = 0; i < userProjectIds.length; i++) {
@@ -138,7 +138,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
   const renderItem = useCallback(
     ({item, index, drag, isActive}: RenderItemParams<nodeItem>) => {
       return (
-        <View>
+        <View key={index}>
           {item.type == 'image' ? (
             <View style={{marginVertical: 2}} key={parseInt(item.key)}>
               <Image

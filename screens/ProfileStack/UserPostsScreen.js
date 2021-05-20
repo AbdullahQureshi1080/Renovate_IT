@@ -6,30 +6,33 @@ import {useSelector} from 'react-redux';
 
 // Components Imports
 import PostCard from '../../components/Card/PostCard';
-// import {postsDummyData} from '../../assets/DummyData';
-import dataAPI from '../../api/data';
-import useApi from '../../hooks/useApi';
-// import { setAppPosts } from '../../store/data';
 import AppButton from '../../components/AppButton';
 import AppText from '../../components/AppText';
-// import SearchBar from '../../components/SearchBar';
 import ErrorMessage from '../../components/AppForm/ErrorMessage';
-// import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-const UserPostsScreen = ({navigation}) => {
+// Api Imports
+import dataAPI from '../../api/data';
+import useApi from '../../hooks/useApi';
+import userAPI from '../../api/user';
+
+const UserPostsScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
-  const userPostsIdObjs = state.entities.user.postIds;
-
-  const userPostIds = userPostsIdObjs.map(({id}) => id);
-
-  //  const _id = action.payload;
-  //  const userPosts = posts.filter(function(post){return post._id != _id})
-
+  const userEmail = state.entities.auth.data.email;
   const [error, setError] = useState(null);
   const postsApi = useApi(dataAPI.getAllPosts);
-
+  const postApi = useApi(userAPI.userPosts);
   const [posts, setPosts] = useState([]);
+  const [userPostIds, setUserPostIds] = useState([]);
   const [refresh, setRefresh] = useState(false);
+
+  const fetchUserPostIds = async () => {
+    // User Post Ids
+    const result = await postApi.request(userEmail);
+    if (result.length == 0) {
+      console.log('Could Not Get Post Ids');
+    }
+    setUserPostIds(result);
+  };
 
   const fetchPosts = async () => {
     const result = await postsApi.request();
@@ -37,25 +40,22 @@ const UserPostsScreen = ({navigation}) => {
       setError('Could not retrive posts at this moment, refresh. ');
       return;
     }
-    // console.log(result.data);
-    // console.log("This happens")
     const userPosts = result.data.filter((post) =>
       userPostIds.includes(post._id),
     );
     setPosts(userPosts);
+    // setPosts(result.data);
   };
 
   useEffect(() => {
-    fetchPosts();
-    console.log(
-      'User Posts from User Slice PostIds',
-      state.entities.user.postIds,
-    );
-    console.log(
-      'User Posts from Auth Data Posts',
-      state.entities.auth.data,
-    );
+    fetchUserPostIds();
   }, []);
+
+  useEffect(() => {
+
+    fetchPosts();
+  }, [userPostIds]);
+
 
   const refreshPosts = () => {
     if (posts !== []) {
@@ -96,7 +96,12 @@ const UserPostsScreen = ({navigation}) => {
             creator={item.creator}
             description={item.description}
             budget={item.budget}
-            onPress={() => navigation.navigate('Post Details', {item: item})}
+            onPress={() =>
+              navigation.navigate('Post Details', {
+                item: item,
+                userPostIds: userPostIds,
+              })
+            }
           />
         )}
       />

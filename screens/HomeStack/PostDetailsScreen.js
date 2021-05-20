@@ -13,16 +13,13 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  FlatList,
   Touchable,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import {Paragraph, Avatar} from 'react-native-paper';
+import {Paragraph, Avatar, Divider} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import PopUpModal from '../../components/PopUpModal';
-// import Modal from 'react-native-modal';
-// Components Imports
-import AppButton from '../../components/AppButton';
 import {
   MenuProvider,
   Menu,
@@ -30,38 +27,40 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import {useSelector} from 'react-redux';
+
+// Components Imports
+import AppButton from '../../components/AppButton';
+import AppText from '../../components/AppText';
 import GallaryModal from '../../components/Modal/GallaryModal';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
+
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
-import {useSelector} from 'react-redux';
-import PopUpModal from '../../components/PopUpModal';
-// import { model } from 'mongoose';
+
+// Api Imports
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
-import ErrorMessage from '../../components/AppForm/ErrorMessage';
-import {deletePost} from '../../store/user';
-import {deleteAppPost} from '../../store/data';
-// var { width, height } = Dimensions.get('window')
-
-// import Pdf from 'react-native-pdf';
+import {bindActionCreators} from 'redux';
+import BidModal from '../../components/Modal/BidModal';
+import BidCard from '../../components/Card/BidCard';
 
 const PostDetailsScreen = ({navigation, route}) => {
-  const dispatch = useDispatch();
+  // ----
+  const allusers = useSelector((state) => state.entities.data.allusers);
+
+  // -----
+
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [bidModal, setBidModal] = useState(false);
+  const [selectedBid, setSelectedBid] = useState(false);
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
-  const userPosts = state.entities.user.posts;
-  // const postsIds = userPosts.map(post=>post._id);
   const deleteApi = useApi(userAPI.deletePost);
   const postId = route.params.item._id;
-
-  const userPostsIdObjs = state.entities.user.postIds;
-  // const userProjectsIdObjs = state.entities.user.projectIds;
-
-  const userPostIds = userPostsIdObjs.map(({id}) => id);
-  // const  userProjectIds = userProjectsIdObjs.map(({ id }) => id);
+  const userPostIds = route.params.userPostIds;
 
   useEffect(() => {
     console.log('Item Params', route.params.item);
@@ -101,6 +100,19 @@ const PostDetailsScreen = ({navigation, route}) => {
       index: 0,
       routes: [{name: 'AppHome'}],
     });
+  };
+
+  const bidHandler = (item) => {
+    const bidder = allusers.filter((user) => {
+      return user._id == item.bidderId;
+    });
+    console.log('Biddder in modal', bidder);
+    const modalData = {
+      bidData: item,
+      bidderData: bidder[0],
+    };
+    setSelectedBid(modalData);
+    setBidModal(true);
   };
 
   return (
@@ -174,14 +186,10 @@ const PostDetailsScreen = ({navigation, route}) => {
           </View>
           <View style={{alignSelf: 'center'}}>
             {idCheck ? (
-              <AppButton
-                name="Message"
-                onPress={() => console.log('Message Button')}
-              />
+              <AppButton name="Bid" onPress={() => console.log('Bid Button')} />
             ) : (
               <View></View>
             )}
-            {/* <AppButton name="Message"  onPress={()=>console.log("Message Button")}/> */}
           </View>
         </View>
         <GallaryModal
@@ -221,9 +229,10 @@ const PostDetailsScreen = ({navigation, route}) => {
         </Text>
         <View style={{flexDirection: 'row', marginVertical: 10}}>
           {route.params.item.images.map(
-            (image) => (
+            (image, index) => (
               // <View style={styles.container}>
               <TouchableOpacity
+                key={index}
                 style={styles.container}
                 onPress={() => setIsVisible(true)}
               >
@@ -235,11 +244,12 @@ const PostDetailsScreen = ({navigation, route}) => {
         </View>
         <View style={{flexDirection: 'row'}}>
           {route.params.item.documents.map(
-            (image) => (
+            (document, index) => (
               // <View style={styles.container}>
               <TouchableOpacity
+                key={index}
                 style={styles.container}
-                onPress={() => loadInBrowser(image)}
+                onPress={() => loadInBrowser(document)}
               >
                 <MaterialCommunityIcons
                   color="white"
@@ -251,6 +261,44 @@ const PostDetailsScreen = ({navigation, route}) => {
             //  </View>
           )}
         </View>
+        <BidModal
+          bidData={selectedBid}
+          isVisible={bidModal}
+          onPressClose={() => setBidModal(false)}
+        />
+        <Divider style={styles.divider} />
+        <View style={styles.bidContainer}>
+          <AppText style={ScreenStyles.postsDetailScreen.viewBox.titleText}>
+            Bids
+          </AppText>
+        </View>
+        <FlatList
+          ListEmptyComponent={() => (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+              }}
+            >
+              <AppText style={{fontSize: 14}}>No Bids yet</AppText>
+            </View>
+          )}
+          horizontal={true}
+          data={route.params.item?.bids}
+          keyExtractor={(bid) => bid._id}
+          renderItem={({item}) => (
+            <View style={styles.bidCardContainer} key={item._id}>
+              <BidCard
+                // key={item._id}
+                data={item}
+                onPress={() => bidHandler(item)}
+              />
+            </View>
+          )}
+        />
+        {/* </View> */}
       </ScrollView>
     </MenuProvider>
   );
@@ -272,6 +320,18 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     width: '100%',
+  },
+  divider: {
+    width: '100%',
+    marginVertical: 10,
+    borderWidth: 0.5,
+  },
+  bidContainer: {
+    width: '100%',
+    backgroundColor: 'red',
+  },
+  bidCardContainer: {
+    // width: '65%',
   },
 });
 

@@ -31,14 +31,14 @@ const updateProfile = (
     image,
   });
 
-const getProfile = (email) =>
+const getProfile = (userId) =>
   client.post('profile/getProfile', {
-    email,
+    userId,
   });
 
-const userProfile = async (email) => {
+const userProfile = async (userId) => {
   // console.log(email);
-  const result = await getProfile(email);
+  const result = await getProfile(userId);
   if (!result.ok) {
     console.log('API call failed', result.data);
     return;

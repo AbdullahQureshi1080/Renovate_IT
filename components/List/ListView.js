@@ -12,7 +12,7 @@ import ListViewItem from './ListViewItem';
 import CardViewList from './CardViewList';
 // require("firebase/firestore");
 
-export const ListViewNotifications = (props) => (
+export const ListViewNotifications = ({notifications}) => (
   <View style={{justifyContent: 'center', alignContent: 'center'}}>
     {notifications.length > 0 ? (
       notifications.map((item, index) => {

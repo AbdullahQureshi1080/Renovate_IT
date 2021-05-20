@@ -60,12 +60,7 @@ const LoginScreen = ({navigation}) => {
   // api calls ---
   const auth = useAuth();
   const loginApi = useApi(authAPI.login);
-  const userApi = useApi(userAPI.userProfile);
   const appUsersApi = useApi(dataAPI.getAllUsers);
-  // const appPostsApi = useApi(dataAPI.getAllPosts)
-  // const appProjectsApi = useApi(dataAPI.getAllProjects)
-  // const userPostsApi = useApi(userAPI.userPosts);
-  // const userProjectsApi = useApi(userAPI.userProjects);
 
   const [loginFailed, setLoginFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,23 +82,9 @@ const LoginScreen = ({navigation}) => {
     auth.logIn(result.data);
     dispatch(loginUser(result.data));
     const userData = await storage.getUser();
-    // ------------------------------------------
-    const profileData = await userApi.request(email);
     const allUsersData = await appUsersApi.request(email);
-    // const userPostsData = await userPostsApi.request(email);
-    // const userProjectsData = await userProjectsApi.request(email);
-    // const appPosts = await appPostsApi.request();
-    // const appProjects = await appProjectsApi.request();
-
-    // dispatch(loginUser(userToken));
     dispatch(setUserData(userData));
-    dispatch(setProfileData(profileData));
-    // dispatch(setUserPostIds(userPostsData))
-    // dispatch(setUserProjectIds(userProjectsData))
-    // dispatch(setAppPosts(appPosts.data))
-    // dispatch(setAppProjects(appProjec0ts.data))
     dispatch(setAllUsers(allUsersData.data));
-    // -------------------------------------------
     setIsLoading(false);
     navigation.reset({
       index: 0,
