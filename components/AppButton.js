@@ -5,7 +5,7 @@ import {Button} from 'react-native-paper';
 
 var {width, height} = Dimensions.get('window');
 
-const AppButton = ({name, onPress, style, width, disabled}) => {
+const AppButton = ({name, onPress, style, width, disabled, buttonColor}) => {
   return (
     <Button
       style={[styles.button, style]}

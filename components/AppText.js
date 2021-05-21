@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-export default function AppText({style, children, onPress}) {
+export default function AppText({style, children, onPress, ...otherProps}) {
   return (
-    <Text style={[styles.appText, style]} onPress={onPress}>
+    <Text {...otherProps} style={[styles.appText, style]} onPress={onPress}>
       {children}
     </Text>
   );

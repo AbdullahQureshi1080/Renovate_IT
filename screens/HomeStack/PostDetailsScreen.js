@@ -42,7 +42,8 @@ import ScreenStyles from '../../styles/ScreenStyles';
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 import {bindActionCreators} from 'redux';
-import BidModal from '../../components/Modal/BidModal';
+import ViewBidModal from '../../components/Modal/ViewBidModal';
+import NewBidModal from '../../components/Modal/NewBidModal';
 import BidCard from '../../components/Card/BidCard';
 
 const PostDetailsScreen = ({navigation, route}) => {
@@ -55,14 +56,41 @@ const PostDetailsScreen = ({navigation, route}) => {
   const [deleteError, setDeleteError] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [bidModal, setBidModal] = useState(false);
-  const [selectedBid, setSelectedBid] = useState(false);
+  const [newBidVisible, setNewBidVisible] = useState(false);
+  const [selectedBid, setSelectedBid] = useState([]);
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
+  const userId = state.entities.auth.data._id;
   const deleteApi = useApi(userAPI.deletePost);
+  const acceptBidApi = useApi(userAPI.acceptBid);
+  const rejectBidApi = useApi(userAPI.rejectBid);
+  const withdrawBidApi = useApi(userAPI.withdrawBid);
+  const bidsApi = useApi(userAPI.getPostBids);
+  const newBidApi = useApi(userAPI.offerNewBid);
   const postId = route.params.item._id;
   const userPostIds = route.params.userPostIds;
+  const [bids, setBids] = useState([]);
+
+  // const [message, setMessage] = useState('');
+  // const [amount, setAmount] = useState('');
+
+  const userBids = bids?.filter((bid) => {
+    return bid.bidderId == userId;
+  });
+
+  const fetchPostBids = async () => {
+    const result = await bidsApi.request(postId);
+    if (!result.ok) {
+      console.log('Error fetching bids');
+      return;
+    }
+    setBids(result.data);
+    // Alert.alert('Bid Accepted');
+    // setBidModal(false);
+  };
 
   useEffect(() => {
+    fetchPostBids();
     console.log('Item Params', route.params.item);
     console.log(userPostIds);
     console.log(postId);
@@ -71,8 +99,11 @@ const PostDetailsScreen = ({navigation, route}) => {
         setCheckId(false);
       }
     }
+    console.log('Bids Length', userBids.length);
     // console.log(route.params.item.images)
   }, []);
+
+  // useEffect(()=>{},[])
 
   const handleUpdate = () => {
     //  Update Post
@@ -110,9 +141,88 @@ const PostDetailsScreen = ({navigation, route}) => {
     const modalData = {
       bidData: item,
       bidderData: bidder[0],
+      calltoActionHideStatus: idCheck,
     };
     setSelectedBid(modalData);
     setBidModal(true);
+  };
+
+  const styleforstatusRed = {
+    color: '#F16174',
+  };
+  const styleforstatusGreen = {
+    color: '#329E4B',
+  };
+  const styleforstatusActive = {
+    color: '#0F4C75',
+  };
+
+  const handleStatus = (status) => {
+    if (status.toLowerCase() == 'accepted') {
+      return styleforstatusGreen;
+    } else if (status.toLowerCase() == 'rejected') {
+      return styleforstatusRed;
+    } else if (status.toLowerCase() == 'active') {
+      return styleforstatusActive;
+    }
+  };
+
+  const newBidHandler = async (values) => {
+    let bidderId = userId;
+    let message = values.message;
+    let bidAmount = values.amount;
+    const result = await newBidApi.request(
+      bidderId,
+      postId,
+      message,
+      bidAmount,
+    );
+    if (!result.ok) {
+      console.log('Error bidding');
+      return;
+    }
+    Alert.alert('New Bid');
+    fetchPostBids();
+    setNewBidVisible(false);
+  };
+
+  const acceptHandler = async (selectedBid) => {
+    const bidId = selectedBid?.bidData._id;
+    console.log('Bid Id', bidId);
+    const result = await acceptBidApi.request(bidId, postId);
+    if (!result.ok) {
+      console.log('Error accepting bid');
+      return;
+    }
+    Alert.alert('Bid Accepted');
+    fetchPostBids();
+    setBidModal(false);
+  };
+
+  const rejectHandler = async (selectedBid) => {
+    const bidId = selectedBid?.bidData._id;
+    console.log('Bid Id', bidId);
+    const result = await rejectBidApi.request(bidId, postId);
+    if (!result.ok) {
+      console.log('Error accepting bid');
+      return;
+    }
+    Alert.alert('Bid Rejected');
+    fetchPostBids();
+    setBidModal(false);
+  };
+
+  const withdrawHandler = async (selectedBid) => {
+    const bidId = selectedBid?.bidData._id;
+    console.log('Bid Id', bidId);
+    const result = await withdrawBidApi.request(userId, postId, bidId);
+    if (!result.ok) {
+      console.log('Error withdrawing bid');
+      return;
+    }
+    Alert.alert('Bid Widthdraw');
+    fetchPostBids();
+    setBidModal(false);
   };
 
   return (
@@ -186,9 +296,17 @@ const PostDetailsScreen = ({navigation, route}) => {
           </View>
           <View style={{alignSelf: 'center'}}>
             {idCheck ? (
-              <AppButton name="Bid" onPress={() => console.log('Bid Button')} />
+              userBids.length == 0 ? (
+                <AppButton name="Bid" onPress={() => setNewBidVisible(true)} />
+              ) : (
+                <AppButton
+                  name="Bidded"
+                  disabled={true}
+                  // onPress={() => console.log('Bidded Button')}
+                />
+              )
             ) : (
-              <View></View>
+              <View />
             )}
           </View>
         </View>
@@ -261,44 +379,93 @@ const PostDetailsScreen = ({navigation, route}) => {
             //  </View>
           )}
         </View>
-        <BidModal
+        <NewBidModal
+          // bidData={selectedBid}
+          isVisible={newBidVisible}
+          onPressClose={() => setNewBidVisible(false)}
+          onPressBid={(values) => newBidHandler(values)}
+          // bidStatus={!message && !amount}
+        />
+        <ViewBidModal
           bidData={selectedBid}
           isVisible={bidModal}
           onPressClose={() => setBidModal(false)}
+          onPressAccept={() => acceptHandler(selectedBid)}
+          onPressReject={() => rejectHandler(selectedBid)}
+          onPressWithdraw={() => withdrawHandler(selectedBid)}
         />
         <Divider style={styles.divider} />
-        <View style={styles.bidContainer}>
-          <AppText style={ScreenStyles.postsDetailScreen.viewBox.titleText}>
-            Bids
-          </AppText>
-        </View>
-        <FlatList
-          ListEmptyComponent={() => (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center',
-              }}
-            >
-              <AppText style={{fontSize: 14}}>No Bids yet</AppText>
+        {!idCheck ? (
+          <>
+            <View style={styles.bidContainer}>
+              <AppText style={ScreenStyles.postsDetailScreen.viewBox.titleText}>
+                Bids
+              </AppText>
             </View>
-          )}
-          horizontal={true}
-          data={route.params.item?.bids}
-          keyExtractor={(bid) => bid._id}
-          renderItem={({item}) => (
-            <View style={styles.bidCardContainer} key={item._id}>
-              <BidCard
-                // key={item._id}
-                data={item}
-                onPress={() => bidHandler(item)}
-              />
+            <FlatList
+              ListEmptyComponent={() => (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  }}
+                >
+                  <AppText style={{fontSize: 14}}>No Bids yet</AppText>
+                </View>
+              )}
+              horizontal={true}
+              data={bids}
+              keyExtractor={(bid) => bid._id}
+              renderItem={({item}) => (
+                <View style={styles.bidCardContainer} key={item._id}>
+                  <BidCard
+                    // key={item._id}
+                    data={item}
+                    onPress={() => bidHandler(item)}
+                    styleStatus={handleStatus(item.bidStatus)}
+                  />
+                </View>
+              )}
+            />
+          </>
+        ) : (
+          <>
+            <View style={styles.bidContainer}>
+              <AppText style={ScreenStyles.postsDetailScreen.viewBox.titleText}>
+                Your Bid
+              </AppText>
             </View>
-          )}
-        />
-        {/* </View> */}
+            <FlatList
+              ListEmptyComponent={() => (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  }}
+                >
+                  <AppText style={{fontSize: 14}}>No Bid yet</AppText>
+                </View>
+              )}
+              horizontal={true}
+              data={userBids}
+              keyExtractor={(bid) => bid._id}
+              renderItem={({item}) => (
+                <View style={styles.bidCardContainer} key={item._id}>
+                  <BidCard
+                    // key={item._id}
+                    data={item}
+                    onPress={() => bidHandler(item)}
+                    styleStatus={handleStatus(item.bidStatus)}
+                  />
+                </View>
+              )}
+            />
+          </>
+        )}
       </ScrollView>
     </MenuProvider>
   );
@@ -323,12 +490,12 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: '100%',
-    marginVertical: 10,
+    marginVertical: 20,
     borderWidth: 0.5,
   },
   bidContainer: {
     width: '100%',
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
   },
   bidCardContainer: {
     // width: '65%',

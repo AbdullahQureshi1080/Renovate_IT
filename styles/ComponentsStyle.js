@@ -75,6 +75,7 @@ const ComponentsStyle = {
       // fontFamily:"Poppins-Regular" ,
     },
   },
+  
   postCardStyle: {
     borderRadius: 5,
     marginHorizontal: marginHorizontal,

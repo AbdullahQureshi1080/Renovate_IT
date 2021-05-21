@@ -16,15 +16,6 @@ const OrderCard = ({
   orderStatus,
   styleStatus,
 }) => {
-//   const [color, setColor] = React.useState('');
-
-//   React.useEffect(() => {
-//     if (orderStatus.toLowerCase() == 'confirmed') {
-//       setColor('#0F4C75');
-//     } else if (orderStatus.toLowerCase() == 'awaitng confirmation') {
-//       setColor('#F16174');
-//     }
-//   }, []);
   return (
     <TouchableOpacity style={ComponentsStyle.postCardStyle} onPress={onPress}>
       <View style={styles.container}>

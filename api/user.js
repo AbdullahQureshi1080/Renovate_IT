@@ -82,6 +82,38 @@ const userPosts = async (email) => {
   return result.data;
 };
 
+const offerNewBid = (bidderId, postId, message, bidAmount) =>
+  client.post('posts/offerBid', {
+    bidderId,
+    postId,
+    message,
+    bidAmount,
+  });
+
+const acceptBid = (bidId, postId) =>
+  client.post('posts/acceptBid', {
+    bidId,
+    postId,
+  });
+
+const rejectBid = (bidId, postId) =>
+  client.post('posts/rejectBid', {
+    bidId,
+    postId,
+  });
+
+const withdrawBid = (userId, postId, bidId) =>
+  client.post('posts/withdrawUserBid', {
+    userId,
+    postId,
+    bidId,
+  });
+
+const getPostBids = (postId) =>
+  client.post('posts/getPostBids', {
+    postId,
+  });
+
 //  Project ----------------------
 
 const createProject = (email, title, description, category, data) =>
@@ -225,6 +257,11 @@ export default {
   userPosts,
   deletePost,
   updatePost,
+  offerNewBid,
+  acceptBid,
+  rejectBid,
+  withdrawBid,
+  getPostBids,
   createProject,
   deleteProject,
   updateProject,
