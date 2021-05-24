@@ -36,6 +36,15 @@ const BottomNavigation = ({navigation}) => {
         name="AppHome"
         //   The Main Home Screen ------ From App Stack All Screen availale from that stack navigator
         component={HomeStack}
+        listeners={({navigation}) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+            navigation.navigate('AppHome', {
+              screen: 'AppHome',
+              // params: {_id: userId},
+            });
+          },
+        })}
         options={({route, navigation}) => ({
           tabBarLabel: 'AppHome',
           tabBarIcon: ({color, size}) => (
@@ -137,9 +146,13 @@ const BottomNavigation = ({navigation}) => {
           tabBarVisible: ((route) => {
             let routeName =
               getFocusedRouteNameFromRoute(route) ??
-              ('Profile' || 'User Profile');
+              ('Profile' || 'User Profile' || 'Other User');
             console.log(routeName);
-            if (routeName == 'Profile' || routeName === 'User Profile')
+            if (
+              routeName == 'Profile' ||
+              routeName === 'User Profile' ||
+              routeName === 'Other User'
+            )
               return true;
             else return false;
           })(route),

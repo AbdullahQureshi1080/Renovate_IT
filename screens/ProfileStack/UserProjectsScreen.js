@@ -62,6 +62,7 @@ export default UserProjectsScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <FlatList
+        horizontal={true}
         ListEmptyComponent={() => (
           <View
             style={{

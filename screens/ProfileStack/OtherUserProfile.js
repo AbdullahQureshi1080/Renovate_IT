@@ -1,15 +1,7 @@
 // Native Imports
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  ImageBackground,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {Button, List} from 'react-native-paper';
 import MaterialComunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useFocusEffect} from '@react-navigation/native';
@@ -31,20 +23,30 @@ import userAPI from '../../api/user';
 import UserProjectsScreen from './UserProjectsScreen';
 import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
-import RemoteFirmScreen from './RemoteFirmScreen';
-
-// import { useEffect } from 'react';
-import {setUserData} from '../../store/auth';
-import {setProfileData} from '../../store/user';
+import AppText from '../../components/AppText';
 
 const Tab = createMaterialTopTabNavigator();
 
 const UserProjects = () => {
   return (
-    <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProjectsTab}>
-      <Tab.Screen name="Projects" component={UserProjectsScreen} />
-      <Tab.Screen name="Posts" component={UserPostsScreen} />
-    </Tab.Navigator>
+    <View style={{flex: 1, marginVertical: 10}}>
+      <View style={{flex: 1}}>
+        <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+          Projects
+        </AppText>
+        <UserProjectsScreen />
+      </View>
+      <View style={{flex: 1}}>
+        <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+          Posts
+        </AppText>
+        <UserPostsScreen />
+      </View>
+    </View>
+    // <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProjectsTab}>
+    //   <Tab.Screen name="Projects" component={UserProjectsScreen} />
+    //   <Tab.Screen name="Posts" component={UserPostsScreen} />
+    // </Tab.Navigator>
   );
 };
 
@@ -56,15 +58,16 @@ const display = () => {
   );
 };
 
-const UserProfileScreen = ({navigation, route}) => {
+const OtherUserProfile = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
-  const profile = state.entities.user.profile;
   const [userProfile, setUserProfile] = useState(null);
   const [checkId, setCheckId] = useState(false);
 
   const profileApi = useApi(userAPI.userProfile);
   const profileId = route.params._id;
+  const otherProfile = route.params.user._id;
 
   const fetchUserProfile = async () => {
     const result = await profileApi.request(profileId);
@@ -73,25 +76,29 @@ const UserProfileScreen = ({navigation, route}) => {
     }
     console.log('Profile from Api', result);
     setUserProfile(result);
+    // dispatch(setProfileData(result));
   };
 
-  useEffect(() => {
-    fetchUserProfile();
-
-    if (profileId == userId) {
-      setCheckId(false);
-      // dispatch(setProfileData(userProfile));
-    } else {
-      if (profileId !== userId) {
-        setCheckId(true);
-        // dispatch(setProfileData(userProfile));
+  useFocusEffect(
+    React.useCallback(() => {
+      //   alert('Screen was focused');
+      // Do something when the screen is focused
+      fetchUserProfile();
+      if (profileId == userId) {
+        setCheckId(false);
+      } else {
+        if (profileId !== userId) {
+          setCheckId(true);
+        }
       }
-    }
-  }, [profileId]);
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
+      return () => {
+        // alert('Screen was unfocused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        setUserProfile(null);
+      };
+    }, []),
+  );
 
   const getImageUri = () => {
     if (userProfile) {
@@ -107,6 +114,10 @@ const UserProfileScreen = ({navigation, route}) => {
 
   if (userProfile === null) {
     return <View />;
+  }
+
+  if (userProfile._id !== otherProfile) {
+    setUserProfile(route.params.user);
   }
   return (
     <ScrollView style={ScreenStyles.userprofileScreen}>
@@ -164,15 +175,13 @@ const UserProfileScreen = ({navigation, route}) => {
         />
       </View>
       <View>
-        <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProfileTab}>
+        <Tab.Navigator tabBarOptions={TabNavigatorStyle.otherUserProfileTab}>
           <Tab.Screen
             name="About"
             component={AboutUser}
             initialParams={userProfile}
           />
           <Tab.Screen name="Projects" component={UserProjects} />
-          <Tab.Screen name="Remote Firm" component={RemoteFirmScreen} />
-          <Tab.Screen name="Design a room" component={display} />
         </Tab.Navigator>
       </View>
     </ScrollView>
@@ -197,4 +206,4 @@ const profileAvatar = {
   },
 };
 
-export default UserProfileScreen;
+export default OtherUserProfile;

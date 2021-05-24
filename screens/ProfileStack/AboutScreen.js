@@ -6,34 +6,38 @@ import {useSelector} from 'react-redux';
 // Components Import
 import AppButton from '../../components/AppButton';
 import AppText from '../../components/AppText';
-
+import InfoCard from '../../components/Card/InfoCard';
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
+import {useIsFocused} from '@react-navigation/native';
 
 // Api Imports
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
 const AboutUser = ({navigation, route}) => {
+  const isFocused = useIsFocused();
+
   const state = useSelector((state) => state);
-  //   const profile = state.entities.user.profile;
+  // const profile = state.entities.user.profile;
   const [userProfile, setUserProfile] = useState(route.params);
 
-  //   useEffect(() => {
-  //     setUserProfile(profile);
-  //   }, []);
+  // useEffect(() => {
+  //   console.log('Route Params', route.params);
+  //   setUserProfile(route.params);
+  // }, []);
 
-  //   useEffect(() => {
-  //     setUserProfile(profile);
-  //   }, [profile]);
+  useEffect(() => {
+    setUserProfile(route.params);
+  }, [userProfile]);
 
   return (
     <View>
-      {/* <View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
-                <InfoCard subtitle="Thumb-Ups" value={300} />
-                <InfoCard subtitle="Following" value={50} />
-                <InfoCard subtitle="Followers" value={10} />
-            </View> */}
+      {/* <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+        <InfoCard subtitle="Likes" value={300} />
+        <InfoCard subtitle="Following" value={50} />
+        <InfoCard subtitle="Followers" value={10} />
+      </View> */}
       {/* ["about","jobtitle","location"] */}
       {userProfile?.hasOwnProperty('about') &&
       userProfile.about &&
@@ -49,7 +53,6 @@ const AboutUser = ({navigation, route}) => {
             <AppText
               style={ScreenStyles.userprofileScreen.userAbout.userAboutText}
             >
-              {/* <Entypo name="location-pin" size={18}/> */}
               {userProfile.location}
             </AppText>
           </View>

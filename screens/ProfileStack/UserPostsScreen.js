@@ -52,10 +52,8 @@ const UserPostsScreen = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
-
     fetchPosts();
   }, [userPostIds]);
-
 
   const refreshPosts = () => {
     if (posts !== []) {
@@ -68,10 +66,12 @@ const UserPostsScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <FlatList
+        horizontal={true}
         ListEmptyComponent={() => (
           <View
             style={{
               flex: 1,
+              // alignContent: 'center',
               justifyContent: 'center',
               alignItems: 'center',
               alignSelf: 'center',
