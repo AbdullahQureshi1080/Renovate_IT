@@ -102,7 +102,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
   };
 
   const projectId = route.params.item._id;
-  const userProjectIds = route.params.userProjectIds;
+  const userProjectIds = state.entities.auth.data.projects.map((id) => id);
   useEffect(() => {
     getLikes();
     for (var i = 0; i < userProjectIds.length; i++) {

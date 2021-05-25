@@ -16,35 +16,36 @@ require('firebase/firestore');
 import userAPI from '../../api/user';
 import useApi from '../../hooks/useApi';
 import {Alert} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 // import { v1 as uuidv1 } from 'uuid';
 // import { auth, db } from "../../config/firebase";
 // import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
-const AllMessagesScreen = ({navigation}) => {
+const AllMessagesScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const user = state.entities.auth.data;
-  const chatIds = state.entities.auth.data.chats.map((chat) => chat.id);
-  // const [chatIds, setChatIds] = useState([]);
+  // const chatIds = state.entities.auth.data.chats.map((chat) => chat.id);
+  // const [chatIds, setChatIds] = useState(route.params);
+  const [chatIds, setChatIds] = useState([]);
   const [chats, setChats] = useState([]);
-  // const [allChats, setAllChats] = useState([]);
+  // // const [allChats, setAllChats] = useState([]);
   const chatIdApi = useApi(userAPI.getChatIds);
 
-  //   useEffect(()=>{
-  //     getChatIds()
-  //    },[])
+  const getChatIds = async () => {
+    const result = await chatIdApi.request(user.email);
+    if (!result.ok) {
+      return Alert.alert('Error Retriving Chat Ids');
+    }
 
-  // const getChatIds = async()=>{
-  //   const result = await chatIdApi.request(user.email);
-  //     if(!result.ok){
-  //       return Alert.alert("Error Retriving Chat Ids")
-  //     }
-  //     setChatIds(result.data);
-  // }
+    setChatIds(result.data);
+  };
 
   useEffect(() => {
-    // getChatIds()
-    // const chatId = uuidv1();
-    console.log('chatIds in  All Messaging Screen', chatIds);
+    getChatIds();
+  }, []);
+
+  useEffect(() => {
+
     const unsubscribe = firebase
       .firestore()
       .collection('chats')
@@ -53,7 +54,7 @@ const AllMessagesScreen = ({navigation}) => {
           const chat = [];
           //  const chat = chatIds.map(chatId=>chatId == snapshot.docs.map(doc=>doc.id))
           for (var i = 0; i < snapshot.docs.length; i++) {
-            if (chatIds[i] === snapshot.docs[i].id) {
+            if (chatIds[i] == snapshot.docs[i].id) {
               chat.push(snapshot.docs[i]);
               // chat.
             }
@@ -70,17 +71,10 @@ const AllMessagesScreen = ({navigation}) => {
             })),
           );
         },
-        // setChats(
-        //   snapshot.docs.map((doc) => ({
-        //     id: doc.id,
-        //     data: doc.data(),
-        //   }))
-        // )
       );
 
-    // setChats(filteredChats);
     return unsubscribe;
-  }, []);
+  }, [chatIds]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

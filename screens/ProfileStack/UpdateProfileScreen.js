@@ -1,7 +1,7 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   ImageBackground,
   StyleSheet,
@@ -9,81 +9,154 @@ import {
   Text,
   Dimensions,
   ScrollView,
-  // ActivityIndicator,
   Alert,
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
   TextInput,
   KeyboardAvoidingView,
-} from "react-native";
-// import { Button,List,TextInput } from 'react-native-paper';
+} from 'react-native';
 
 // Components Imports
-// import InputText from '../../components/AppTextInput';
-// import ProfessionalAvatar from '../../components/ProfessionalAvatar';
-import AppFormField from "../../components/AppForm/AppFormField";
-import SubmitButton from "../../components/AppForm/SubmitButton";
-import AppForm from "../../components/AppForm/AppForm";
-import ErrorMessage from "../../components/AppForm/ErrorMessage";
-// import AppButton from "../../components/AppButton";
-import ActivityIndicator from "../../components/ActivityIndicator";
-// Styles Imports
-import ScreenStyles from '../../styles/ScreenStyles'
-import ComponentsStyle from "../../styles/ComponentsStyle";
 
-import firebase from "firebase";
-require("firebase/firestore");
-require("firebase/firebase-storage");
- 
- 
+import AppFormField from '../../components/AppForm/AppFormField';
+import SubmitButton from '../../components/AppForm/SubmitButton';
+import AppForm from '../../components/AppForm/AppForm';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
+import Switch from '../../components/Switch';
+import ActivityIndicator from '../../components/ActivityIndicator';
+
+// Styles Imports
+import ScreenStyles from '../../styles/ScreenStyles';
+import ComponentsStyle from '../../styles/ComponentsStyle';
+
+import uploadAsPromise from '../../api/imageUpload';
+
+// import firebase from 'firebase';
+// require('firebase/firestore');
+// require('firebase/firebase-storage');
+
 // Supporting Imports
-import * as Yup from "yup";
- 
+import * as Yup from 'yup';
+
 // Api Imports
 // import authAPI from "../../api/auth";
-import userAPI from "../../api/user";
+import userAPI from '../../api/user';
 // import useAuth from "../../auth/useAuth";
-import useApi from "../../hooks/useApi";
+import useApi from '../../hooks/useApi';
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageInput from '../../components/Image/ImageInput';
 // import { setUserData } from '../../store/auth';
-import {setProfileData}from "../../store/user";
+// import {setProfileData} from '../../store/user';
 import AppFormPicker from '../../components/AppForm/AppFormPicker';
 import AppText from '../../components/AppText';
- 
-var { width, height } = Dimensions.get("window");
- 
+
+var {width, height} = Dimensions.get('window');
+
 const validationSchema = Yup.object().shape({
-  firstname: Yup.string().required().label("First Name"),
-  lastname: Yup.string().required().min(3).label("Last Name"),
-  about: Yup.string().label("About"),
-  location:Yup.object().required().nullable().label("Location"),
-  // location: Yup.string().min(3).label("Location"),
-  jobtitle: Yup.string().min(3).label("Job Title"),
-  jobcategory:Yup.object().required().nullable().label("Job Category"),
-  // image: Yup.string(),
+  firstname: Yup.string().required().label('First Name'),
+  lastname: Yup.string().required().label('Last Name'),
+  about: Yup.string().label('About'),
+  location: Yup.object().required().nullable().label('Location'),
+  jobtitle: Yup.string().min(3).label('Job Title'),
+  jobcategory: Yup.object().required().nullable().label('Job Category'),
 });
- 
-const UpdateProfileScreen = ({ navigation, route }) => {
+const validationNormalSchema = Yup.object().shape({
+  firstname: Yup.string().required().label('First Name'),
+  lastname: Yup.string().required().min(3).label('Last Name'),
+  // about: Yup.string().label('About'),
+  // location: Yup.object().required().nullable().label('Location'),
+  // jobtitle: Yup.string().min(3).label('Job Title'),
+  // jobcategory: Yup.object().required().nullable().label('Job Category'),
+});
+
+const UpdateProfileScreen = ({navigation, route}) => {
   const profileData = route.params.profile;
-  useEffect(()=>{
-    console.log("Data from Prev Route", profileData);
-  },[])
   const [imageUri, setImageUri] = useState(profileData.image);
-  const [downloadURL, setDownloadURL] = useState(null);
-  const dispatch = useDispatch();
+  // const [downloadURL, setDownloadURL] = useState(null);
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
   // console.log(userId);
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
+  const [statusProfile, setStatusProfile] = useState(profileData.profileStatus);
+  const [switchOn, setSwitchOn] = useState(
+    profileData.profileStatus.toLowerCase() == 'professional',
+  );
   // const imageApi = useApi(userAPI.imageUpload);
-  const updateApi =useApi(userAPI.updateProfile);
-  
-  const handleSubmit = async ({
+  const updateProfessionalApi = useApi(userAPI.updateProfessionalProfile);
+  const updateNormalApi = useApi(userAPI.updateNormalProfile);
+  useEffect(() => {
+    console.log('Data from Prev Route', profileData);
+    console.log('Swicth Status', switchOn);
+  }, []);
+
+  // const handleSubmit = async ({
+  //   email,
+  //   firstname,
+  //   lastname,
+  //   about,
+  //   locationName,
+  //   jobtitle,
+  //   jobCategory,
+  //   image,
+  //   profileStatus,
+  // }) => {
+  //   const jobcategory = jobCategory;
+  //   const location = locationName;
+  //   // const image = image;
+  //   // console.log(jobCategory,workingLocation)
+  //   const dataProfessional = {
+  //     email,
+  //     firstname,
+  //     lastname,
+  //     about,
+  //     location,
+  //     jobtitle,
+  //     jobcategory,
+  //     image,
+  //     profileStatus,
+  //   };
+  //   const dataNormal = {
+  //     email,
+  //     firstname,
+  //     lastname,
+  //     image,
+  //     profileStatus,
+  //   };
+  //   // console.log('Data from Handle Submit ', data);
+  //   switchOn
+  //     ? callingNormalApi(dataNormal)
+  //     : callingProfessionalApi(dataProfessional);
+  // };
+
+  const callingNormalApi = async ({
+    email,
+    firstname,
+    lastname,
+    image,
+    profileStatus,
+  }) => {
+    const result = await updateNormalApi.request(
+      email,
+      firstname,
+      lastname,
+      image,
+      profileStatus,
+    );
+    if (!result.ok) {
+      setIsLoading(false);
+      return setSaveData(true);
+    }
+    setSaveData(false);
+    setIsLoading(false);
+    navigation.navigate('User Profile');
+  };
+
+  const callingProfessionalApi = async ({
     email,
     firstname,
     lastname,
@@ -92,14 +165,12 @@ const UpdateProfileScreen = ({ navigation, route }) => {
     jobtitle,
     jobCategory,
     image,
+    profileStatus,
   }) => {
- 
     const jobcategory = jobCategory;
     const location = locationName;
-    // const image = image;
-    // console.log(jobCategory,workingLocation)
-    const data = {
-      email, 
+    const result = await updateProfessionalApi.request(
+      email,
       firstname,
       lastname,
       about,
@@ -107,99 +178,18 @@ const UpdateProfileScreen = ({ navigation, route }) => {
       jobtitle,
       jobcategory,
       image,
+      profileStatus,
+    );
+    if (!result.ok) {
+      setIsLoading(false);
+      return setSaveData(true);
     }
-    console.log("Data from Handle Submit ",data);
-    // setIsLoading(false);
-    // console.log(jobCategory,workinglocation);
-    // console.log(data);
-    // console.log("It comes till here")
-    const result = await updateApi.request(
-      email, 
-      firstname,
-      lastname,
-      about,
-      location,
-      jobtitle,
-      jobcategory,
-      image,
-     );
-    //  const result = await updateApi.request( data );
-  if (!result.ok) {
-          // console.log(result.data);
-          // setError(result.data);
-          setIsLoading(false);
-          return setSaveData(true);
-   }
-        setSaveData(false);
-        setIsLoading(false);
-        // const {prevEmail,newfirstName,newLastname,_id} = result.data;
-        // console.log(result.data);
-        // dispatch(setUserData(prevEmail,newfirstName,newLastname,_id));
-        dispatch(setProfileData(result.data));
-        // logIn(result.data);
-        navigation.navigate("User Profile");
-    // setIsLoading(true);
+    setSaveData(false);
+    setIsLoading(false);
+    navigation.navigate('User Profile');
   };
 
-  const upload =  async({
-    email,
-    firstname,
-    lastname,
-    about,
-    location,
-    jobtitle,
-    jobcategory,
-    image,
-  }) =>{
-    const uri = imageUri;
-    // console.log(uri);
-    const childPath = `images/${userId}/${Math.random().toString(36)}`;
-    // console.log(childPath);
-    const response = await fetch(uri);
-    // console.log(response);
-    const blob = await response.blob();
-    const task = firebase.default.storage().ref().child(childPath).put(blob);
-
-    // console.log(task);
-    const taskProgress = (snapshot) => {
-      console.log(`transferred: ${snapshot.bytesTransferred}`);
-    };
-    const taskCompleted = () => {
-      task.snapshot.ref.getDownloadURL().then((snapshot) => {
-        // savePostData(snapshot);
-        // console.log(snapshot);
-        const image = snapshot;
-        setDownloadURL(snapshot);
-        // console.log(snapshot);
-        const locationName = location.label;
-        const jobCategory = jobcategory.label;
-        const result = {
-          email:userEmail,
-          firstname,
-          lastname,
-          about,
-          locationName,
-          jobtitle,
-          jobCategory,
-          image:image
-        };
-        // console.log(result);
-        handleSubmit(result);
-      });
-    };
-    const taskError = (snapshot) => {
-      const error = `An Error Occured ${snapshot}`;
-      console.log(error);
-      return(error);
-    };
-
-    task.on("state_changed", taskProgress, taskError, taskCompleted);
-    // console.log(response);
-    // console.log(blob);
-
-  }
-
-  const handleFormSave = ({ 
+  const handleFormSave = async ({
     // email,
     firstname,
     lastname,
@@ -208,96 +198,177 @@ const UpdateProfileScreen = ({ navigation, route }) => {
     jobtitle,
     jobcategory,
     // image
-  })=>{
-    if(imageUri.includes("https://")){
-      console.log("imageUriPrevRoute", imageUri);
+  }) => {
+    if (imageUri.includes('https://')) {
+      console.log('imageUriPrevRoute', imageUri);
       const locationName = location.label;
       const jobCategory = jobcategory.label;
       const result = {
-        email:userEmail,
+        email: userEmail,
         firstname,
         lastname,
         about,
         locationName,
         jobtitle,
         jobCategory,
-        image:imageUri
+        image: imageUri,
+        profileStatus: statusProfile,
       };
       // console.log(result);
       setIsLoading(true);
-      handleSubmit(result);
-    }
-    else{
-      console.log("newImageData", imageUri);
-       const result = {
-        email:userEmail,
+      callingProfessionalApi(result);
+    } else {
+      console.log('newImageData', imageUri);
+      setIsLoading(true);
+      let imageUrlFromFb;
+      const uploadType = 'profile';
+
+      var type = 'image';
+      await uploadAsPromise(imageUri, type, uploadType, userId).then((res) => {
+        imageUrlFromFb = res;
+      });
+      const locationName = location.label;
+      const jobCategory = jobcategory.label;
+      const result = {
+        email: userEmail,
         firstname,
         lastname,
         about,
-        location,
+        locationName,
         jobtitle,
-        jobcategory,
-        image:imageUri
+        jobCategory,
+        image: imageUrlFromFb,
+        profileStatus: statusProfile,
+      };
+      callingProfessionalApi(result);
+    }
+  };
+
+  const handleFormNormalSave = async ({firstname, lastname}) => {
+    if (imageUri.includes('https://')) {
+      console.log('imageUriPrevRoute', imageUri);
+      const result = {
+        email: userEmail,
+        firstname,
+        lastname,
+        image: imageUri,
+        profileStatus: statusProfile,
       };
       // console.log(result);
       setIsLoading(true);
-      upload(result);
+      callingNormalApi(result);
+    } else {
+      console.log('newImageData', imageUri);
+      setIsLoading(true);
+      let imageUrlFromFb;
+      const uploadType = 'profile';
 
-      // upload(
-      //   firstname,
-      //   lastname,
-      //   about,
-      //   location,
-      //   jobtitle,
-      //   jobcategory,
-      //   )
+      var type = 'image';
+      await uploadAsPromise(imageUri, type, uploadType, userId).then((res) => {
+        imageUrlFromFb = res;
+      });
+      // const locationName = location.label;
+      // const jobCategory = jobcategory.label;
+      const result = {
+        email: userEmail,
+        firstname,
+        lastname,
+        // about,
+        // locationName,
+        // jobtitle,
+        // jobCategory,
+        image: imageUrlFromFb,
+        profileStatus: statusProfile,
+      };
+      callingNormalApi(result);
     }
-  }
- 
+  };
+
   const locations = [
-    {label:"Islamabad", value:1},
-    {label:"Rawalpindi", value:2},
+    {label: 'Islamabad', value: 1},
+    {label: 'Rawalpindi', value: 2},
   ];
   const categories = [
-    {label:"Interior Designer", value:1},
-    {label:"Architecture", value:2},
-    {label:"Builder", value:3},
-    {label:"Supplier", value:4},
-    {label:"Renovator", value:5}
+    {label: 'Interior Designer', value: 1},
+    {label: 'Architecture', value: 2},
+    {label: 'Builder', value: 3},
+    {label: 'Supplier', value: 4},
+    {label: 'Renovator', value: 5},
   ];
+
+  const onToggleSwitch = () => {
+    setSwitchOn(!switchOn);
+    setStatusProfile(switchOn ? 'Normal' : 'Professional');
+  };
 
   return (
     <KeyboardAvoidingView>
-    <ActivityIndicator visible = {isLoading}/>
-    <ScrollView style={ScreenStyles.updateProfileScreen} showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
+      <ActivityIndicator visible={isLoading} />
+      <ScrollView
+        style={ScreenStyles.updateProfileScreen}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
           <AppForm
             initialValues={{
-              firstname:profileData.firstname ||"",
-              lastname: profileData.lastname||"",
-              location:null,
-              about: profileData.about||"",
-              jobtitle: profileData.jobtitle||"",
-              jobcategory:null,
+              firstname: profileData.firstname || '',
+              lastname: profileData.lastname || '',
+              location: null,
+              about: profileData.about || '',
+              jobtitle: profileData.jobtitle || '',
+              jobcategory: null,
             }}
-              onSubmit={handleFormSave}
-            validationSchema={validationSchema}
+            onSubmit={
+              statusProfile == 'Normal' ? handleFormNormalSave : handleFormSave
+            }
+            validationSchema={
+              statusProfile == 'Normal'
+                ? validationNormalSchema
+                : validationSchema
+            }
           >
-      <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                <TouchableOpacity style={{alignSelf:"center"}} onPress={()=>navigation.goBack()}>
-                  <MaterialCommunityIcons name="backspace" size={40} color="#1b262c"/>
-                  </TouchableOpacity>
-              <View style={{ alignSelf: "center" }}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}
+            >
+              <TouchableOpacity
+                style={{alignSelf: 'center'}}
+                onPress={() => navigation.goBack()}
+              >
+                <MaterialCommunityIcons
+                  name="backspace"
+                  size={40}
+                  color="#1b262c"
+                />
+              </TouchableOpacity>
+              <View style={{alignSelf: 'center'}}>
                 <SubmitButton name="save" />
-            </View>
               </View>
-              <View style={{ alignSelf: "center" }}>
-            <Text style={styles.titleText}>Edit Profile</Text>
-          </View>
-          <View style={{ alignSelf: "center" }}>
-         <ImageInput imageUri={imageUri} onChangeImage={imageUri=>setImageUri(imageUri)}/>
-         </View>
-            <View style={{ alignSelf: "center" }}>
+            </View>
+            <View style={{alignSelf: 'center'}}>
+              <Text style={styles.titleText}>Edit Profile</Text>
+            </View>
+            <View style={{alignSelf: 'center'}}>
+              <ImageInput
+                imageUri={imageUri}
+                onChangeImage={(imageUri) => setImageUri(imageUri)}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginVertical: 10,
+              }}
+            >
+              {switchOn ? (
+                <AppText>Switch Off Professional Profile</AppText>
+              ) : (
+                <AppText>Switch To Professional Profile</AppText>
+              )}
+              {/* <AppText>{statusProfile}</AppText> */}
+              <Switch isSwitchOn={switchOn} onToggleSwitch={onToggleSwitch} />
+            </View>
+            <View style={{alignSelf: 'center'}}>
               <ErrorMessage
                 error="Not able to save User Data"
                 visible={saveData}
@@ -306,136 +377,197 @@ const UpdateProfileScreen = ({ navigation, route }) => {
               <AppText style={styles.labelText}>Firstname</AppText>
 
               <AppFormField
-               style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
+                style={{
+                  ...ComponentsStyle.inputStyleSign,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
                 // label="First Name"
                 name="firstname"
                 selectionColor="#f4f4f2"
                 underlineColor="#495464"
-                 textColor="#495464"
-                 placeholder={profileData.firstname}
-                 placeholderTextColor="#495464"
+                textColor="#495464"
+                placeholder={profileData.firstname}
+                placeholderTextColor="#495464"
                 //  style={{marginVertical:10,}}
               />
               <AppText style={styles.labelText}>Lastname</AppText>
               <AppFormField
-                   style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
+                style={{
+                  ...ComponentsStyle.inputStyleSign,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
                 // label="Last Name"
                 name="lastname"
                 selectionColor="#f4f4f2"
                 underlineColor="#495464"
                 textColor="#495464"
                 placeholder={profileData.lastname}
-                 placeholderTextColor="#495464"
+                placeholderTextColor="#495464"
                 //  style={{marginVertical:10,}}
               />
-              <AppText style={styles.labelText}>Select Location</AppText>
-              <AppFormPicker
-              items={locations}
-              name="location"
-              placeholder="Location"
-              /> 
+              {switchOn ? (
+                <>
+                  <AppText style={styles.labelText}>Select Location</AppText>
+                  <AppFormPicker
+                    items={locations}
+                    name="location"
+                    placeholder="Location"
+                  />
+                  <AppText style={styles.labelText}>About</AppText>
+                  <AppFormField
+                    style={{
+                      ...ComponentsStyle.inputStyleSign,
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    }}
+                    // label="About"
+                    name="about"
+                    selectionColor="#495464"
+                    underlineColor="#495464"
+                    textColor="#495464"
+                    multiline={true}
+                    numberOfLines={5}
+                    placeholder={profileData.about}
+                    placeholderTextColor="#495464"
+                    // style={{marginVertical:10,}}
+                  />
+                  <AppText style={styles.labelText}>Job Title</AppText>
+                  <AppFormField
+                    style={{
+                      ...ComponentsStyle.inputStyleSign,
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    }}
+                    // label="Job Title"
+                    name="jobtitle"
+                    selectionColor="#f4f4f2"
+                    underlineColor="#f4f4f2"
+                    textColor="#495464"
+                    placeholder={profileData.jobtitle}
+                    placeholderTextColor="#495464"
+                    //  style={{marginVertical:10,}}
+                  />
+                  <AppText style={styles.labelText}>
+                    Select Job Category
+                  </AppText>
+                  <AppFormPicker
+                    items={categories}
+                    name="jobcategory"
+                    placeholder="Job Category"
+                  />
+                </>
+              ) : (
+                <View />
+              )}
+              {/* <AppText style={styles.labelText}>Select Location</AppText>
+               <AppFormPicker
+                items={locations}
+                name="location"
+                placeholder="Location"
+              />
               <AppText style={styles.labelText}>About</AppText>
               <AppFormField
-                style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
-                // label="About"
+                style={{
+                  ...ComponentsStyle.inputStyleSign,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
                 name="about"
                 selectionColor="#495464"
                 underlineColor="#495464"
                 textColor="#495464"
-                multiline = {true}
-                numberOfLines = {5}
+                multiline={true}
+                numberOfLines={5}
                 placeholder={profileData.about}
                 placeholderTextColor="#495464"
-                // style={{marginVertical:10,}}
               />
               <AppText style={styles.labelText}>Job Title</AppText>
               <AppFormField
-                  style={{...ComponentsStyle.inputStyleSign,backgroundColor: 'rgba(0, 0, 0, 0.3)'}}
-                  // label="Job Title"
+                style={{
+                  ...ComponentsStyle.inputStyleSign,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
                 name="jobtitle"
                 selectionColor="#f4f4f2"
                 underlineColor="#f4f4f2"
-                 textColor="#495464"
-                 placeholder={profileData.jobtitle}
-                 placeholderTextColor="#495464"
-                //  style={{marginVertical:10,}}
+                textColor="#495464"
+                placeholder={profileData.jobtitle}
+                placeholderTextColor="#495464"
+                 style={{marginVertical:10,}}
               />
-                <AppText style={styles.labelText}>Select Job Category</AppText>
+              <AppText style={styles.labelText}>Select Job Category</AppText>
               <AppFormPicker
-              items={categories}
-              name="jobcategory"
-              placeholder="Job Category"
-              />
+                items={categories}
+                name="jobcategory"
+                placeholder="Job Category"
+              /> */}
             </View>
- 
+
             <View
               style={{
                 marginVertical: 15,
-                borderBottomColor: "#F4f4F2",
+                borderBottomColor: '#F4f4F2',
                 borderBottomWidth: 1,
                 opacity: 0.5,
               }}
             ></View>
           </AppForm>
-        {/* </View> */}
-      </View>
-    </ScrollView>
+          {/* </View> */}
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    marginVertical:20,
+    flexDirection: 'column',
+    marginVertical: 20,
   },
   child: {
     flex: 2,
-    flexDirection: "column",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
+    flexDirection: 'column',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
     paddingHorizontal: 20,
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
   titleText: {
-    fontFamily: "Poppins-Bold",
-    color: "#495464",
+    fontFamily: 'Poppins-Bold',
+    color: '#495464',
     fontSize: 30,
     marginVertical: 10,
     opacity: 0.6,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   text: {
     // fontFamily: "Poppins-Medium",
-    color: "#E8E8E8",
+    color: '#E8E8E8',
     fontSize: 20,
     opacity: 0.8,
   },
-  labelText:{fontSize:15,fontFamily:"Poppins-Medium", opacity:0.4,},
+  labelText: {fontSize: 15, fontFamily: 'Poppins-Medium', opacity: 0.4},
   btnSign: {
-    backgroundColor: "#495464",
+    backgroundColor: '#495464',
     marginVertical: 10,
     width: width / 3,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   mainContainer: {
-    backgroundColor: "grey",
+    backgroundColor: 'grey',
     borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 100,
     width: 100,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   profileImage: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
   },
 });
- 
+
 export default UpdateProfileScreen;

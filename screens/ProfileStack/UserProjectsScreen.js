@@ -13,21 +13,22 @@ import dataAPI from '../../api/data';
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
-export default UserProjectsScreen = ({navigation, route}) => {
+export default UserProjectsScreen = ({navigation, route, email}) => {
   const [error, setError] = useState(null);
   const state = useSelector((state) => state);
-  const userEmail = state.entities.auth.data.email;
+  // const userEmail = state.entities.auth.data.email;
   const projectsApi = useApi(dataAPI.getAllProjects);
   const projectApi = useApi(userAPI.userProjects);
   const [projects, setProjects] = useState([]);
   const [userProjectIds, setUserProjectIds] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
+  const useremail = route.params.email;
   const fetchUserProjectIds = async () => {
     // User Post Ids
-    const result = await projectApi.request(userEmail);
+    const result = await projectApi.request(useremail);
     if (result.length == 0) {
-      console.log('Could Not Get Project Ids');
+      console.log('No Projects for the User');
     }
     setUserProjectIds(result);
   };
@@ -62,7 +63,7 @@ export default UserProjectsScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <FlatList
-        horizontal={true}
+        // horizontal={true}
         ListEmptyComponent={() => (
           <View
             style={{

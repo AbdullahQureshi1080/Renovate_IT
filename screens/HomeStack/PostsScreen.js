@@ -30,7 +30,7 @@ const Posts = ({navigation, route}) => {
     // User Post Ids
     const result = await postApi.request(userEmail);
     if (result.length == 0) {
-      console.log('Could Not Get Post Ids');
+      console.log('Post Ids not available');
     }
     setUserPostIds(result);
   };

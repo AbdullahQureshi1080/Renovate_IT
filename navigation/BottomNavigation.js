@@ -1,6 +1,6 @@
 // Native Imports
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -11,7 +11,10 @@ import StoreStack from './StoreStack';
 import ChatStack from './ChatStack';
 import CreateStack from './CreateStack';
 import ProfileStack from './ProfileStack';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  useFocusEffect,
+} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
@@ -19,6 +22,7 @@ const Tab = createBottomTabNavigator();
 const BottomNavigation = ({navigation}) => {
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
+
   return (
     <Tab.Navigator
       initialRouteName="AppHome"

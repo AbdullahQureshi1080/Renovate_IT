@@ -12,15 +12,31 @@ import {
   ListViewMessages,
 } from '../../components/List/ListView';
 
-const ChatScreen = ({navigation}) => {
+import userAPI from '../../api/user';
+import useApi from '../../hooks/useApi';
+import {useFocusEffect} from '@react-navigation/native';
+
+const ChatScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const user = state.entities.auth.data;
+  const [chatIds, setChatIds] = useState([]);
   const [chats, setChats] = useState([]);
-  const chatIds = state.entities.auth.data.chats.map((chat) => chat.id);
+
+  const chatIdApi = useApi(userAPI.getChatIds);
+
+  const getChatIds = async () => {
+    const result = await chatIdApi.request(user.email);
+    if (!result.ok) {
+      return Alert.alert('Error Retriving Chat Ids');
+    }
+    console.log('Chat array in chat screen', chats);
+    setChatIds(result.data);
+  };
+  useEffect(() => {
+    getChatIds();
+  }, []);
 
   useEffect(() => {
-    // getChatIds()
-    // const chatId = uuidv1();
     console.log('chatIds in Chat Screen', chatIds);
     const unsubscribe = firebase
       .firestore()
@@ -30,7 +46,7 @@ const ChatScreen = ({navigation}) => {
           const chat = [];
           //  const chat = chatIds.map(chatId=>chatId == snapshot.docs.map(doc=>doc.id))
           for (var i = 0; i < snapshot.docs.length; i++) {
-            if (chatIds[i] === snapshot.docs[i].id) {
+            if (chatIds[i] == snapshot.docs[i].id) {
               chat.push(snapshot.docs[i]);
               // chat.
             }
@@ -44,17 +60,9 @@ const ChatScreen = ({navigation}) => {
             })),
           );
         },
-        // setChats(
-        //   snapshot.docs.map((doc) => ({
-        //     id: doc.id,
-        //     data: doc.data(),
-        //   }))
-        // )
       );
-
-    // setChats(filteredChats);
     return unsubscribe;
-  }, []);
+  }, [chatIds]);
 
   const enterChat = (id, chatName) => {
     navigation.navigate('UserChat', {

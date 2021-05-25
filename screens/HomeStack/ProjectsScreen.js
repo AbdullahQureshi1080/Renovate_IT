@@ -34,7 +34,7 @@ const Projects = ({navigation}) => {
     // User Post Ids
     const result = await projectApi.request(userEmail);
     if (result.length == 0) {
-      console.log('Could Not Get Project Ids');
+      console.log('Project Ids not available');
     }
     setUserProjectIds(result);
   };

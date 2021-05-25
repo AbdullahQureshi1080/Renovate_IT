@@ -1,14 +1,19 @@
 // Native Imports
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Dimensions, FlatList} from 'react-native';
 
 // Components Imports
-import {professionals} from '../../assets/DummyData';
+// import {professionals} from '../../assets/DummyData';
 import ProfessionalAvatar from '../../components/ProfessionalAvatar';
 import SearchBar from '../../components/SearchBar';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
+
+// Api Imports
+import useApi from '../../hooks/useApi';
+import dataAPI from '../../api/data';
+import {useSelector} from 'react-redux';
 
 const profileAvatar = {
   marginVertival: 100,
@@ -30,14 +35,32 @@ const profileAvatar = {
 };
 
 const AllProfessionals = ({navigation, route}) => {
-  const [professionals, setProfessionals] = React.useState(
-    route.params.professionals,
+  // const [professionals, setProfessionals] = React.useState(
+  //   route.params.professionals,
+  // );
+  const [category, setCategory] = useState(
+    route.params.professionals[0].jobcategory,
   );
-  const [search, setSearch] = React.useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const state = useSelector((state) => state);
+  const email = state.entities.auth.data.email;
+  const professionalsApi = useApi(dataAPI.getSpecificCategoryProfessional);
 
+  useEffect(() => {
+    fetchProfessionals();
+  }, []);
+
+  const fetchProfessionals = async () => {
+    const result = await professionalsApi.request(email, category);
+    if (!result.ok) {
+      console.log('Error Fetching Data');
+    }
+    setProfessionals(result.data);
+  };
   const handleSearch = (search) => {
     if (search == '') {
-      setProfessionals(route.params.professionals);
+      fetchProfessionals();
+      // setProfessionals(route.params.professionals);
       return;
     }
     const searched = professionals.filter(function (item) {

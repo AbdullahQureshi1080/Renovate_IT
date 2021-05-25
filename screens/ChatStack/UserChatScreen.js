@@ -127,6 +127,7 @@ const ChatScreen = ({navigation, route}) => {
       .doc(route.params.id)
       .delete()
       .catch((error) => alert(error));
+    // Delete from mongo also ---
     navigation.replace('All Messages');
   };
 
@@ -205,6 +206,7 @@ const ChatScreen = ({navigation, route}) => {
                 onChangeText={(text) => setInput(text)}
                 placeholder="message"
                 style={styles.textInput}
+                multiline={true}
                 onSubmitEditing={
                   !input ? () => alert('Empty Message') : sendMessage
                 }
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     bottom: 0,
-    height: 40,
+    // height: 40,
     flex: 1,
     marginRight: 15,
     borderColor: 'transparent',

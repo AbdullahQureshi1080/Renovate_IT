@@ -21,11 +21,7 @@ import {removeItem, updateItem} from '../../store/cart';
 
 const {width, height} = Dimensions.get('screen');
 export default function CartModal({
-  btnName,
-  btnCloseName,
   isVisible,
-  imageUri,
-  onChangeImage,
   onPressClose,
   counter,
   onPressCheckout,

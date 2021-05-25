@@ -132,10 +132,12 @@ function CreateProjectScreen({navigation, route}) {
 
   const handleRemove = (item) => {
     const key = item.key;
+    console.log('All Items in array', dataNode);
     console.log('Data in Handle Remove - Key', key);
-    // const allItems = [...dataNode];
-    // console.log("All Items in array", allItems);
-    const filteredItems = dataNode.filter((item) => item.key !== key);
+    // const allItems = dataNode;
+    const filteredItems = dataNode.filter((item) => {
+      return item.key !== key;
+    });
     console.log('filtered items', filteredItems);
     setDataNodes(filteredItems);
   };

@@ -66,6 +66,7 @@ export default function FirmManageScreen({navigation, route}) {
   const [idCheck, setCheckId] = useState(true);
   const userfirmIds = firms.map(({id}) => id);
   const firmId = route.params.item._id;
+  const creatorId = route.params.item.creatorId;
   const firmMembers = route.params.item.members;
   const noteApi = useApi(userAPI.createNote);
   const notesApi = useApi(userAPI.getNotes);
@@ -79,8 +80,10 @@ export default function FirmManageScreen({navigation, route}) {
   // const userId = state.entities.auth.data._id;
   const name = `${state.entities.auth.data.firstname} ${state.entities.auth.data.lastname}`;
   useEffect(() => {
+    console.log('User Id', userId);
+    console.log('Creator Id', creatorId);
     console.log('name', name);
-    if (name == route.params.item.creator) {
+    if (userId == creatorId) {
       setCheckId(false);
     }
   }, []);
@@ -97,7 +100,7 @@ export default function FirmManageScreen({navigation, route}) {
 
   useEffect(() => {
     fetchNotes();
-    console.log('Notes in manage firm', notes);
+    // console.log('Notes in manage firm', notes);
   }, []);
 
   const handleText = (value) => {
@@ -194,10 +197,7 @@ export default function FirmManageScreen({navigation, route}) {
       return;
     }
     console.log('Firm Deleted');
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'AppHome'}],
-    });
+    navigation.navigate('User Profile');
   };
 
   const handleViewModal = (note) => {

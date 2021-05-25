@@ -10,7 +10,7 @@ const register = (firstname, lastname, email, password) =>
   });
 
 // Profile -----------------------------------
-const updateProfile = (
+const updateProfessionalProfile = (
   email,
   firstname,
   lastname,
@@ -19,6 +19,7 @@ const updateProfile = (
   jobtitle,
   jobcategory,
   image,
+  profileStatus,
 ) =>
   client.post('profile/updateProfile', {
     email,
@@ -29,6 +30,22 @@ const updateProfile = (
     jobtitle,
     jobcategory,
     image,
+    profileStatus,
+  });
+
+const updateNormalProfile = (
+  email,
+  firstname,
+  lastname,
+  image,
+  profileStatus,
+) =>
+  client.post('profile/updateNormalProfile', {
+    email,
+    firstname,
+    lastname,
+    image,
+    profileStatus,
   });
 
 const getProfile = (userId) =>
@@ -201,22 +218,25 @@ const getUserFirms = (email) =>
   });
 
 const getAllFirms = () => client.get('remoteFirm/getAllFirms');
-const userFirms = async (email) => {
-  const userFirms = await getUserFirms(email);
-  const allFirms = await getAllFirms();
-  if (!userFirms.ok && !allFirms.ok) {
-    console.log('User Firms API call failed', userFirms.data);
-    console.log('All Firms API call failed', allFirms.data);
-    return;
-  }
-  if (userFirms.data == []) {
-    console.log('User Firms in user api', userFirms.data);
-    return;
-  } else {
-    const firms = allFirms.data.filter((firm) => firm.id == userFirms.data.id);
-    return firms;
-  }
-};
+
+// const userFirmIds = async (email) => {
+//   // const allFirms = await getAllFirms();
+//   const userFirms = await getUserFirms(email);
+//   if (!userFirms.ok && !allFirms.ok) {
+//     console.log('User Firms API call failed', userFirms.data);
+//     console.log('All Firms API call failed', allFirms.data);
+//     return;
+//   }
+//   if (userFirms.data.length == 0) {
+//     console.log('User Firms in user api', userFirms.data);
+//     return;
+//   } else {
+//     const firms = allFirms.data.filter((firm) => {
+//       return firm._id == userFirms[0];
+//     });
+//     return firms;
+//   }
+// };
 
 const createNote = (firmId, note, email, images, documents) =>
   client.post('remoteFirm/createNote', {
@@ -251,7 +271,8 @@ const deleteFirm = (email, firmId, members) =>
 
 export default {
   register,
-  updateProfile,
+  updateProfessionalProfile,
+  updateNormalProfile,
   userProfile,
   createPost,
   userPosts,
@@ -271,7 +292,8 @@ export default {
   deleteChat,
   getChatIds,
   createFirm,
-  userFirms,
+  getUserFirms,
+  getAllFirms,
   createNote,
   getNotes,
   deleteNote,

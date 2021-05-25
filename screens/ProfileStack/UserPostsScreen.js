@@ -15,9 +15,9 @@ import dataAPI from '../../api/data';
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
-const UserPostsScreen = ({navigation, route}) => {
+const UserPostsScreen = ({navigation, route, email}) => {
   const state = useSelector((state) => state);
-  const userEmail = state.entities.auth.data.email;
+  // const userEmail = state.entities.auth.data.email;
   const [error, setError] = useState(null);
   const postsApi = useApi(dataAPI.getAllPosts);
   const postApi = useApi(userAPI.userPosts);
@@ -25,11 +25,13 @@ const UserPostsScreen = ({navigation, route}) => {
   const [userPostIds, setUserPostIds] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
+  const useremail = route.params.email;
+  // console.log('User Email in user posts screen', useremail);
   const fetchUserPostIds = async () => {
     // User Post Ids
-    const result = await postApi.request(userEmail);
+    const result = await postApi.request(useremail);
     if (result.length == 0) {
-      console.log('Could Not Get Post Ids');
+      console.log('No Posts of the User');
     }
     setUserPostIds(result);
   };
@@ -66,7 +68,7 @@ const UserPostsScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <FlatList
-        horizontal={true}
+        // horizontal={true}
         ListEmptyComponent={() => (
           <View
             style={{

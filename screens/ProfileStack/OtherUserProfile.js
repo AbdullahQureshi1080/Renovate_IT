@@ -5,13 +5,13 @@ import {View, Text, ScrollView} from 'react-native';
 import {Button, List} from 'react-native-paper';
 import MaterialComunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useFocusEffect} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
 
 // Components
 import ProfessionalAvator from '../../components/ProfessionalAvatar';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
 
 // Auth and Api Imports
@@ -20,35 +20,37 @@ import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
 // Screen Imports
-import UserProjectsScreen from './UserProjectsScreen';
-import UserPostsScreen from './UserPostsScreen';
+// import UserProjectsScreen from './UserProjectsScreen';
+// import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
-import AppText from '../../components/AppText';
+// import AppText from '../../components/AppText';
+import UserProjects from './UserProjects';
 
 const Tab = createMaterialTopTabNavigator();
 
-const UserProjects = () => {
-  return (
-    <View style={{flex: 1, marginVertical: 10}}>
-      <View style={{flex: 1}}>
-        <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
-          Projects
-        </AppText>
-        <UserProjectsScreen />
-      </View>
-      <View style={{flex: 1}}>
-        <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
-          Posts
-        </AppText>
-        <UserPostsScreen />
-      </View>
-    </View>
-    // <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProjectsTab}>
-    //   <Tab.Screen name="Projects" component={UserProjectsScreen} />
-    //   <Tab.Screen name="Posts" component={UserPostsScreen} />
-    // </Tab.Navigator>
-  );
-};
+// const UserProjects = ({route}) => {
+//   const userEmail = route.params._id;
+//   return (
+//     <View style={{flex: 1, marginVertical: 10}}>
+//       <View style={{flex: 1}}>
+//         <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+//           Projects
+//         </AppText>
+//         <UserProjectsScreen email={userEmail} />
+//       </View>
+//       <View style={{flex: 1}}>
+//         <AppText style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+//           Posts
+//         </AppText>
+//         <UserPostsScreen email={userEmail} />
+//       </View>
+//     </View>
+//     // <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProjectsTab}>
+//     //   <Tab.Screen name="Projects" component={UserProjectsScreen} />
+//     //   <Tab.Screen name="Posts" component={UserPostsScreen} />
+//     // </Tab.Navigator>
+//   );
+// };
 
 const display = () => {
   return (
@@ -59,7 +61,7 @@ const display = () => {
 };
 
 const OtherUserProfile = ({navigation, route}) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   const [userProfile, setUserProfile] = useState(null);
@@ -181,7 +183,11 @@ const OtherUserProfile = ({navigation, route}) => {
             component={AboutUser}
             initialParams={userProfile}
           />
-          <Tab.Screen name="Projects" component={UserProjects} />
+          <Tab.Screen
+            name="Projects"
+            component={UserProjects}
+            initialParams={userProfile}
+          />
         </Tab.Navigator>
       </View>
     </ScrollView>

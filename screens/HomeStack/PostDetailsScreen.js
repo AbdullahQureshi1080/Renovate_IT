@@ -68,7 +68,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   const bidsApi = useApi(userAPI.getPostBids);
   const newBidApi = useApi(userAPI.offerNewBid);
   const postId = route.params.item._id;
-  const userPostIds = route.params.userPostIds;
+  const userPostIds = state.entities.auth.data.posts.map((id) => id);
   const [bids, setBids] = useState([]);
 
   // const [message, setMessage] = useState('');

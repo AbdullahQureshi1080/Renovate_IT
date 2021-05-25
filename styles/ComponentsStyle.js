@@ -75,7 +75,7 @@ const ComponentsStyle = {
       // fontFamily:"Poppins-Regular" ,
     },
   },
-  
+
   postCardStyle: {
     borderRadius: 5,
     marginHorizontal: marginHorizontal,
@@ -105,7 +105,7 @@ const ComponentsStyle = {
   AppCardStyle: {
     borderRadius: 5,
     marginHorizontal: marginHorizontal,
-    height: Dimensions.get('screen').height / 2.4,
+    // height: Dimensions.get('screen').height / 2.4,
     marginVertical: 10,
     backgroundColor: '#e8e8e8',
     shadowColor: '#1b262c',

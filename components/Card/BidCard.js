@@ -25,6 +25,8 @@ const BidCard = ({data, onPress, styleStatus}) => {
         <Card.Title
           titleStyle={styles.priceText}
           title={`RS ${data.bidAmount}`}
+          titleNumberOfLines={1}
+          ellipsizeMode="tail"
         ></Card.Title>
       </View>
       <View style={styles.container}>
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   bidCardStyle: {
-    width: '80%',
+    width: '90%',
     borderRadius: 5,
     // marginHorizontal: marginHorizontal,
     marginVertical: 10,

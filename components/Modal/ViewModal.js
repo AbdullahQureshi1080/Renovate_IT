@@ -67,7 +67,20 @@ export default function ViewModal({
             justifyContent: 'space-between',
           }}
         >
-          <AppButton name={btnCloseName} onPress={onPressCancel} />
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignSelf: 'flex-end',
+            }}
+            onPress={onPressCancel}
+          >
+            <MaterialCommunityIcons
+              name="close-circle"
+              size={40}
+              color="#1b262c"
+              style={{alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
           {/* <AppButton name={btnName} onPress={onPressDelete} /> */}
           {!idCheck ? (
             <View

@@ -18,27 +18,21 @@ export default function RemoteFirmScreen({navigation}) {
   const email = state.entities.auth.data.email;
   const [firms, setFirms] = useState([]);
   const [error, setError] = useState(null);
-  const firmApi = useApi(userAPI.userFirms);
-  const firmsfromProfile = state.entities.auth.data.firms;
-  const userfirmIds = firmsfromProfile?.map(({id}) => id);
-  const retrivingFirms = async () => {
-    const result = await firmApi.request(email);
-    if (result == []) {
-      console.log('Error retrieving the firms');
+  const userFirmApi = useApi(userAPI.getUserFirms);
+
+  const fetchUserFirms = async () => {
+    const result = await userFirmApi.request(email);
+    if (result.length <= 0) {
+      console.log('Error retrieving the firms', result);
       return setError('Could not retrive firms at this moment, refresh. ');
     }
-    let userfirms = [];
-    for (var i = 0; i < result.length; i++) {
-      if (userfirmIds[i] == result[i]._id) {
-        userfirms.push(result[i]);
-      }
-    }
-
-    setFirms(userfirms);
+    // console.log('Firm Api Result', result.data);
+    setFirms(result.data);
   };
+
   useEffect(() => {
-    retrivingFirms();
-    console.log('Firms in remote firm screen', firms);
+    // fetchAllFirms();
+    fetchUserFirms();
   }, []);
 
   return (
@@ -55,9 +49,10 @@ export default function RemoteFirmScreen({navigation}) {
           >
             <ErrorMessage error={error} visible={error} />
             <AppText style={{fontSize: 14}}>No Firms</AppText>
-            <AppButton name="reload" onPress={retrivingFirms} />
+            <AppButton name="reload" onPress={fetchUserFirms} />
           </View>
         )}
+        keyExtractor={(item) => item._id}
         data={firms.sort((a, b) => {
           return new Date(b.date) - new Date(a.date);
         })}

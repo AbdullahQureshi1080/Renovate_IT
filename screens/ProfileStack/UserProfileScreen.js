@@ -28,25 +28,18 @@ import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
 // Screen Imports
-import UserProjectsScreen from './UserProjectsScreen';
-import UserPostsScreen from './UserPostsScreen';
+// import UserProjectsScreen from './UserProjectsScreen';
+// import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
 import RemoteFirmScreen from './RemoteFirmScreen';
 
 // import { useEffect } from 'react';
 import {setUserData} from '../../store/auth';
 import {setProfileData} from '../../store/user';
+import AppText from '../../components/AppText';
+import UserProjects from './UserProjects';
 
 const Tab = createMaterialTopTabNavigator();
-
-const UserProjects = () => {
-  return (
-    <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProjectsTab}>
-      <Tab.Screen name="Projects" component={UserProjectsScreen} />
-      <Tab.Screen name="Posts" component={UserPostsScreen} />
-    </Tab.Navigator>
-  );
-};
 
 const display = () => {
   return (
@@ -59,7 +52,7 @@ const display = () => {
 const UserProfileScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
-  const profile = state.entities.user.profile;
+  // const profile = state.entities.user.profile;
   const [userProfile, setUserProfile] = useState(null);
   const [checkId, setCheckId] = useState(false);
 
@@ -75,23 +68,44 @@ const UserProfileScreen = ({navigation, route}) => {
     setUserProfile(result);
   };
 
-  useEffect(() => {
-    fetchUserProfile();
+  // useEffect(() => {
+  //   fetchUserProfile();
 
-    if (profileId == userId) {
-      setCheckId(false);
-      // dispatch(setProfileData(userProfile));
-    } else {
-      if (profileId !== userId) {
-        setCheckId(true);
-        // dispatch(setProfileData(userProfile));
-      }
-    }
-  }, [profileId]);
+  //   if (profileId == userId) {
+  //     setCheckId(false);
+  //     // dispatch(setProfileData(userProfile));
+  //   } else {
+  //     if (profileId !== userId) {
+  //       setCheckId(true);
+  //       // dispatch(setProfileData(userProfile));
+  //     }
+  //   }
+  // }, [profileId]);
 
   useEffect(() => {
     fetchUserProfile();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      //   alert('Screen was focused');
+      // Do something when the screen is focused
+      fetchUserProfile();
+      if (profileId == userId) {
+        setCheckId(false);
+      } else {
+        if (profileId !== userId) {
+          setCheckId(true);
+        }
+      }
+      return () => {
+        // alert('Screen was unfocused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        setUserProfile(null);
+      };
+    }, []),
+  );
 
   const getImageUri = () => {
     if (userProfile) {
@@ -170,7 +184,11 @@ const UserProfileScreen = ({navigation, route}) => {
             component={AboutUser}
             initialParams={userProfile}
           />
-          <Tab.Screen name="Projects" component={UserProjects} />
+          <Tab.Screen
+            name="Projects"
+            component={UserProjects}
+            initialParams={userProfile}
+          />
           <Tab.Screen name="Remote Firm" component={RemoteFirmScreen} />
           <Tab.Screen name="Design a room" component={display} />
         </Tab.Navigator>
