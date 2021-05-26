@@ -49,8 +49,10 @@ export default function ProductDetailScreen({navigation, route}) {
               </AppText>
             </View>
             <View style={styles.shopInfoContainer}>
-              <Avatar.Image source={{uri: product.shopImage}} size={40} />
-              <AppText style={styles.shopText}>{product.shopName}</AppText>
+              <View style={{width: '70%', flexDirection: 'row'}}>
+                <Avatar.Image source={{uri: product.shopImage}} size={40} />
+                <AppText style={styles.shopText}>{product.shopName}</AppText>
+              </View>
               <View style={styles.buttonContainer}>
                 <AppButton name="Buy" onPress={buyHandler} />
               </View>
@@ -91,7 +93,8 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 20,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
+    width: '70%',
   },
   priceText: {
     fontSize: 20,
@@ -99,7 +102,6 @@ const styles = StyleSheet.create({
   },
   shopInfoContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
   },
   shopText: {
     fontSize: 18,
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   buttonContainer: {
-    width: '100%',
+    width: '30%',
     alignSelf: 'flex-end',
   },
 });

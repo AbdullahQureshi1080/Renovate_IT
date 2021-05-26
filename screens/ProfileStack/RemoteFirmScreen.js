@@ -26,12 +26,11 @@ export default function RemoteFirmScreen({navigation}) {
       console.log('Error retrieving the firms', result);
       return setError('Could not retrive firms at this moment, refresh. ');
     }
-    // console.log('Firm Api Result', result.data);
     setFirms(result.data);
   };
 
   useEffect(() => {
-    // fetchAllFirms();
+    // fetchFirms();
     fetchUserFirms();
   }, []);
 

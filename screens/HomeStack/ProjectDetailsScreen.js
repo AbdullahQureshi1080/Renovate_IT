@@ -30,6 +30,8 @@ import {
 import AppText from '../../components/AppText';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {FloatingAction} from 'react-native-floating-action';
+import GallaryModal from '../../components/Modal/GallaryModal';
+
 // import ComponentsStyle from '../../styles/ComponentsStyle';
 // import AppButton from '../../components/AppButton';
 
@@ -51,19 +53,19 @@ const ProjectDetailsScreen = ({route, navigation}) => {
 
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [colorRed, setColorRed] = useState(false);
   const [likedError, setLikedError] = useState(false);
 
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   const userEmail = state.entities.auth.data.email;
 
-  // const userProjectsIdObjs = state.entities.user.projectIds;
-
-  // const userProjectIds = userProjectsIdObjs.map(({id}) => id);
+  const [isVisible, setIsVisible] = useState(false);
 
   const deleteApi = useApi(userAPI.deleteProject);
   const likeApi = useApi(userAPI.likeProject);
   const getLikesApi = useApi(userAPI.getLikes);
+  const saveApi = useApi(userAPI.saveItem);
   const [text, setText] = useState('');
 
   const likeProject = async () => {
@@ -121,9 +123,9 @@ const ProjectDetailsScreen = ({route, navigation}) => {
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // delete Project
-    const result = deleteApi.request(userEmail, projectId);
+    const result = await eleteApi.request(userEmail, projectId);
     if (!result.ok) {
       console.log('Could Not Delete Project');
       setDeleteError('Error Deleting Project');
@@ -135,16 +137,29 @@ const ProjectDetailsScreen = ({route, navigation}) => {
     });
   };
 
+  const onPressSave = async (image) => {
+    console.log('Image for saving', image);
+    const result = saveApi.request(userId, image);
+    if (!result.ok) {
+      console.log('Not able to save at the moment');
+    }
+    console.log('Item Saved');
+    setColorRed(true);
+    Alert.alert('Item Saved');
+  };
+
   const renderItem = useCallback(
     ({item, index, drag, isActive}: RenderItemParams<nodeItem>) => {
       return (
         <View key={index}>
           {item.type == 'image' ? (
             <View style={{marginVertical: 2}} key={parseInt(item.key)}>
-              <Image
-                source={{uri: item.value}}
-                style={{width: width, height: height / 2}}
-              />
+              <TouchableOpacity onPress={() => setIsVisible(true)}>
+                <Image
+                  source={{uri: item.value}}
+                  style={{width: width, height: height / 2}}
+                />
+              </TouchableOpacity>
             </View>
           ) : (
             <View
@@ -239,6 +254,15 @@ const ProjectDetailsScreen = ({route, navigation}) => {
                 <View></View>
               )}
             </View>
+            <GallaryModal
+              color={colorRed}
+              isVisible={isVisible}
+              images={route.params.item.data.gallaryImages.map(
+                ({value}) => value,
+              )}
+              onPressClose={() => setIsVisible(false)}
+              onPressSave={(image) => onPressSave(image)}
+            />
             <ErrorMessage error={deleteError} />
             <View style={ScreenStyles.projectsDetailScreen.viewBox}>
               <Text style={ScreenStyles.projectsDetailScreen.viewBox.titleText}>

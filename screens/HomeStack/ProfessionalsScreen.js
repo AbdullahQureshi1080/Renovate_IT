@@ -31,7 +31,7 @@ const profileAvatar = {
     fontSize: 14,
     fontWeight: 'normal',
     color: '#495464',
-    width: Dimensions.get('window').width / 3,
+    width: Dimensions.get('window').width / 4,
     fontFamily: 'Poppins-Medium',
     alignSelf: 'center',
   },
@@ -87,8 +87,14 @@ const Professionals = ({navigation}) => {
               name={user.name}
               title={user.jobtitle}
               style={profileAvatar}
-              size={90}
+              size={80}
               imageUri={user.image}
+              onPress={() =>
+                navigation.navigate('Profile', {
+                  screen: 'Other User',
+                  params: {_id: user._id, user: user},
+                })
+              }
             />
           );
         })}

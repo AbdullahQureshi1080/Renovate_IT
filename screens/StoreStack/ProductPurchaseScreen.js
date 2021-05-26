@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 //  Component Imports
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
-import {addItem} from '../../store/cart';
+import {addItem, addNewItem} from '../../store/cart';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -30,6 +30,8 @@ export default function ProductPurchaseScreen({navigation, route}) {
 
   const addToCartHandler = () => {
     const cartItemIds = cart.cart.map(({_id}) => _id);
+    const shopCartId = cart.cart.map(({shopId}) => shopId);
+    console.log('Cart Shop Id', shopCartId);
     console.log('Cart Item Ids', cartItemIds);
     console.log('Cart Handler');
 
@@ -39,6 +41,60 @@ export default function ProductPurchaseScreen({navigation, route}) {
       Alert.alert('Product already in cart');
       return;
     }
+
+    // const checkShop = shopIds.filter((id) => id == product.shopId);
+    if (shopCartId[0] == product.shopId || shopCartId.length <= 0) {
+      // console.log('Item Already Exists in Cart');
+      // Alert.alert('Product already in cart');
+      // return;
+
+      let data = {
+        _id: product._id,
+        productName: product.productName,
+        productDescription: product.productDescription,
+        productCategory: product.productCategory,
+        productPrice: product.productPrice,
+        productImage: product.productImage,
+        shopName: product.shopName,
+        shopImage: product.shopImage,
+        shopId: product.shopId,
+        quantity: counter,
+        totalProductPrice: total,
+      };
+      dispatch(addItem(data));
+      navigation.navigate('Category Screen');
+    } else {
+      console.log('Cannot Shop From Differnt Stores at Once');
+      Alert.alert('Cannot Shop From Differnt Stores at Once');
+      Alert.alert(
+        'Cart Update',
+        'Empty Cart and add from different store?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => Alert.alert('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => handleNewUpdateCart(),
+            style: 'cancel',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () =>
+            Alert.alert(
+              'This alert was dismissed by tapping outside of the alert dialog.',
+            ),
+        },
+      );
+      return;
+    }
+  };
+
+  const handleNewUpdateCart = () => {
+    Alert.alert('Yes Pressed');
     let data = {
       _id: product._id,
       productName: product.productName,
@@ -52,7 +108,7 @@ export default function ProductPurchaseScreen({navigation, route}) {
       quantity: counter,
       totalProductPrice: total,
     };
-    dispatch(addItem(data));
+    dispatch(addNewItem(data));
     navigation.navigate('Category Screen');
   };
 

@@ -58,6 +58,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   const [bidModal, setBidModal] = useState(false);
   const [newBidVisible, setNewBidVisible] = useState(false);
   const [selectedBid, setSelectedBid] = useState([]);
+  const [colorRed, setColorRed] = useState(false);
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
@@ -67,6 +68,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   const withdrawBidApi = useApi(userAPI.withdrawBid);
   const bidsApi = useApi(userAPI.getPostBids);
   const newBidApi = useApi(userAPI.offerNewBid);
+  const saveApi = useApi(userAPI.saveItem);
   const postId = route.params.item._id;
   const userPostIds = state.entities.auth.data.posts.map((id) => id);
   const [bids, setBids] = useState([]);
@@ -225,6 +227,17 @@ const PostDetailsScreen = ({navigation, route}) => {
     setBidModal(false);
   };
 
+  const onPressSave = async (image) => {
+    console.log('Image for saving', image);
+    const result = saveApi.request(userId, image);
+    if (!result.ok) {
+      console.log('Not able to save at the moment');
+    }
+    console.log('Item Saved');
+    setColorRed(true);
+    Alert.alert('Item Saved');
+  };
+
   return (
     <MenuProvider>
       <ScrollView style={ScreenStyles.postsDetailScreen}>
@@ -311,9 +324,11 @@ const PostDetailsScreen = ({navigation, route}) => {
           </View>
         </View>
         <GallaryModal
+          color={colorRed}
           isVisible={isVisible}
           images={route.params.item.images}
           onPressClose={() => setIsVisible(false)}
+          onPressSave={(image) => onPressSave(image)}
         />
         <View
           style={{

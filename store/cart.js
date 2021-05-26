@@ -17,6 +17,10 @@ const cart = createSlice({
       cart.cart = [...cart.cart, action.payload];
       cart.counter = cart.counter + 1;
     },
+    addNewToCart: (cart, action) => {
+      cart.cart = [action.payload];
+      cart.counter = 1;
+    },
     removeFromCart: (cart, action) => {
       // cart.posts = [...cart.posts, action.payload];
       const _id = action.payload;
@@ -46,7 +50,13 @@ const cart = createSlice({
 
 // console.log(slice);
 
-const {addToCart, removeFromCart, updateInCart, clearCart} = cart.actions;
+const {
+  addToCart,
+  addNewToCart,
+  removeFromCart,
+  updateInCart,
+  clearCart,
+} = cart.actions;
 export default cart.reducer;
 
 // Action Creators
@@ -58,6 +68,11 @@ export const emptyCart = () => ({
 });
 export const addItem = (item) => ({
   type: addToCart.type,
+  payload: item,
+});
+
+export const addNewItem = (item) => ({
+  type: addNewToCart.type,
   payload: item,
 });
 

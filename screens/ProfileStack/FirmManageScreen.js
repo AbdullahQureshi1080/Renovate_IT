@@ -75,7 +75,7 @@ export default function FirmManageScreen({navigation, route}) {
   const deleteFirmApi = useApi(userAPI.deleteFirm);
   const [deleteError, setDeleteError] = useState(null);
 
-  // const [idCheck, setCheckId] = useState(true);
+  const [delHide, setDelHide] = useState(false);
   // const state = useSelector(state=>state)
   // const userId = state.entities.auth.data._id;
   const name = `${state.entities.auth.data.firstname} ${state.entities.auth.data.lastname}`;
@@ -85,6 +85,7 @@ export default function FirmManageScreen({navigation, route}) {
     console.log('name', name);
     if (userId == creatorId) {
       setCheckId(false);
+      setDelHide(true);
     }
   }, []);
 
@@ -454,6 +455,7 @@ export default function FirmManageScreen({navigation, route}) {
             titleMessage={'Firm Details'}
           />
           <FirmDetailsModal
+            delHide={delHide}
             isVisible={isVisible3}
             data={firmData}
             btnName="Delete"

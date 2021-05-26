@@ -269,6 +269,10 @@ const deleteNote = (email, noteId, firmId) =>
 const deleteFirm = (email, firmId, members) =>
   client.post('remoteFirm/deleteFirm', {email, firmId, members});
 
+const saveItem = (userId, image) => client.post('save/save', {userId, image});
+const unSaveItem = (userId, itemId) =>
+  client.post('save/unSave', {userId, itemId});
+
 export default {
   register,
   updateProfessionalProfile,
@@ -300,4 +304,6 @@ export default {
   deleteFirm,
   updateNote,
   getLikes,
+  saveItem,
+  unSaveItem,
 };

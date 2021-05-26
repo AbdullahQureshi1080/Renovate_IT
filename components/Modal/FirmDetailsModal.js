@@ -21,17 +21,15 @@ import ProfessionalAvatar from '../ProfessionalAvatar';
 const {width, height} = Dimensions.get('screen');
 export default function FirmDetailsModal({
   btnName,
+  delHide,
   btnCloseName,
   onPressCancel,
   onPressDelete,
   isVisible,
   data,
 }) {
-  //   const [isGallaryVisible, setIsGallaryVisible] = useState(false);
-  console.log(data);
-  //   const  loadInBrowser = (url) => {
-  //     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
-  //   }
+  // console.log(data);
+
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
       <View style={styles.modalView}>
@@ -56,7 +54,11 @@ export default function FirmDetailsModal({
               style={{alignSelf: 'center'}}
             />
           </TouchableOpacity>
-          <AppButton name={btnName} onPress={onPressDelete} />
+          {delHide ? (
+            <AppButton name={btnName} onPress={onPressDelete} />
+          ) : (
+            <View />
+          )}
         </View>
         <View style={{marginVertical: 10}}>
           <AppText
