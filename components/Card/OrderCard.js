@@ -17,7 +17,7 @@ const OrderCard = ({
   styleStatus,
 }) => {
   return (
-    <TouchableOpacity style={ComponentsStyle.postCardStyle} onPress={onPress}>
+    <TouchableOpacity style={ComponentsStyle.orderCardStyle} onPress={onPress}>
       <View style={styles.container}>
         <AppText style={styles.titleText}>{productName}</AppText>
         <AppText style={styles.priceText}>{`${totalOrderPrice} RS `}</AppText>
@@ -27,6 +27,8 @@ const OrderCard = ({
           <Avatar.Image source={{uri: shopImage}} size={40} />
           <AppText style={styles.subtitleText}>{`By ${shopName}`}</AppText>
         </View>
+      </View>
+      <View style={{width: '100%'}}>
         <AppText style={[styles.status, styleStatus]}>{orderStatus}</AppText>
       </View>
     </TouchableOpacity>
@@ -60,8 +62,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   status: {
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     fontSize: 14,
+    marginHorizontal: 5,
+    // width: '70%',
+    // width: 100,
   },
 });
 

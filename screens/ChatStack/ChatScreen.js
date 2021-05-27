@@ -19,6 +19,8 @@ import {useFocusEffect} from '@react-navigation/native';
 const ChatScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const user = state.entities.auth.data;
+  // const chatFromRedux = state.entities.auth.data.chats.map(({id}) => id);
+  // console.log('chat Ids from store', chatFromRedux);
   const [chatIds, setChatIds] = useState([]);
   const [chats, setChats] = useState([]);
 
@@ -41,26 +43,17 @@ const ChatScreen = ({navigation, route}) => {
     const unsubscribe = firebase
       .firestore()
       .collection('chats')
-      .onSnapshot(
-        (snapshot) => {
-          const chat = [];
-          //  const chat = chatIds.map(chatId=>chatId == snapshot.docs.map(doc=>doc.id))
-          for (var i = 0; i < snapshot.docs.length; i++) {
-            if (chatIds[i] == snapshot.docs[i].id) {
-              chat.push(snapshot.docs[i]);
-              // chat.
-            }
-          }
-          //   console.log("Chat for documents",chat.map((doc)=>({data:doc})))
-          // }
-          setChats(
-            chat.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            })),
-          );
-        },
-      );
+      .onSnapshot((snapshot) => {
+        const chat = snapshot.docs.filter((doc) => chatIds.includes(doc.id));
+        console.log('chats from intersection', chat);
+
+        setChats(
+          chat.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          })),
+        );
+      });
     return unsubscribe;
   }, [chatIds]);
 

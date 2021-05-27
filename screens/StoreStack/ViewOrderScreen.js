@@ -212,5 +212,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 16,
     fontFamily: 'Poppins-Bold',
+    // width: '70%',
   },
 });
