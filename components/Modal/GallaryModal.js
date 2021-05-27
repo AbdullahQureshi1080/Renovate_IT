@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import AppButton from '../AppButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // import AppText from '../AppText';
 // import ImageInput from '../Image/ImageInput';
 
@@ -116,8 +116,8 @@ export default function ImageModal({
                 key={index}
               >
                 <TouchableOpacity onPress={() => onPressSave(item)}>
-                  <MaterialCommunityIcons
-                    name="cards-heart"
+                  <MaterialIcons
+                    name="bookmark"
                     size={40}
                     color={color ? 'red' : '#ffffff'}
                     style={{alignSelf: 'center'}}

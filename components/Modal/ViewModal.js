@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import AppButton from '../AppButton';
 import AppText from '../AppText';
@@ -16,13 +17,17 @@ import GallaryModal from '../Modal/GallaryModal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+//  Api Imports
+import useApi from '../../hooks/useApi';
+import userAPI from '../../api/user';
+
+// import {
+//   MenuProvider,
+//   Menu,
+//   MenuOptions,
+//   MenuOption,
+//   MenuTrigger,
+// } from 'react-native-popup-menu';
 
 import {Avatar} from 'react-native-elements';
 import {useSelector} from 'react-redux';
@@ -47,16 +52,33 @@ export default function ViewModal({
     );
   };
 
+  // const [color, setColor] = useState(false);
+
   const [idCheck, setCheckId] = useState(true);
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   const name = `${state.entities.auth.data.firstname} ${state.entities.auth.data.lastname}`;
+  const [color, setColor] = useState(false);
+  const saveApi = useApi(userAPI.saveItem);
   useEffect(() => {
     console.log('name', name);
     if (userId == data.noterId || name == creator) {
       setCheckId(false);
     }
   }, []);
+
+  const onPressSave = async (image) => {
+    console.log('Image for saving', image);
+    let type = 'note';
+    const result = saveApi.request(userId, image, type);
+    if (!result.ok) {
+      console.log('Not able to save at the moment');
+    }
+    console.log('Item Saved');
+    setColor(true);
+    Alert.alert('Item Saved');
+  };
+
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
       <View style={styles.modalView}>
@@ -136,9 +158,11 @@ export default function ViewModal({
             {data.note}
           </AppText>
           <GallaryModal
+            color={color}
             isVisible={isGallaryVisible}
             images={data.images}
             onPressClose={() => setIsGallaryVisible(false)}
+            onPressSave={(image) => onPressSave(image)}
           />
           {/* <View style={{flexDirection:"row", marginVertical:10,}}> */}
           {!data.images && !data.documents ? (

@@ -28,26 +28,13 @@ import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
 // Screen Imports
-// import UserProjectsScreen from './UserProjectsScreen';
-// import UserPostsScreen from './UserPostsScreen';
 import AboutUser from './AboutScreen';
 import RemoteFirmScreen from './RemoteFirmScreen';
 
-// import { useEffect } from 'react';
-import {setUserData} from '../../store/auth';
-import {setProfileData} from '../../store/user';
-import AppText from '../../components/AppText';
 import UserProjects from './UserProjects';
+import SavedScreen from './SavedScreen';
 
 const Tab = createMaterialTopTabNavigator();
-
-const display = () => {
-  return (
-    <View>
-      <Text>Somthing to Display</Text>
-    </View>
-  );
-};
 
 const UserProfileScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
@@ -67,20 +54,6 @@ const UserProfileScreen = ({navigation, route}) => {
     console.log('Profile from Api', result);
     setUserProfile(result);
   };
-
-  // useEffect(() => {
-  //   fetchUserProfile();
-
-  //   if (profileId == userId) {
-  //     setCheckId(false);
-  //     // dispatch(setProfileData(userProfile));
-  //   } else {
-  //     if (profileId !== userId) {
-  //       setCheckId(true);
-  //       // dispatch(setProfileData(userProfile));
-  //     }
-  //   }
-  // }, [profileId]);
 
   useEffect(() => {
     fetchUserProfile();
@@ -190,7 +163,7 @@ const UserProfileScreen = ({navigation, route}) => {
             initialParams={userProfile}
           />
           <Tab.Screen name="Remote Firm" component={RemoteFirmScreen} />
-          <Tab.Screen name="Design a room" component={display} />
+          <Tab.Screen name="Saved Items" component={SavedScreen} />
         </Tab.Navigator>
       </View>
     </ScrollView>

@@ -31,18 +31,19 @@ import AppText from '../../components/AppText';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {FloatingAction} from 'react-native-floating-action';
 import GallaryModal from '../../components/Modal/GallaryModal';
+import Comment from '../../api/comment';
+import ActivityIndicator from '../../components/ActivityIndicator';
+import ErrorMessage from '../../components/AppForm/ErrorMessage';
 
 // import ComponentsStyle from '../../styles/ComponentsStyle';
 // import AppButton from '../../components/AppButton';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
+
+//  Api Imports
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
-import ErrorMessage from '../../components/AppForm/ErrorMessage';
-
-import Comment from '../../api/comment';
-import ActivityIndicator from '../../components/ActivityIndicator';
 
 var {width, height} = Dimensions.get('screen');
 
@@ -139,7 +140,8 @@ const ProjectDetailsScreen = ({route, navigation}) => {
 
   const onPressSave = async (image) => {
     console.log('Image for saving', image);
-    const result = saveApi.request(userId, image);
+    let type = 'project';
+    const result = saveApi.request(userId, image, type);
     if (!result.ok) {
       console.log('Not able to save at the moment');
     }

@@ -269,9 +269,11 @@ const deleteNote = (email, noteId, firmId) =>
 const deleteFirm = (email, firmId, members) =>
   client.post('remoteFirm/deleteFirm', {email, firmId, members});
 
-const saveItem = (userId, image) => client.post('save/save', {userId, image});
+const saveItem = (userId, image, type) =>
+  client.post('save/save', {userId, image, type});
 const unSaveItem = (userId, itemId) =>
   client.post('save/unSave', {userId, itemId});
+const getSavedItems = (userId) => client.post('save/getSavedItems', {userId});
 
 export default {
   register,
@@ -306,4 +308,5 @@ export default {
   getLikes,
   saveItem,
   unSaveItem,
+  getSavedItems,
 };

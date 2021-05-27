@@ -229,7 +229,8 @@ const PostDetailsScreen = ({navigation, route}) => {
 
   const onPressSave = async (image) => {
     console.log('Image for saving', image);
-    const result = saveApi.request(userId, image);
+    let type = 'post';
+    const result = saveApi.request(userId, image, type);
     if (!result.ok) {
       console.log('Not able to save at the moment');
     }

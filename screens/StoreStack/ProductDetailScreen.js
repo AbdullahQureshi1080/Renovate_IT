@@ -1,5 +1,5 @@
 //  Native Imports
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -7,22 +7,47 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 //  Component Imports
 import AppButton from '../../components/AppButton';
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
 
+//  Api Imports
+import useApi from '../../hooks/useApi';
+import userAPI from '../../api/user';
+import {useSelector} from 'react-redux';
+
 const {width, height} = Dimensions.get('screen');
 
 export default function ProductDetailScreen({navigation, route}) {
+  const state = useSelector((state) => state);
+  const userId = state.entities.auth.data._id;
+  const [color, setColor] = useState(false);
   const product = route.params.product;
+  const saveApi = useApi(userAPI.saveItem);
   const buyHandler = () => {
     console.log('Buying Item');
     navigation.navigate('Purchase Product', {product: product});
   };
+
+  const onPressSave = async (image) => {
+    console.log('Image for saving', image);
+    let type = 'store';
+    const result = saveApi.request(userId, image, type);
+    if (!result.ok) {
+      console.log('Not able to save at the moment');
+    }
+    console.log('Item Saved');
+    setColor(true);
+    Alert.alert('Item Saved');
+  };
+
   return (
     <>
       <Header
@@ -52,6 +77,16 @@ export default function ProductDetailScreen({navigation, route}) {
               <View style={{width: '70%', flexDirection: 'row'}}>
                 <Avatar.Image source={{uri: product.shopImage}} size={40} />
                 <AppText style={styles.shopText}>{product.shopName}</AppText>
+                <TouchableOpacity
+                  onPress={() => onPressSave(product.productImage)}
+                >
+                  <MaterialIcons
+                    name="bookmark"
+                    size={40}
+                    color={color ? 'red' : '#e8e8e8'}
+                    style={{alignSelf: 'center'}}
+                  />
+                </TouchableOpacity>
               </View>
               <View style={styles.buttonContainer}>
                 <AppButton name="Buy" onPress={buyHandler} />
