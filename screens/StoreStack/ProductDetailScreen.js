@@ -1,5 +1,5 @@
 //  Native Imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -21,7 +21,9 @@ import Header from '../../components/Header';
 //  Api Imports
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
+import storeAPI from '../../api/store';
 import {useSelector} from 'react-redux';
+import ShopDetailModal from '../../components/Modal/ShopDetailModal';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -29,8 +31,19 @@ export default function ProductDetailScreen({navigation, route}) {
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   const [color, setColor] = useState(false);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [shopData, setShopData] = useState([]);
+  const [shopProducts, setShopProducts] = useState([]);
+
   const product = route.params.product;
+  const shopId = route.params.product.shopId;
+
   const saveApi = useApi(userAPI.saveItem);
+  const shopApi = useApi(storeAPI.getShopData);
+  const shopProductsApi = useApi(storeAPI.getShopProducts);
+
   const buyHandler = () => {
     console.log('Buying Item');
     navigation.navigate('Purchase Product', {product: product});
@@ -47,6 +60,34 @@ export default function ProductDetailScreen({navigation, route}) {
     setColor(true);
     Alert.alert('Item Saved');
   };
+
+  const fetchShopData = async () => {
+    const result = await shopApi.request(shopId);
+    if (!result.ok) {
+      console.log('Error Fetching shop data');
+      return;
+    }
+    // console.log('Shop Data from Api', result.data);
+    setShopData(result.data);
+  };
+
+  const fetchShopProducts = async () => {
+    const result = await shopProductsApi.request(shopId);
+    if (!result.ok) {
+      console.log('Error Fetching shop data');
+      return;
+    }
+    // console.log('Shop Products from Api', result.data);
+    setShopProducts(result.data);
+  };
+  const handleCategory = (product) => {
+    setIsVisible(false);
+    navigation.navigate('Product Details', {product: product});
+  };
+  useEffect(() => {
+    fetchShopData();
+    fetchShopProducts();
+  }, []);
 
   return (
     <>
@@ -74,8 +115,18 @@ export default function ProductDetailScreen({navigation, route}) {
               </AppText>
             </View>
             <View style={styles.shopInfoContainer}>
+              <ShopDetailModal
+                onPressCancel={() => setIsVisible(false)}
+                isVisible={isVisible}
+                data={shopData}
+                products={shopProducts}
+                navigation={navigation}
+                handleCategory={(product) => handleCategory(product)}
+              />
               <View style={{width: '70%', flexDirection: 'row'}}>
-                <Avatar.Image source={{uri: product.shopImage}} size={40} />
+                <TouchableOpacity onPress={() => setIsVisible(true)}>
+                  <Avatar.Image source={{uri: product.shopImage}} size={40} />
+                </TouchableOpacity>
                 <AppText style={styles.shopText}>{product.shopName}</AppText>
                 <TouchableOpacity
                   onPress={() => onPressSave(product.productImage)}

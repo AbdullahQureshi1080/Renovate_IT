@@ -105,7 +105,8 @@ const ProjectDetailsScreen = ({route, navigation}) => {
   };
 
   const projectId = route.params.item._id;
-  const userProjectIds = state.entities.auth.data.projects.map((id) => id);
+  // const userProjectIds = state.entities.auth.data.projects.map(({id}) => id);
+  const userProjectIds = route.params.userProjectIds;
   useEffect(() => {
     getLikes();
     for (var i = 0; i < userProjectIds.length; i++) {
@@ -126,7 +127,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
 
   const handleDelete = async () => {
     // delete Project
-    const result = await eleteApi.request(userEmail, projectId);
+    const result = await deleteApi.request(userEmail, projectId);
     if (!result.ok) {
       console.log('Could Not Delete Project');
       setDeleteError('Error Deleting Project');
@@ -212,7 +213,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
               >
                 <MaterialCommunityIcons
                   name="backspace"
-                  size={40}
+                  size={35}
                   color="#1b262c"
                 />
               </TouchableOpacity>
@@ -234,7 +235,7 @@ const ProjectDetailsScreen = ({route, navigation}) => {
                         onSelect={() =>
                           Alert.alert(
                             'Delete',
-                            'Are you sure you want to delete this post?',
+                            'Are you sure you want to delete this project?',
                             [
                               {
                                 text: 'Cancel',

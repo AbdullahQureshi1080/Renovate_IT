@@ -5,25 +5,31 @@ import {
   Modal,
   StyleSheet,
   Dimensions,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import AppButton from '../AppButton';
 import AppText from '../AppText';
-import CameraInput from '../Image/CameraInput';
+import ImageInput from '../Image/ImageInput';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SavedItemList from '../List/SavedItemList';
+
 const {width, height} = Dimensions.get('screen');
-const CameraModal = ({
+export default function SavedItemsModal({
   btnName,
   btnCloseName,
   isVisible,
   imageUri,
   onChangeImage,
+  savedItems,
+  refresh,
+  refreshSavedItems,
   onPressAdd,
   onPressCancel,
-}) => {
+}) {
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
-      <View style={styles.modalView}>
+      <ScrollView style={styles.modalView}>
         <View
           style={{
             marginVertical: 10,
@@ -47,18 +53,28 @@ const CameraModal = ({
           </TouchableOpacity>
           <AppButton name={btnName} onPress={onPressAdd} />
         </View>
-        <View style={{marginVertical: 10}}>
-          <AppText
-            style={{
-              marginVertical: 10,
-              fontSize: 14,
-              fontFamily: 'Poppins-Bold',
-              color: '#495464',
-            }}
-          >
-            Add an image to the project
-          </AppText>
-          <CameraInput
+        <AppText
+          style={{
+            marginVertical: 10,
+            fontSize: 14,
+            fontFamily: 'Poppins-Bold',
+            color: '#495464',
+          }}
+        >
+          Add an image to the project
+        </AppText>
+        <SavedItemList
+          data={savedItems}
+          refresh={refresh}
+          refreshSavedItems={refreshSavedItems}
+          style={styles.list}
+          imageStyles={styles.image}
+          onPressSelect={(item) => onChangeImage(item)}
+          //   onPressDownload={(item) => onPressDownload(item)}
+          //   onPressShare={(item) => onPressShare(item)}
+        />
+        {/* <View style={{marginVertical: 10}}>
+          <ImageInput
             imageUri={imageUri}
             onChangeImage={onChangeImage}
             style={{
@@ -66,15 +82,15 @@ const CameraModal = ({
               width: width - 110,
             }}
           />
-        </View>
-      </View>
+        </View> */}
+      </ScrollView>
     </Modal>
   );
-};
+}
 
 const styles = StyleSheet.create({
   modalView: {
-    // height: "50%",
+    // height: '50%',
     margin: 20,
     backgroundColor: '#e8e8e8',
     borderRadius: 20,
@@ -89,5 +105,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  list: {
+    marginTop: 10,
+    marginRight: 0,
+    marginHorizontal: 0,
+    marginVertical: 20,
+    // width: width,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+  },
+  image: {
+    width: width / 1.15,
+    height: height / 4,
+    borderRadius: 5,
+  },
 });
-export default CameraModal;

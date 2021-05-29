@@ -10,6 +10,7 @@ import {Button} from 'react-native-paper';
 // import { useSelector } from 'react-redux';
 import ListViewItem from './ListViewItem';
 import CardViewList from './CardViewList';
+import AppText from '../AppText';
 // require("firebase/firestore");
 
 export const ListViewNotifications = ({notifications}) => (

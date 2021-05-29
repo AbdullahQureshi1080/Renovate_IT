@@ -129,13 +129,18 @@ const ComponentsStyle = {
     },
   },
   AppCardStyle: {
+    // flex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // width: '90%',
     borderRadius: 5,
     marginHorizontal: marginHorizontal,
+
     // height: Dimensions.get('screen').height / 2.4,
     marginVertical: 10,
     backgroundColor: '#e8e8e8',
     shadowColor: '#1b262c',
-    border: 'none',
+    // border: 'none',
     shadowOffset: {
       width: 0,
       height: 5,
@@ -145,14 +150,12 @@ const ComponentsStyle = {
     elevation: 10,
     titleStyle: {
       fontSize: 16,
-      fontWeight: '600',
-      // fontFamily: 'Poppins-Regular',
+      fontFamily: 'Poppins-Bold',
     },
     subtitleStyle: {
       fontSize: 14,
-      // fontWeight : "normal",
-      fontWeight: '600',
-      // fontFamily: 'Poppins-Bold',
+      fontFamily: 'Poppins-Regular',
+      // borderBottomWidth: '10%',
     },
   },
   categoryCardStyle: {

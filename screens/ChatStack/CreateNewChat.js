@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Button, Input, Image, Avatar, Icon} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {createNewChat, addChat} from '../../store/user';
+// import {createNewChat, addChat} from '../../store/user';
 import AppButton from '../../components/AppButton';
 // import { db } from "../../config/firebase";
 import firebase from 'firebase';
@@ -12,20 +12,34 @@ import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
 const CreateNewChat = ({navigation}) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const allUsers = state.entities.data.allusers;
   const sender = state.entities.auth.data;
-  // const email = state.entities.auth.data.email;
+  const email = state.entities.auth.data.email;
   const chatApi = useApi(userAPI.createChat);
-  const [recieverEmail, setRecieverEmail] = useState('');
+  // const [recieverEmail, setRecieverEmail] = useState('');
   const [input, setInput] = useState('');
-  const [chatName, setChatName] = useState('');
+  // const [chatName, setChatName] = useState('');
   // const [chatId, setChatId] = useState([])
 
   // const chatId = "";
 
+  const [chatIds, setChatIds] = useState([]);
+
+  const chatIdApi = useApi(userAPI.getChatIds);
+
+  const getChatIds = async () => {
+    const result = await chatIdApi.request(email);
+    if (!result.ok) {
+      return Alert.alert('Error Retriving Chat Ids');
+    }
+
+    setChatIds(result.data);
+  };
+
   useEffect(() => {
+    getChatIds();
     // console.log("User Id in Create Chat", userId)
   }, []);
 
@@ -81,7 +95,15 @@ const CreateNewChat = ({navigation}) => {
     // chatUserIds.sort();
     const chatId = chatUserIds.join('_');
 
-    console.log('Data for Chat Api', sender.email, reciever.email, chatId);
+    const checkIfChatExists = chatIds.filter((id) => {
+      return id == chatId;
+    });
+    console.log('Checking Chat Id if exixts', checkIfChatExists);
+    if (checkIfChatExists.length > 0) {
+      navigation.navigate('All Messages');
+      return Alert.alert('Chat Already Exists');
+    }
+    // console.log('Data for Chat Api', sender.email, reciever.email, chatId);
 
     const result = await chatApi.request(sender.email, reciever.email, chatId);
     if (!result.ok) {
@@ -101,7 +123,6 @@ const CreateNewChat = ({navigation}) => {
         navigation.navigate('All Messages');
       })
       .catch((error) => alert(error));
-
   };
 
   return (

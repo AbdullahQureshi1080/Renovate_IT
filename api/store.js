@@ -13,6 +13,16 @@ const getCategoryProducts = (userId, category) =>
     category,
   });
 
+const getShopData = (shopId) =>
+  client.post('shop/getShopData', {
+    shopId,
+  });
+
+const getShopProducts = (shopId) =>
+  client.post('shop/getShopProducts', {
+    shopId,
+  });
+
 const orderFromStore = (
   userId,
   shopId,
@@ -45,4 +55,6 @@ export default {
   orderFromStore,
   userStoreOrders,
   cancelStoreOrder,
+  getShopData,
+  getShopProducts,
 };

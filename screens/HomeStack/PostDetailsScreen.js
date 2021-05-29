@@ -51,7 +51,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   const allusers = useSelector((state) => state.entities.data.allusers);
 
   // -----
-
+  // const [userPostIds, setUserPostIds] = useState([]);
   const [idCheck, setCheckId] = useState(true);
   const [deleteError, setDeleteError] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -70,11 +70,21 @@ const PostDetailsScreen = ({navigation, route}) => {
   const newBidApi = useApi(userAPI.offerNewBid);
   const saveApi = useApi(userAPI.saveItem);
   const postId = route.params.item._id;
-  const userPostIds = state.entities.auth.data.posts.map((id) => id);
+  // const postApi = useApi(userAPI.userPosts);
+  // const userPostIds = state.entities.auth.data.posts.map(({id}) => id);
+  const userPostIds = route.params.userPostIds;
   const [bids, setBids] = useState([]);
 
   // const [message, setMessage] = useState('');
   // const [amount, setAmount] = useState('');
+  // const fetchUserPostIds = async () => {
+  //   // User Post Ids
+  //   const result = await postApi.request(userEmail);
+  //   if (result.length == 0) {
+  //     console.log('Post Ids not available');
+  //   }
+  //   setUserPostIds(result);
+  // };
 
   const userBids = bids?.filter((bid) => {
     return bid.bidderId == userId;
@@ -92,6 +102,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
+    // fetchUserPostIds();
     fetchPostBids();
     console.log('Item Params', route.params.item);
     console.log(userPostIds);
@@ -255,7 +266,7 @@ const PostDetailsScreen = ({navigation, route}) => {
           >
             <MaterialCommunityIcons
               name="backspace"
-              size={40}
+              size={35}
               color="#1b262c"
             />
           </TouchableOpacity>

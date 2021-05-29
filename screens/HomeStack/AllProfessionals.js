@@ -1,6 +1,7 @@
 // Native Imports
 import React, {useState, useEffect} from 'react';
-import {View, Text, Dimensions, FlatList} from 'react-native';
+import {View, Text, Dimensions, FlatList, TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Components Imports
 // import {professionals} from '../../assets/DummyData';
@@ -71,6 +72,21 @@ const AllProfessionals = ({navigation, route}) => {
 
   return (
     <View style={ScreenStyles.allProfessionals}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginVertical: 10,
+        }}
+      >
+        <TouchableOpacity
+          style={{alignSelf: 'center'}}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialCommunityIcons name="backspace" size={35} color="#1b262c" />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         ListHeaderComponent={
           <SearchBar

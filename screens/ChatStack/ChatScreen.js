@@ -34,9 +34,28 @@ const ChatScreen = ({navigation, route}) => {
     console.log('Chat array in chat screen', chats);
     setChatIds(result.data);
   };
+
   useEffect(() => {
     getChatIds();
   }, []);
+
+  useEffect(() => {
+    getChatIds();
+  }, [navigation, route]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      //   alert('Screen was focused');
+      // Do something when the screen is focused
+      getChatIds();
+      return () => {
+        // alert('Screen was unfocused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        setChatIds([]);
+      };
+    }, []),
+  );
 
   useEffect(() => {
     console.log('chatIds in Chat Screen', chatIds);
@@ -67,12 +86,8 @@ const ChatScreen = ({navigation, route}) => {
   return (
     <View style={styles.screenContainer}>
       <AppCard
-        title="Notifications"
-        component={<ListViewNotifications notifications={[]} />}
-        onPress={() => navigation.navigate('All Notifications')}
-      />
-      <AppCard
         title="Inbox"
+        buttonName="View All"
         component={
           <ListViewMessages
             navigation={navigation}

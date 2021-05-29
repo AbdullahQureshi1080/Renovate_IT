@@ -42,7 +42,7 @@ export default function Header({
         style={{alignSelf: 'center'}}
         onPress={() => navigation.goBack()}
       >
-        <MaterialCommunityIcons name="backspace" size={40} color="#1b262c" />
+        <MaterialCommunityIcons name="backspace" size={35} color="#1b262c" />
       </TouchableOpacity>
       <AppText style={styles.screenName}>{screenName}</AppText>
       {renderButton ? (

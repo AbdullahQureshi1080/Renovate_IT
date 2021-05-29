@@ -11,11 +11,9 @@ import InfoCard from '../../components/Card/InfoCard';
 import ScreenStyles from '../../styles/ScreenStyles';
 import {useIsFocused} from '@react-navigation/native';
 
-
 const AboutUser = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const [userProfile, setUserProfile] = useState(route.params);
-
 
   useEffect(() => {
     setUserProfile(route.params);

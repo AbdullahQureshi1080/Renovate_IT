@@ -11,6 +11,7 @@ import {Avatar} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import ListViewItem from '../../components/List/ListViewItem';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
 require('firebase/firestore');
 import userAPI from '../../api/user';
@@ -24,11 +25,9 @@ import {useFocusEffect} from '@react-navigation/native';
 const AllMessagesScreen = ({navigation, route}) => {
   const state = useSelector((state) => state);
   const user = state.entities.auth.data;
-  // const chatIds = state.entities.auth.data.chats.map((chat) => chat.id);
-  // const [chatIds, setChatIds] = useState(route.params);
   const [chatIds, setChatIds] = useState([]);
   const [chats, setChats] = useState([]);
-  // // const [allChats, setAllChats] = useState([]);
+
   const chatIdApi = useApi(userAPI.getChatIds);
 
   const getChatIds = async () => {
@@ -43,6 +42,25 @@ const AllMessagesScreen = ({navigation, route}) => {
   useEffect(() => {
     getChatIds();
   }, []);
+
+  useEffect(() => {
+    getChatIds();
+  }, [navigation, route]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      //   alert('Screen was focused');
+      // Do something when the screen is focused
+      getChatIds();
+
+      return () => {
+        // alert('Screen was unfocused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        setChatIds([]);
+      };
+    }, []),
+  );
 
   useEffect(() => {
     console.log('chatIds in Chat Screen', chatIds);
@@ -71,7 +89,7 @@ const AllMessagesScreen = ({navigation, route}) => {
       },
       headerTitleStyle: {
         color: '#1b262c',
-        // alignSelf: "center",
+        alignSelf: 'center',
       },
       headerTintColor: '#1b262c',
       headerRight: () => (
@@ -86,6 +104,30 @@ const AllMessagesScreen = ({navigation, route}) => {
           <TouchableOpacity onPress={() => navigation.navigate('CreateChat')}>
             <MaterialIcons name="create" size={24} color="#1b262c" />
           </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            width: 50,
+            marginRight: 20,
+          }}
+        >
+          <TouchableOpacity
+            style={{alignSelf: 'center'}}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialCommunityIcons
+              name="backspace"
+              size={30}
+              color="#1b262c"
+            />
+          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('CreateChat')}>
+            <MaterialIcons name="create" size={24} color="#1b262c" />
+          </TouchableOpacity> */}
         </View>
       ),
     });

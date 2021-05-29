@@ -21,12 +21,18 @@ import {v4 as uuidv4} from 'uuid';
 
 import AppButton from '../../components/AppButton';
 import AppText from '../../components/AppText';
+
+import useApi from '../../hooks/useApi';
+import userAPI from '../../api/user';
+
 // import CameraInput from "../../components/Image/CameraInput";
 // import ImageInput from "../../components/Image/ImageInput";
 import ImageModal from '../../components/Modal/ImageModal';
 import TextModal from '../../components/Modal/TextModal';
 import CameraModal from '../../components/Modal/CameraModal';
 import AddSvg from '../../assets/svg/addToProject.svg';
+import SavedItemsModal from '../../components/Modal/SavedItemsModal';
+import {useSelector} from 'react-redux';
 
 const {width, height} = Dimensions.get('screen');
 type nodeItem = {
@@ -37,27 +43,45 @@ type nodeItem = {
 };
 
 function CreateProjectScreen({navigation, route}) {
-  const flatlist = useRef();
+  const state = useSelector((state) => state);
+  const userId = state.entities.auth.data._id;
+  // const flatlist = useRef();
   const [dataNode, setDataNodes] = useState([]);
-  // useEffect(() => {
-  //   console.log(route.params)
-  //   // console.log(dataNode);
-  //   // if(route.params == null) return;
-  //   // else{
-  //     // setDataNodes(route.params.data.data)
-  //   // }
-  // }, []);
+  const [saved, setSaved] = useState([]);
+  const saveApi = useApi(userAPI.getSavedItems);
+  const fetchSavedItems = async () => {
+    const result = await saveApi.request(userId);
+    if (!result.ok) {
+      console.log('Error Fetching Saved Items');
+      return;
+    }
+    // console.log('Fetch Saved Items Successfully', result.data);
+    setSaved(result.data);
+  };
+
   useEffect(() => {
     console.log(dataNode);
+    fetchSavedItems();
     // setDataNodes(route.params.data.data)
   }, [dataNode]);
+
+  const refreshSavedItems = () => {
+    if (saved !== []) {
+      setRefresh(true);
+      fetchSavedItems();
+      setRefresh(false);
+    }
+  };
   // const [id, setId] = useState(0);
   const [imageUri, setImageUri] = useState(null);
   const [textModalVisible, setTextModalVisible] = useState(false);
   const [imageModalVisible, setImageModalVisible] = useState(false);
+  const [savedItemsModalVisible, setSaveItemsModalVisible] = useState(false);
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [text, setText] = useState('');
   //   console.log(data);
+
+  const [refresh, setRefresh] = useState(false);
 
   const renderItem = useCallback(
     ({item, index, drag, isActive}: RenderItemParams<nodeItem>) => {
@@ -136,7 +160,7 @@ function CreateProjectScreen({navigation, route}) {
     console.log('Data in Handle Remove - Key', key);
     // const allItems = dataNode;
     const filteredItems = dataNode.filter((item) => {
-      return item.key !== key;
+      return item.key != key;
     });
     console.log('filtered items', filteredItems);
     setDataNodes(filteredItems);
@@ -185,6 +209,7 @@ function CreateProjectScreen({navigation, route}) {
       setDataNodes([...dataNode, newNode]);
       setImageModalVisible(false);
       setCameraModalVisible(false);
+      setSaveItemsModalVisible(false);
       setImageUri(null);
     }
     // console.log(dataNode);
@@ -212,6 +237,11 @@ function CreateProjectScreen({navigation, route}) {
     //   console.log(" Updated Data to Gallary", dataFormToScreen)
     //   navigation.navigate("Gallery",{projectData:dataFormToScreen})
     // }
+  };
+
+  const callAddHandler = () => {
+    console.log('Image URI from Saved Items', imageUri);
+    onPressAdd('image');
   };
 
   return (
@@ -262,6 +292,20 @@ function CreateProjectScreen({navigation, route}) {
         onChangeImage={(imageUri) => setImageUri(imageUri)}
         onPressAdd={() => onPressAdd('image')}
         onPressCancel={() => setCameraModalVisible(false)}
+      />
+      <SavedItemsModal
+        btnName="Add"
+        btnCloseName="Cancel"
+        isVisible={savedItemsModalVisible}
+        imageUri={imageUri}
+        savedItems={saved}
+        refresh={refresh}
+        refreshSavedItem={refreshSavedItems}
+        onChangeImage={(imageUri) => {
+          setImageUri(imageUri), callAddHandler();
+        }}
+        // onPressAdd={() => onPressAdd('image')}
+        onPressCancel={() => setSaveItemsModalVisible(false)}
       />
       {dataNode.length == 0 ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -326,28 +370,23 @@ function CreateProjectScreen({navigation, route}) {
         >
           <MaterialCommunityIcons name="text" size={40} color={'#1b262c'} />
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => setSaveItemsModalVisible(true)}
+        >
+          <MaterialCommunityIcons
+            name="content-save-outline"
+            size={40}
+            color={'#1b262c'}
+          />
+        </TouchableOpacity> */}
       </View>
     </View>
     // </ScrollView>
   );
 }
 
-// const styles = StyleSheet.create({
-//   modalView: {
-//     // height: "50%",
-//     margin: 20,
-//     backgroundColor: "#e8e8e8",
-//     borderRadius: 20,
-//     padding: 35,
-//     // alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-// });
 export default CreateProjectScreen;
