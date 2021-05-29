@@ -170,9 +170,18 @@ export default function SavedScreen() {
       .then(async (base64Data) => {
         var base64Data = `data:image/png;base64,` + base64Data;
         // here's base64 encoded image
-        setImageToShare(base64Data);
+        const shareResponse = await Share.open({
+          message: 'Shared From Renovate It',
+          title: 'Image from saved Images',
+          url: base64Data,
+        });
+        console.log('Item to share - from share', shareResponse);
+        // setImageToShare(base64Data);
         // remove the file from storage
         return fs.unlink(imagePath);
+      })
+      .catch((err) => {
+        console.log('Error', err);
       });
 
   const onPressDownload = async (item) => {
@@ -183,12 +192,6 @@ export default function SavedScreen() {
   const onPressShare = async (item) => {
     console.log('Item to share', item);
     await blobRS(item);
-    const shareResponse = await Share.open({
-      message: 'Shared From Renovate It',
-      title: 'Image from saved Images',
-      url: imageToShare,
-    });
-    console.log('Item to share - from share', shareResponse);
   };
 
   return (
