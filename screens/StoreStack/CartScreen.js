@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     // width: width / 1.38,
-    height: height / 6,
+    // height: height / 6,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
@@ -188,11 +188,12 @@ const styles = StyleSheet.create({
   headContainer: {
     marginTop: 5,
     flexDirection: 'row',
-    width: '50%',
+    width: '60%',
     justifyContent: 'space-between',
   },
   nameText: {
     // marginVertical: 5,
+    width: '60%',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
     marginHorizontal: 5,
@@ -204,6 +205,7 @@ const styles = StyleSheet.create({
   },
   productInfoContainer: {
     flexDirection: 'row',
+    // width: '100%',
   },
   cartInfoContainer: {
     flexDirection: 'row',

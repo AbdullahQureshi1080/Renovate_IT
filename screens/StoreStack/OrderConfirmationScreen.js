@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import useApi from '../../hooks/useApi';
 import storeAPI from '../../api/store';
 import {Alert} from 'react-native';
+import {ScrollView} from 'react-native';
 // import {emptyCart} from '../../store/cart';
 
 const {width, height} = Dimensions.get('screen');
@@ -71,10 +72,10 @@ export default function OrderConfirmationScreen({navigation, route}) {
         navigation={navigation}
         idCheck={false}
         screenName={'Confirm Order'}
-        buttonName={'Order'}
+        buttonName={'Place Order'}
         buttonHandler={() => orderHandler()}
       />
-      <View style={{marginVertical: 10}}>
+      <ScrollView style={{marginVertical: 10}}>
         <FlatList
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
@@ -125,18 +126,30 @@ export default function OrderConfirmationScreen({navigation, route}) {
             </>
           )}
         />
-      </View>
-      <Divider style={styles.divider} />
-      <View style={styles.container}>
-        <View style={styles.shippingContainer}>
-          <AppText style={styles.nameText}>Shipping</AppText>
-          <AppText style={styles.priceText}>{deliveryDetails.address}</AppText>
-          <AppText style={styles.priceText}>
-            {deliveryDetails.city.label}, {deliveryDetails.province.label}
-          </AppText>
-          <AppText style={styles.priceText}>{deliveryDetails.zipCode}</AppText>
+        <Divider style={styles.divider} />
+        <View style={styles.container}>
+          <View style={styles.shippingContainer}>
+            <AppText style={styles.nameText}>Shipping</AppText>
+            <AppText style={styles.priceText}>
+              {deliveryDetails.address}
+            </AppText>
+            <AppText style={styles.priceText}>
+              {deliveryDetails.city.label}, {deliveryDetails.province.label}
+            </AppText>
+            <AppText style={styles.priceText}>
+              {deliveryDetails.zipCode}
+            </AppText>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.noteContainer}>
+            <AppText style={styles.noteHead}>Note</AppText>
+            <AppText style={styles.noteDescription}>
+              The store has the ability of cash on delivery payment and is
+              bringing online soon. Thankyou for your cooperation.{' '}
+            </AppText>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
@@ -192,5 +205,16 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderWidth: 0.5,
     opacity: 0.7,
+  },
+  noteContainer: {
+    marginHorizontal: 20,
+  },
+  noteHead: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+  },
+  noteDescription: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
   },
 });

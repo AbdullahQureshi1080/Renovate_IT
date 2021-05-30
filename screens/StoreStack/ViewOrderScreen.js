@@ -147,6 +147,14 @@ export default function ViewOrderScreen({navigation, route}) {
           ) : (
             <View />
           )}
+          <Divider style={styles.divider} />
+          <View style={styles.noteContainer}>
+            <AppText style={styles.noteHead}>Note</AppText>
+            <AppText style={styles.noteDescription}>
+              The store has the ability of cash on delivery payment and is
+              bringing online soon. Thankyou for your cooperation.{' '}
+            </AppText>
+          </View>
         </View>
       </ScrollView>
     </>
@@ -213,5 +221,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Bold',
     // width: '70%',
+  },
+  noteContainer: {
+    marginHorizontal: 20,
+  },
+  noteHead: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+  },
+  noteDescription: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
   },
 });

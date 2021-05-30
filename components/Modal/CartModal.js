@@ -171,7 +171,9 @@ export default function CartModal({
                       color="#1b262c"
                     />
                   </TouchableOpacity>
-                  <AppText style={styles.nameText}>{item.productName}</AppText>
+                  <AppText style={[styles.nameText, {width: '70%'}]}>
+                    {item.productName}
+                  </AppText>
                   <View style={styles.productInfoContainer}>
                     <Avatar.Image source={{uri: item.shopImage}} size={35} />
                     <AppText style={styles.shopText}>
@@ -232,7 +234,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: width / 1.4,
-    height: height / 2,
+    height: height / 1.8,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
@@ -255,7 +257,9 @@ const styles = StyleSheet.create({
   nameText: {
     marginVertical: 5,
     fontSize: 18,
+    // width: '80%',
     fontFamily: 'Poppins-Medium',
+    marginHorizontal: 3,
   },
   shopText: {
     fontSize: 16,
