@@ -11,6 +11,10 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Alert,
+  // Platform,
+  Linking,
+  // Alert,
+  // alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -33,9 +37,11 @@ import {useSelector} from 'react-redux';
 const ChatScreen = ({navigation, route}) => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [emailForGmailLink, setEmailForGmailLink] = useState('');
   const state = useSelector((state) => state);
   const profile = state.entities.auth.data;
   console.log(profile);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -78,11 +84,14 @@ const ChatScreen = ({navigation, route}) => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             width: 80,
             marginRight: 20,
           }}
         >
+          <TouchableOpacity onPress={() => linkingContactPlatform('gmail')}>
+            <MaterialCommunityIcons name="gmail" size={24} color="#1b262c" />
+          </TouchableOpacity>
           <TouchableOpacity onPress={handleDelete}>
             <MaterialIcons name="delete" size={24} color="#1b262c" />
           </TouchableOpacity>

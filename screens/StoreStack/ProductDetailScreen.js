@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: 'center',
     marginHorizontal: 10,
+    width: '60%',
   },
   decsriptionText: {
     fontSize: 0.0375 * width,

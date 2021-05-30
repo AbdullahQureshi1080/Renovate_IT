@@ -16,11 +16,12 @@ import {useFocusEffect} from '@react-navigation/native';
 
 // Styles Imports
 import ScreenStyles from '../../styles/ScreenStyles';
+import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
 
 // Components
 import ProfessionalAvator from '../../components/ProfessionalAvatar';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
+import Switch from '../../components/Switch';
 
 // Auth and Api Imports
 import useAuth from '../../auth/useAuth';
@@ -33,6 +34,7 @@ import RemoteFirmScreen from './RemoteFirmScreen';
 
 import UserProjects from './UserProjects';
 import SavedScreen from './SavedScreen';
+import AppText from '../../components/AppText';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -45,6 +47,8 @@ const UserProfileScreen = ({navigation, route}) => {
 
   const profileApi = useApi(userAPI.userProfile);
   const profileId = route.params._id;
+
+  const [switchOn, setSwitchOn] = useState(false);
 
   const fetchUserProfile = async () => {
     const result = await profileApi.request(profileId);
@@ -95,6 +99,12 @@ const UserProfileScreen = ({navigation, route}) => {
   if (userProfile === null) {
     return <View />;
   }
+
+  // const onToggleSwitch = () => {
+  //   setSwitchOn(!switchOn);
+  //   // setStatusProfile(switchOn ? 'Normal' : 'Professional');
+  // };
+
   return (
     <ScrollView style={ScreenStyles.userprofileScreen}>
       {!checkId ? (
@@ -150,6 +160,20 @@ const UserProfileScreen = ({navigation, route}) => {
           placeholdertext={'Update profile to set title'}
         />
       </View>
+      {/* <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: 20,
+        }}
+      >
+        {switchOn ? (
+          <AppText>Switch to app light mode</AppText>
+        ) : (
+          <AppText>Switch to app dark mode</AppText>
+        )}
+        <Switch isSwitchOn={switchOn} onToggleSwitch={onToggleSwitch} />
+      </View> */}
       <View>
         <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProfileTab}>
           <Tab.Screen

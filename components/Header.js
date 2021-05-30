@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingTop: 18,
     marginHorizontal: 20,
+    justifyContent: 'space-between',
   },
   screenName: {
     fontSize: 16,
@@ -134,8 +135,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   buttonContainer: {
-    width: '75%',
-    alignSelf: 'center',
+    marginLeft: 30,
   },
   renderContainer: {
     width: '70%',

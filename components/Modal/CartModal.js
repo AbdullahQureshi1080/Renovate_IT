@@ -121,7 +121,7 @@ export default function CartModal({
             Items ({cart.counter})
           </AppText>
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{marginVertical: 20}}>
           <FlatList
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   imageContainer: {
-    width: width / 1.38,
+    width: width / 1.4,
     height: height / 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   productImage: {
-    width: width / 1.75,
+    width: width / 1.85,
     height: height / 4,
     borderRadius: 10,
   },
