@@ -187,6 +187,7 @@ export default function FirmManageScreen({navigation, route}) {
       console.log('Unable to delete note, try again');
       return;
     }
+    setIsVisible2(false);
     setNotes(new Array(result.data));
   };
 
