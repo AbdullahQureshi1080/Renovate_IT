@@ -65,18 +65,18 @@ function CreateProjectScreen({navigation, route}) {
     // setDataNodes(route.params.data.data)
   }, [dataNode]);
 
-  const refreshSavedItems = () => {
-    if (saved !== []) {
-      setRefresh(true);
-      fetchSavedItems();
-      setRefresh(false);
-    }
-  };
+  // const refreshSavedItems = () => {
+  //   if (saved !== []) {
+  //     setRefresh(true);
+  //     fetchSavedItems();
+  //     setRefresh(false);
+  //   }
+  // };
   // const [id, setId] = useState(0);
   const [imageUri, setImageUri] = useState(null);
   const [textModalVisible, setTextModalVisible] = useState(false);
   const [imageModalVisible, setImageModalVisible] = useState(false);
-  const [savedItemsModalVisible, setSaveItemsModalVisible] = useState(false);
+  // const [savedItemsModalVisible, setSaveItemsModalVisible] = useState(false);
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [text, setText] = useState('');
   //   console.log(data);
@@ -209,7 +209,7 @@ function CreateProjectScreen({navigation, route}) {
       setDataNodes([...dataNode, newNode]);
       setImageModalVisible(false);
       setCameraModalVisible(false);
-      setSaveItemsModalVisible(false);
+      // setSaveItemsModalVisible(false);
       setImageUri(null);
     }
     // console.log(dataNode);
@@ -293,7 +293,7 @@ function CreateProjectScreen({navigation, route}) {
         onPressAdd={() => onPressAdd('image')}
         onPressCancel={() => setCameraModalVisible(false)}
       />
-      <SavedItemsModal
+      {/* <SavedItemsModal
         btnName="Add"
         btnCloseName="Cancel"
         isVisible={savedItemsModalVisible}
@@ -306,7 +306,7 @@ function CreateProjectScreen({navigation, route}) {
         }}
         // onPressAdd={() => onPressAdd('image')}
         onPressCancel={() => setSaveItemsModalVisible(false)}
-      />
+      /> */}
       {dataNode.length == 0 ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <View style={{alignSelf: 'center', opacity: 0.6}}>

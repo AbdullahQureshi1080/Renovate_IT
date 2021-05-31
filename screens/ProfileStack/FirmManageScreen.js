@@ -51,6 +51,7 @@ export default function FirmManageScreen({navigation, route}) {
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisible3, setIsVisible3] = useState(false);
   const [isVisible4, setIsVisible4] = useState(false);
+  // const [updateVisible, setUpdateVisible] = useState(false);
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
   const firms = state.entities.auth.data.firms;
@@ -461,6 +462,7 @@ export default function FirmManageScreen({navigation, route}) {
             btnName="Delete"
             btnCloseName="Close"
             onPressDelete={() => handleFirmDelete()}
+            // onPressUpdate={() => handleFirmUpdate()}
             onPressCancel={() => setIsVisible3(false)}
             titleMessage={'Add note details'}
           />

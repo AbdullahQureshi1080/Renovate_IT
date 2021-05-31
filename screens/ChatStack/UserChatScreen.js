@@ -84,14 +84,14 @@ const ChatScreen = ({navigation, route}) => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: 80,
+            justifyContent: 'flex-end',
+            width: 30,
             marginRight: 20,
           }}
         >
-          <TouchableOpacity onPress={() => linkingContactPlatform('gmail')}>
+          {/* <TouchableOpacity onPress={() => linkingContactPlatform('gmail')}>
             <MaterialCommunityIcons name="gmail" size={24} color="#1b262c" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={handleDelete}>
             <MaterialIcons name="delete" size={24} color="#1b262c" />
           </TouchableOpacity>

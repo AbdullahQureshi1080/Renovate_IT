@@ -23,7 +23,7 @@ export default function SavedItemList({
   error,
   onPressDownload,
   onPressShare,
-  onPressSelect,
+  // onPressSelect,
 }) {
   return (
     <FlatList
@@ -50,12 +50,12 @@ export default function SavedItemList({
       keyExtractor={(item) => item._id}
       renderItem={({item}) => (
         <View style={[styles.container, style]}>
-          <TouchableOpacity onPress={() => onPressSelect(item.image)}>
-            <Image
-              source={{uri: item.image}}
-              style={[styles.image, imageStyles]}
-            />
-          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={() => onPressSelect(item.image)}> */}
+          <Image
+            source={{uri: item.image}}
+            style={[styles.image, imageStyles]}
+          />
+          {/* </TouchableOpacity> */}
           <View
             style={{
               flexDirection: 'row',
