@@ -19,6 +19,7 @@ export default function RemoteFirmScreen({navigation}) {
   const [firms, setFirms] = useState([]);
   const [error, setError] = useState(null);
   const userFirmApi = useApi(userAPI.getUserFirms);
+  const [refresh, setRefresh] = useState(false);
 
   const fetchUserFirms = async () => {
     const result = await userFirmApi.request(email);
@@ -34,9 +35,19 @@ export default function RemoteFirmScreen({navigation}) {
     fetchUserFirms();
   }, []);
 
+  const refreshFirms = () => {
+    if (firms.length > 0) {
+      setRefresh(true);
+      fetchUserFirms();
+      setRefresh(false);
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <FlatList
+        refreshing={refresh}
+        onRefresh={refreshFirms}
         ListEmptyComponent={() => (
           <View
             style={{

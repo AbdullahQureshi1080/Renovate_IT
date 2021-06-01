@@ -18,21 +18,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {Avatar} from 'react-native-elements';
 import ProfessionalAvatar from '../ProfessionalAvatar';
+import {ScrollView} from 'react-native';
+import {FlatList} from 'react-native';
 const {width, height} = Dimensions.get('screen');
 export default function FirmDetailsModal({
   btnName,
   delHide,
+  deleteIcon,
   btnCloseName,
   onPressCancel,
   onPressDelete,
+  onPressUpdate,
   isVisible,
   data,
 }) {
-  // console.log(data);
+  console.log('firm Mebers', data.members.length);
 
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
-      <View style={styles.modalView}>
+      <ScrollView style={styles.modalView}>
         <View
           style={{
             marginVertical: 10,
@@ -55,7 +59,10 @@ export default function FirmDetailsModal({
             />
           </TouchableOpacity>
           {delHide ? (
-            <AppButton name={btnName} onPress={onPressDelete} />
+            <>
+              <AppButton name={'update'} onPress={onPressUpdate} />
+              <AppButton name={btnName} onPress={onPressDelete} />
+            </>
           ) : (
             <View />
           )}
@@ -119,25 +126,30 @@ export default function FirmDetailsModal({
           >
             Members
           </AppText>
-          <View style={{flexDirection: 'row', marginHorizontal: 10}}>
-            {data.members.map((member) => (
-              <View style={{width: 100}}>
-                {/* <AppText style={styles.labelText}>Supplier</AppText> */}
+          <FlatList
+            data={data.members}
+            numColumns={3}
+            keyExtractor={(item) => item._id}
+            renderItem={({item}) => (
+              <View
+                style={{
+                  marginHorizontal: 5,
+                }}
+              >
                 <ProfessionalAvatar
-                  key={member?._id}
-                  name={member?.name}
-                  title={member?.jobtitle}
+                  key={item?._id}
+                  name={item?.name}
+                  title={item?.jobtitle}
                   style={profileAvatar}
-                  size={80}
-                  imageUri={member?.image}
+                  size={65}
+                  imageUri={item?.image}
                   placeholdertext={'add user'}
-                  //   onPress={()=>{setModalVisible3(true); dataForModal("supplier");}}
                 />
               </View>
-            ))}
-          </View>
+            )}
+          />
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 }
@@ -191,7 +203,7 @@ const profileAvatar = {
   titleText: {
     fontSize: 12,
     color: '#495464',
-    // width:Dimensions.get('window').width/4,
+    width: width / 5,
     fontFamily: 'Poppins-Medium',
   },
 };

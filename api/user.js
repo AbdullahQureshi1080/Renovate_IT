@@ -269,6 +269,15 @@ const deleteNote = (email, noteId, firmId) =>
 const deleteFirm = (email, firmId, members) =>
   client.post('remoteFirm/deleteFirm', {email, firmId, members});
 
+const deleteFirmMember = (firmId, memberId) =>
+  client.post('remoteFirm/removeMember', {firmId, memberId});
+
+const addFirmMember = (firmId, memberId) =>
+  client.post('remoteFirm/addNewMember', {firmId, memberId});
+
+const updateFirmData = (firmId, title, description) =>
+  client.post('remoteFirm/updateFirm', {firmId, title, description});
+
 const saveItem = (userId, image, type) =>
   client.post('save/save', {userId, image, type});
 const unSaveItem = (userId, itemId) =>
@@ -304,6 +313,9 @@ export default {
   getNotes,
   deleteNote,
   deleteFirm,
+  addFirmMember,
+  deleteFirmMember,
+  updateFirmData,
   updateNote,
   getLikes,
   saveItem,

@@ -54,7 +54,7 @@ export default function FirmManageScreen({navigation, route}) {
   // const [updateVisible, setUpdateVisible] = useState(false);
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
-  const firms = state.entities.auth.data.firms;
+  // const firms = state.entities.auth.data.firms;
   const email = state.entities.auth.data.email;
   const [notes, setNotes] = useState([]);
   const [modalData, setModalData] = useState('');
@@ -65,7 +65,7 @@ export default function FirmManageScreen({navigation, route}) {
   const [value, setValue] = useState([]);
   // const [input, setInput] = useState("");
   const [idCheck, setCheckId] = useState(true);
-  const userfirmIds = firms.map(({id}) => id);
+  // const userfirmIds = firms.map(({id}) => id);
   const firmId = route.params.item._id;
   const creatorId = route.params.item.creatorId;
   const firmMembers = route.params.item.members;
@@ -298,6 +298,11 @@ export default function FirmManageScreen({navigation, route}) {
     setDocuments([]);
   };
 
+  const handleFirmUpdate = () => {
+    navigation.navigate('Update Firm', {data: route.params.item});
+    setIsVisible3(false);
+  };
+
   return (
     <MenuProvider>
       <ActivityIndicator visible={isLoading} />
@@ -459,11 +464,11 @@ export default function FirmManageScreen({navigation, route}) {
           <FirmDetailsModal
             delHide={delHide}
             isVisible={isVisible3}
-            data={firmData}
+            data={route.params.item}
             btnName="Delete"
             btnCloseName="Close"
             onPressDelete={() => handleFirmDelete()}
-            // onPressUpdate={() => handleFirmUpdate()}
+            onPressUpdate={() => handleFirmUpdate()}
             onPressCancel={() => setIsVisible3(false)}
             titleMessage={'Add note details'}
           />

@@ -11,6 +11,7 @@ import UpdateProfileScreen from '../screens/ProfileStack/UpdateProfileScreen';
 // import { Button } from 'react-native-paper';
 import FirmManageScreen from '../screens/ProfileStack/FirmManageScreen';
 import OtherUserProfile from '../screens/ProfileStack/OtherUserProfile';
+import FirmUpdateScreen from '../screens/ProfileStack/FirmUpdateScreen';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,13 @@ const ProfileStack = () => {
       <Stack.Screen
         name="Firm Details"
         component={FirmManageScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Update Firm"
+        component={FirmUpdateScreen}
         options={{
           headerShown: false,
         }}
