@@ -112,15 +112,22 @@ export default function ViewModal({
                 justifyContent: 'space-between',
               }}
             >
-              <AppButton
+              {/* <AppButton
                 name={btnName}
                 onPress={onPressDelete}
                 style={{marginHorizontal: 5}}
-              />
+              /> */}
               {data.noterId == userId ? (
-                <AppButton name={updateName} onPress={onPressUpdate} />
+                <>
+                  <AppButton
+                    name={btnName}
+                    onPress={onPressDelete}
+                    style={{marginHorizontal: 5}}
+                  />
+                  <AppButton name={updateName} onPress={onPressUpdate} />
+                </>
               ) : (
-                <View />
+                <AppButton name={updateName} onPress={onPressUpdate} />
               )}
               {/* <AppButton name={updateName} onPress={onPressUpdate} /> */}
             </View>
