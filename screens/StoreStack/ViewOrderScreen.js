@@ -8,6 +8,8 @@ import {
   StyleSheet,
   View,
   FlatList,
+  Platform,
+  Linking,
 } from 'react-native';
 import {Avatar, Divider} from 'react-native-paper';
 
@@ -20,14 +22,19 @@ import {useSelector} from 'react-redux';
 import AppText from '../../components/AppText';
 import Header from '../../components/Header';
 import AppButton from '../../components/AppButton';
+import {TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const {width, height} = Dimensions.get('screen');
 
 export default function ViewOrderScreen({navigation, route}) {
   const state = useSelector((state) => state);
+  const [shopData, setShopData] = useState('');
   const userId = state.entities.auth.data._id;
   const data = route.params.data;
   const orderId = data._id;
+  const shopId = data.shopId;
   const styleforstatusRed = {
     color: '#F16174',
   };
@@ -50,6 +57,45 @@ export default function ViewOrderScreen({navigation, route}) {
   };
 
   const cancelApi = useApi(storeAPI.cancelStoreOrder);
+  const shopDataApi = useApi(storeAPI.getShopData);
+
+  const linkingContactPlatform = (linkFor) => {
+    let msg = `From Renovate It: I am sending this message with regards to my order, ${orderId}`;
+    let phoneWithCountryCode = '92' + shopData?.phoneNumber.substring(1);
+    console.log('Number', phoneWithCountryCode);
+
+    let mobile =
+      Platform.OS == 'ios' ? phoneWithCountryCode : '+' + phoneWithCountryCode;
+    console.log('Mobile Wala', mobile);
+    if (mobile) {
+      if (linkFor == 'whatsapp') {
+        if (msg) {
+          let url = 'whatsapp://send?text=' + msg + '&phone=' + mobile;
+          Linking.openURL(url)
+            .then((data) => {
+              console.log('WhatsApp Opened');
+            })
+            .catch(() => {
+              alert('Make sure WhatsApp installed on your device');
+            });
+        } else {
+          alert('Please insert message to send');
+        }
+      }
+      if (linkFor == 'Call') {
+        let url = `tel:${mobile}`;
+        Linking.openURL(url)
+          .then((data) => {
+            console.log('DialPad Opened');
+          })
+          .catch(() => {
+            alert('Failed');
+          });
+      }
+    } else {
+      alert('Please insert mobile no');
+    }
+  };
 
   const handleCancelOrder = async () => {
     console.log('Cancel handler');
@@ -63,6 +109,23 @@ export default function ViewOrderScreen({navigation, route}) {
     }
     console.log('Order Canceled');
     navigation.navigate('Store Home');
+  };
+
+  useEffect(() => {
+    fetchShopData();
+  }, []);
+
+  const fetchShopData = async () => {
+    console.log('Shop handler');
+    // console.log(userId, orderId);
+    const result = await shopDataApi.request(shopId);
+    if (!result.ok) {
+      console.log('Result', result.data);
+      console.log('Error canceling order');
+      Alert.alert('Error canceling order');
+      return;
+    }
+    setShopData(result.data);
   };
 
   return (
@@ -147,14 +210,44 @@ export default function ViewOrderScreen({navigation, route}) {
           ) : (
             <View />
           )}
-          <Divider style={styles.divider} />
-          <View style={styles.noteContainer}>
-            <AppText style={styles.noteHead}>Note</AppText>
-            <AppText style={styles.noteDescription}>
-              The store has the ability of cash on delivery payment and is
-              bringing online soon. Thankyou for your cooperation.{' '}
-            </AppText>
-          </View>
+          <>
+            <Divider style={styles.divider} />
+            <View style={styles.noteContainer}>
+              <AppText style={styles.noteHead}>Note</AppText>
+              <AppText style={styles.noteDescription}>
+                If you have any queries regarding your order you can contact at
+                this number.{''}
+              </AppText>
+              <AppText style={styles.noteDescription}>
+                {shopData.phoneNumber}
+              </AppText>
+              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <TouchableOpacity>
+                  <MaterialCommunityIcons
+                    name="whatsapp"
+                    onPress={() => linkingContactPlatform('whatsapp')}
+                    size={30}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <MaterialIcons
+                    name="call"
+                    onPress={() => linkingContactPlatform('Call')}
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <Divider style={styles.divider} />
+            <View style={styles.noteContainer}>
+              <AppText style={styles.noteHead}>Note</AppText>
+              <AppText style={styles.noteDescription}>
+                The store has the ability of cash on delivery payment and is
+                bringing online soon. Thankyou for your cooperation.{' '}
+              </AppText>
+            </View>
+          </>
         </View>
       </ScrollView>
     </>

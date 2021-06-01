@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 18,
     fontFamily: 'Poppins-Medium',
+    width: '70%',
   },
   subtitleText: {
     fontSize: 16,
