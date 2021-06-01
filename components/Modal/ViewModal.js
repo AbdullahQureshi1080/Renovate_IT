@@ -70,7 +70,7 @@ export default function ViewModal({
   const onPressSave = async (image) => {
     console.log('Image for saving', image);
     let type = 'note';
-    const result = saveApi.request(userId, image, type);
+    const result = await saveApi.request(userId, image, type);
     if (!result.ok) {
       console.log('Not able to save at the moment');
     }
@@ -117,10 +117,16 @@ export default function ViewModal({
                 onPress={onPressDelete}
                 style={{marginHorizontal: 5}}
               />
-              <AppButton name={updateName} onPress={onPressUpdate} />
+              {data.noterId == userId ? (
+                <AppButton name={updateName} onPress={onPressUpdate} />
+              ) : (
+                <View />
+              )}
+              {/* <AppButton name={updateName} onPress={onPressUpdate} /> */}
             </View>
           ) : (
-            <View></View>
+            <AppButton name={updateName} onPress={onPressUpdate} />
+            // <View></View>
           )}
         </View>
         <View style={{marginVertical: 10}}>
