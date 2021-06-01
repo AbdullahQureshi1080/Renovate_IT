@@ -40,6 +40,7 @@ import ProfessionalAvatar from '../../components/ProfessionalAvatar';
 import SelectUserModal from '../../components/Modal/SelectUserModal';
 import AppButton from '../../components/AppButton';
 import {Dimensions} from 'react-native';
+import {Alert} from 'react-native';
 
 require('firebase/firestore');
 require('firebase/firebase-storage');
@@ -125,18 +126,37 @@ function CreateFirmScreen({navigation, route}) {
     return user;
   };
   const handleSubmit = async ({title, description, resetForm}) => {
-    setIsLoading(true);
     // const members ={
     //   "architect":getData(selectedArchitect),
     //   "builder":getData(selectedBuilder),
     //   "supplier":getData(selectedSupplier),
     // };
-    const members = [
-      getData(selectedArchitect),
-      getData(selectedBuilder),
-      getData(selectedSupplier),
-    ];
-    // const emails = members.map(user=>user.email);
+    const members = [];
+    if (selectedArchitect && selectedSupplier && selectedBuilder) {
+      members.push(getData(selectedArchitect));
+      members.push(getData(selectedBuilder));
+      members.push(getData(selectedSupplier));
+    } else if (selectedBuilder && selectedArchitect) {
+      members.push(getData(selectedBuilder));
+      members.push(getData(selectedArchitect));
+    } else if (selectedSupplier && selectedArchitect) {
+      members.push(getData(selectedSupplier));
+      members.push(getData(selectedArchitect));
+    } else if (selectedSupplier && selectedBuilder) {
+      members.push(getData(selectedSupplier));
+      members.push(getData(selectedBuilder));
+    } else if (selectedSupplier) {
+      members.push(getData(selectedSupplier));
+    } else if (selectedBuilder) {
+      members.push(getData(selectedBuilder));
+    } else if (selectedArchitect) {
+      members.push(getData(selectedArchitect));
+    } else {
+      Alert.alert('Select at least one professional');
+      return;
+    }
+    setIsLoading(true);
+    console.log('Members for database firm', members[0]);
     console.log('Handle Submit', title, description, members);
     const result = await createApi.request(email, title, description, members);
     // // console.log(result.data);
@@ -153,7 +173,7 @@ function CreateFirmScreen({navigation, route}) {
       index: 0,
       routes: [{name: 'AppHome'}],
     });
-    // resetForm();
+    resetForm();
   };
 
   const handleSearch = (search, type) => {

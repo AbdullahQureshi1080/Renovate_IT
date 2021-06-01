@@ -6,16 +6,29 @@
  * @flow strict-local
  */
 
-
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {Provider} from "react-redux";
-import { configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import {Provider} from 'react-redux';
+import {
+  configureFonts,
+  DefaultTheme,
+  Provider as PaperProvider,
+} from 'react-native-paper';
 import ContainerNavigation from './navigation/ContainerNavigation';
-import firebase from "firebase";
+import firebase from 'firebase';
 
 import configureStore from './store/configureStore';
-import { API_KEY, APP_ID, AUTH_DOMAIN, MEASUREMENT_ID, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } from './config/config';
+import {
+  API_KEY,
+  APP_ID,
+  AUTH_DOMAIN,
+  MEASUREMENT_ID,
+  MESSAGING_SENDER_ID,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+} from './config/config';
+
+import {LogBox} from 'react-native';
 
 const store = configureStore();
 
@@ -23,20 +36,20 @@ const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
   projectId: PROJECT_ID,
-  storageBucket:STORAGE_BUCKET,
+  storageBucket: STORAGE_BUCKET,
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
   measurementId: MEASUREMENT_ID,
 };
 
-// let app 
+// let app
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-}else {
+} else {
   firebase.app(); // if already initialized, use that one
 }
 
-firebase.firestore().settings({ experimentalForceLongPolling: true });
+firebase.firestore().settings({experimentalForceLongPolling: true});
 
 const fontConfig = {
   default: {
@@ -57,28 +70,30 @@ const fontConfig = {
       fontWeight: 'normal',
     },
   },
-}
+};
 
 const theme = {
   ...DefaultTheme,
   fonts: configureFonts(fontConfig),
-  colors:{
-  ...DefaultTheme.colors, 
-  primary: '#f4f4f2', 
-  accent: '#495464',
-  background:'#f4f4f2',
-  surface:'#495464',
-  text:'#495464',
-}
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#f4f4f2',
+    accent: '#495464',
+    background: '#f4f4f2',
+    surface: '#495464',
+    text: '#495464',
+  },
 };
+
+LogBox.ignoreAllLogs();
 
 const App = () => {
   return (
-    <Provider store = {store}>
+    <Provider store={store}>
       <PaperProvider theme={theme}>
-       <ContainerNavigation />
+        <ContainerNavigation />
       </PaperProvider>
-     </Provider> 
+    </Provider>
   );
 };
 
