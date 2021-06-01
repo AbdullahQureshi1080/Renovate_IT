@@ -442,13 +442,13 @@ const PostDetailsScreen = ({navigation, route}) => {
                   <AppText style={{fontSize: 14}}>No Bids yet</AppText>
                 </View>
               )}
-              horizontal={true}
+              // horizontal={true}
               data={bids}
               keyExtractor={(bid) => bid._id}
               renderItem={({item}) => (
                 <View style={styles.bidCardContainer} key={item._id}>
                   <BidCard
-                    // key={item._id}
+                    key={item._id}
                     data={item}
                     onPress={() => bidHandler(item)}
                     styleStatus={handleStatus(item.bidStatus)}
@@ -477,7 +477,7 @@ const PostDetailsScreen = ({navigation, route}) => {
                   <AppText style={{fontSize: 14}}>No Bid yet</AppText>
                 </View>
               )}
-              horizontal={true}
+              // horizontal={true}
               data={userBids}
               keyExtractor={(bid) => bid._id}
               renderItem={({item}) => (
@@ -521,11 +521,12 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   bidContainer: {
-    width: '100%',
+    // width: '100%',
     // backgroundColor: 'red',
   },
   bidCardContainer: {
     // width: '65%',
+    // flexDirection: 'row',
   },
 });
 

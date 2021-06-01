@@ -4,7 +4,7 @@ import {Avatar, Card, Paragraph} from 'react-native-paper';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 // Styles Imports
-import ComponentsStyle from '../../styles/ComponentsStyle';
+// import ComponentsStyle from '../../styles/ComponentsStyle';
 import AppText from '../AppText';
 import {useSelector} from 'react-redux';
 
@@ -18,20 +18,20 @@ const BidCard = ({data, onPress, styleStatus}) => {
   return (
     <Card style={styles.bidCardStyle} onPress={onPress}>
       <View style={styles.container}>
-        <Card.Title
-          titleStyle={styles.titleText}
-          title={bidder[0].name}
-        ></Card.Title>
-        <Card.Title
-          titleStyle={styles.priceText}
-          title={`RS ${data.bidAmount}`}
+        <AppText style={styles.titleText}>{bidder[0].name}</AppText>
+        <AppText
+          style={styles.priceText}
           titleNumberOfLines={1}
           ellipsizeMode="tail"
-        ></Card.Title>
+        >{`RS ${data.bidAmount}`}</AppText>
       </View>
       <View style={styles.container}>
         <Card.Content>
-          <Paragraph numberOfLines={1} ellipsizeMode="tail">
+          <Paragraph
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            // style={{width: '25%'}}
+          >
             {data.message}
           </Paragraph>
         </Card.Content>
@@ -46,8 +46,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    marginVertical: 10,
   },
   titleText: {
+    flexDirection: 'row',
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
   },
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   priceText: {
+    flexDirection: 'row',
     fontSize: 14,
     fontFamily: 'Poppins-Bold',
     paddingLeft: 10,
@@ -70,13 +73,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   bidCardStyle: {
-    width: '90%',
+    width: '100%',
     borderRadius: 5,
-    // marginHorizontal: marginHorizontal,
     marginVertical: 10,
     backgroundColor: '#e8e8e8',
     shadowColor: '#1b262c',
-    // border: 'none',
     shadowOffset: {
       width: 0,
       height: 5,
@@ -84,17 +85,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    // titleStyle: {
-    //   fontSize: 16,
-    //   fontWeight: '600',
-    //   // fontFamily: 'Poppins-Regular',
-    // },
-    // subtitleStyle: {
-    //   fontSize: 14,
-    //   // fontWeight : "normal",
-    //   fontWeight: '600',
-    //   // fontFamily: 'Poppins-Bold',
-    // },
   },
 });
 
