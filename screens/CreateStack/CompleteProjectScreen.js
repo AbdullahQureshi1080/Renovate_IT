@@ -33,7 +33,8 @@ import AppText from '../../components/AppText';
 import ScreenStyles from '../../styles/ScreenStyles';
 import uploadAsPromise from '../../api/imageUpload';
 import AppFormPicker from '../../components/AppForm/AppFormPicker';
-
+import {getAllTokensExceptUser} from '../../api/notification';
+import {sendNotification} from '../../api/notification';
 // const categories = ["Interior Design","Architecture","Building","Renovation"];
 const categories = [
   {label: 'Interior Design', value: 1},
@@ -53,13 +54,25 @@ function CompleteProjectScreen({navigation, route}) {
   const state = useSelector((state) => state);
   const email = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
+  const user = state.entities.auth.data;
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [saveData, setSaveData] = useState(false);
   const [error, setError] = useState();
   const [images, setImages] = useState([]);
   // const[showModal,setShowModal] =useState();
+
+  const [recievers, setRecievers] = useState([]);
+  console.log('Recievers', recievers);
+  const gettingTokens = async () => {
+    const Alltokens = await getAllTokensExceptUser(userId);
+    // const specificTokens = await getAllTokensExceptUser();
+    setRecievers(Alltokens);
+    // console.log('All Tokens Except User', specificTokens);
+  };
+
   useEffect(() => {
+    gettingTokens();
     console.log(userId);
     console.log(route.params);
     const data = route.params.projectData;
@@ -91,6 +104,24 @@ function CompleteProjectScreen({navigation, route}) {
     setIsLoading(false);
     // dispatch(addProject(result.data));
     // dispatch(addDataProject(result.data));
+    const notification = {
+      body: 'See the new projects that have been added',
+      title: `New project by ${user.firstname} ${user.lastname}`,
+      image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: 'New projects from a user',
+      title: 'New project',
+    };
+    const send = await sendNotification(recievers, notification, dataNotify);
+    if (!send.ok) {
+      Alert.alert('Unable to send notification');
+      console.log('Error Message :', send);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AppHome'}],
+      });
+    }
     navigation.reset({
       index: 0,
       routes: [{name: 'AppHome'}],

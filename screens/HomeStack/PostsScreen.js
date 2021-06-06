@@ -18,6 +18,7 @@ import userAPI from '../../api/user';
 
 const Posts = ({navigation, route}) => {
   const state = useSelector((state) => state);
+  const tokenNotification = state.entities.auth.notificationToken;
   const userEmail = state.entities.auth.data.email;
   const [error, setError] = useState(null);
   const postsApi = useApi(dataAPI.getAllPosts);
@@ -45,6 +46,7 @@ const Posts = ({navigation, route}) => {
   };
 
   useEffect(() => {
+    console.log('The Notification Token:', tokenNotification);
     fetchUserPostIds();
     fetchPosts();
   }, []);

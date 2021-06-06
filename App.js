@@ -7,8 +7,8 @@
  */
 
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
-import {Provider} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {Provider, useSelector} from 'react-redux';
 import {
   configureFonts,
   DefaultTheme,
@@ -16,8 +16,9 @@ import {
 } from 'react-native-paper';
 import ContainerNavigation from './navigation/ContainerNavigation';
 import firebase from 'firebase';
-
+import messaging from '@react-native-firebase/messaging';
 import configureStore from './store/configureStore';
+
 import {
   API_KEY,
   APP_ID,
@@ -28,7 +29,7 @@ import {
   STORAGE_BUCKET,
 } from './config/config';
 
-import {LogBox} from 'react-native';
+import {Alert, LogBox} from 'react-native';
 
 const store = configureStore();
 
@@ -88,6 +89,13 @@ const theme = {
 LogBox.ignoreAllLogs();
 
 const App = () => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>

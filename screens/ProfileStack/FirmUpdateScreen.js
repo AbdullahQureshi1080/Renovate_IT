@@ -40,6 +40,11 @@ import {ScrollView} from 'react-native';
 import SelectUserModal from '../../components/Modal/SelectUserModal';
 import {useSelector} from 'react-redux';
 import {Alert} from 'react-native';
+
+import notificationAPI from '../../api/notification';
+import {getToken} from '../../api/notification';
+import {sendNotification} from '../../api/notification';
+
 const {width, height} = Dimensions.get('screen');
 export default function FirmUpdateScreen({route, navigation}) {
   const state = useSelector((state) => state);
@@ -55,6 +60,16 @@ export default function FirmUpdateScreen({route, navigation}) {
   const data = route.params.data;
   const [firmMembers, setMembers] = useState(data.members);
   const [firmData, setFirmData] = useState(data);
+  const notificationsApi = useApi(notificationAPI.addNewNotification);
+
+  const [recievers, setRecievers] = useState([]);
+  console.log('Recievers', recievers);
+  const gettingTokens = async (userId) => {
+    const Alltokens = await getToken(userId);
+    // const specificTokens = await getAllTokensExceptUser();
+    setRecievers(Alltokens);
+    // console.log('All Tokens Except User', specificTokens);
+  };
 
   const onPressUpdateFirmData = async ({title, description}) => {
     const firmId = data._id;
@@ -86,6 +101,7 @@ export default function FirmUpdateScreen({route, navigation}) {
 
   useEffect(() => {
     fetchUsers();
+
     // console.log(users);
   }, []);
 
@@ -113,6 +129,7 @@ export default function FirmUpdateScreen({route, navigation}) {
 
   const onPressAddUserToFirm = async () => {
     const memberId = selectedUser._id;
+    gettingTokens(memberId);
     const firmId = firmData._id;
     console.log(
       'Before Sending Request From Adding new member Api',
@@ -125,11 +142,37 @@ export default function FirmUpdateScreen({route, navigation}) {
       Alert.alert('Error adding new member');
       return;
     }
+    const notification = {
+      body: 'Added in the firm  by  admin',
+      title: `Added in the firm  by  admin`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `Added in the firm  by  admin`,
+      title: 'Added in the firm  by  admin',
+    };
+    const send = await sendNotification(recievers, notification, dataNotify);
+    if (!send.ok) {
+      Alert.alert('Unable to send notification');
+      console.log('Error Message :', send);
+    }
+    for (var i = 0; i < firmMembers.length; i++) {
+      let message = `Added a new member in firm ${firmData.title} by admin`;
+      console.log('Message for notification', message);
+      const resultToSave = await notificationsApi.request(
+        firmMembers[i]._id,
+        message,
+      );
+      if (!resultToSave.ok) {
+        return Alert.alert('Its not working, notifications in remote firm');
+      }
+    }
     setMembers(result.data.members);
   };
 
   const onPressRemoveUserFromFirm = async (item) => {
     const memberId = item._id;
+    gettingTokens(memberId);
     const firmId = firmData._id;
     console.log(
       'Before Sending Request From removing new member Api',
@@ -141,6 +184,31 @@ export default function FirmUpdateScreen({route, navigation}) {
       console.log('Error deleting  member');
       Alert.alert('Error deleting member');
       return;
+    }
+    const notification = {
+      body: 'Removed from firm  by  admin',
+      title: `Removed from firm  by  admin`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `Removed from firm  by  admin`,
+      title: 'Removed from firm',
+    };
+    const send = await sendNotification(recievers, notification, dataNotify);
+    if (!send.ok) {
+      Alert.alert('Unable to send notification');
+      console.log('Error Message :', send);
+    }
+    for (var i = 0; i < firmMembers.length; i++) {
+      let message = `Added a new member in firm ${firmData.title} by admin`;
+      console.log('Message for notification', message);
+      const resultToSave = await notificationsApi.request(
+        firmMembers[i]._id,
+        message,
+      );
+      if (!resultToSave.ok) {
+        return Alert.alert('Its not working, notifications in remote firm');
+      }
     }
     console.log('Result From deleting the member Api', result.data);
     console.log('Member removed');

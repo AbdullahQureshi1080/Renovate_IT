@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +24,10 @@ import firebase from 'firebase';
 import ActivityIndicator from '../../components/ActivityIndicator';
 
 import userAPI from '../../api/user';
+import notificationAPI, {
+  getAllTokens,
+  getAllTokensExceptUser,
+} from '../../api/notification';
 import useApi from '../../hooks/useApi';
 
 import {addPost} from '../../store/user';
@@ -32,6 +37,7 @@ import AppText from '../../components/AppText';
 
 import ScreenStyles from '../../styles/ScreenStyles';
 import uploadAsPromise from '../../api/imageUpload';
+import {sendNotification} from '../../api/notification';
 
 require('firebase/firestore');
 require('firebase/firebase-storage');
@@ -51,8 +57,20 @@ const validationSchema = Yup.object().shape({
 function CreatePostScreen({navigation, route}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const user = state.entities.auth.data;
   const email = state.entities.auth.data.email;
   const userId = state.entities.auth.data._id;
+  const [recievers, setRecievers] = useState([]);
+  console.log('Recievers', recievers);
+  const gettingTokens = async () => {
+    const Alltokens = await getAllTokensExceptUser(userId);
+    // const specificTokens = await getAllTokensExceptUser();
+    setRecievers(Alltokens);
+    // console.log('All Tokens Except User', specificTokens);
+  };
+  useEffect(() => {
+    gettingTokens();
+  }, []);
   console.log(userId);
   console.log(route.params);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +78,7 @@ function CreatePostScreen({navigation, route}) {
   const [error, setError] = useState();
   const [Images, setImages] = useState([]);
   const createApi = useApi(userAPI.createPost);
+  // const notificationApi = useApi(notificationAPI.addNewNotification);
   const handleSubmit = async ({
     title,
     description,
@@ -89,6 +108,39 @@ function CreatePostScreen({navigation, route}) {
     setIsLoading(false);
     dispatch(addPost(result.data));
     dispatch(addDataPost(result.data));
+    // Add data;
+    const notification = {
+      body: 'See the new posts that have been added',
+      title: `New post by ${user.firstname} ${user.lastname}`,
+      image: images[0],
+    };
+    let data = {
+      body: 'New posts from a user',
+      title: 'New post',
+    };
+    const send = await sendNotification(recievers, notification, data);
+    if (!send.ok) {
+      Alert.alert('Unable to send notification');
+      console.log('Error Message :', send);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AppHome'}],
+      });
+    }
+    // console.log('Result from fcm API:', send.results);
+    // const notificationResult = await notificationApi.request(
+    //   userId,
+    //   `New Post by ${user.firstname} ${user.lastname}`,
+    // );
+    // if (!notificationResult.ok) {
+    //   Alert.alert('Unable to save notification');
+    //   console.log('Error Message :', notificationResult.data);
+    //   navigation.reset({
+    //     index: 0,
+    //     routes: [{name: 'AppHome'}],
+    //   });
+    // }
+
     navigation.reset({
       index: 0,
       routes: [{name: 'AppHome'}],

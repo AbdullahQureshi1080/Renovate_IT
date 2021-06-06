@@ -63,3 +63,4 @@ buck-out/
 config/firebase.config.env
 config/config.js
 config/firebase.js
+google-services.json

@@ -112,11 +112,6 @@ export default function ViewModal({
                 justifyContent: 'space-between',
               }}
             >
-              {/* <AppButton
-                name={btnName}
-                onPress={onPressDelete}
-                style={{marginHorizontal: 5}}
-              /> */}
               {data.noterId == userId ? (
                 <>
                   <AppButton
@@ -126,14 +121,16 @@ export default function ViewModal({
                   />
                   <AppButton name={updateName} onPress={onPressUpdate} />
                 </>
+              ) : data.noterId !== userId && creator == userId ? (
+                <AppButton name={btnName} onPress={onPressDelete} />
               ) : (
-                <AppButton name={updateName} onPress={onPressUpdate} />
+                <View></View>
               )}
               {/* <AppButton name={updateName} onPress={onPressUpdate} /> */}
             </View>
           ) : (
-            <AppButton name={updateName} onPress={onPressUpdate} />
-            // <View></View>
+            // <AppButton name={updateName} onPress={onPressUpdate} />
+            <View></View>
           )}
         </View>
         <View style={{marginVertical: 10}}>

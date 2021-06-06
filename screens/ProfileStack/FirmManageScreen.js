@@ -43,6 +43,9 @@ import UpdateNoteModal from '../../components/Modal/UpdateNoteModal';
 //  Api Imports
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
+import notificationAPI from '../../api/notification';
+import {getAllTokensExceptUser} from '../../api/notification';
+import {sendNotification} from '../../api/notification';
 
 export default function FirmManageScreen({navigation, route}) {
   const [text, setText] = useState('');
@@ -54,6 +57,7 @@ export default function FirmManageScreen({navigation, route}) {
   // const [updateVisible, setUpdateVisible] = useState(false);
   const state = useSelector((state) => state);
   const userId = state.entities.auth.data._id;
+  const user = state.entities.auth.data;
   // const firms = state.entities.auth.data.firms;
   const email = state.entities.auth.data.email;
   const [notes, setNotes] = useState([]);
@@ -71,6 +75,7 @@ export default function FirmManageScreen({navigation, route}) {
   const firmMembers = route.params.item.members;
   const noteApi = useApi(userAPI.createNote);
   const notesApi = useApi(userAPI.getNotes);
+  const notificationsApi = useApi(notificationAPI.addNewNotification);
   const updateNoteApi = useApi(userAPI.updateNote);
   const deleteNoteApi = useApi(userAPI.deleteNote);
   const deleteFirmApi = useApi(userAPI.deleteFirm);
@@ -90,6 +95,15 @@ export default function FirmManageScreen({navigation, route}) {
     }
   }, []);
 
+  const [recievers, setRecievers] = useState([]);
+  console.log('Recievers', recievers);
+  const gettingTokens = async () => {
+    const Alltokens = await getAllTokensExceptUser(userId);
+    // const specificTokens = await getAllTokensExceptUser();
+    setRecievers(Alltokens);
+    // console.log('All Tokens Except User', specificTokens);
+  };
+
   const fetchNotes = async () => {
     const result = await notesApi.request(firmId);
     if (!result.ok) {
@@ -102,6 +116,7 @@ export default function FirmManageScreen({navigation, route}) {
 
   useEffect(() => {
     fetchNotes();
+    gettingTokens();
     // console.log('Notes in manage firm', notes);
   }, []);
 
@@ -157,8 +172,34 @@ export default function FirmManageScreen({navigation, route}) {
       setIsLoading(false);
       return;
     }
+
     setNotes(new Array(result.data));
     setIsLoading(false);
+    const notification = {
+      body: 'See the new note in the firm',
+      title: `New note by ${user.firstname} in firm`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `New note by ${user.firstname} in  ${firmData.title}`,
+      title: 'New Note',
+    };
+    const send = await sendNotification(recievers, notification, dataNotify);
+    if (!send.ok) {
+      Alert.alert('Unable to send notification');
+      console.log('Error Message :', send);
+    }
+    for (var i = 0; i < firmMembers.length; i++) {
+      let message = `Added a new note in firm ${firmData.title}`;
+      console.log('Message for notification', message);
+      const resultToSave = await notificationsApi.request(
+        firmMembers[i]._id,
+        message,
+      );
+      if (!resultToSave.ok) {
+        return Alert.alert('Its not working, notifications in remote firm');
+      }
+    }
     setText('');
     setImages([]);
     setDocuments([]);
@@ -451,7 +492,7 @@ export default function FirmManageScreen({navigation, route}) {
             onPressDelete={() => handleDelete(email, modalData.id, firmId)}
             onPressCancel={() => setIsVisible2(false)}
             // idCheck={idCheck}
-            creator={route.params.item.creator}
+            creator={route.params.item.creatorId}
             updateName="Update"
             onPressUpdate={() => {
               setIsVisible4(true),

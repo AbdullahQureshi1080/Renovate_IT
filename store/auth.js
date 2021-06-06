@@ -1,19 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 // import { useDispatch, useSelector } from "react-redux";
-import { apiCallBegan, LOGIN_URL, REGISTER_URL } from "./api";
-import clearData from './user';
+// import {apiCallBegan, LOGIN_URL, REGISTER_URL} from './api';
+// import clearData from './user';
 
 const auth = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     token: null,
     loading: false,
     // lastFetch: null,
     data: {},
+    notificationToken: null,
   },
   reducers: {
     // actions => action handlers
 
+    notificationRequestToken: (auth, action) => {
+      auth.notificationToken = action.payload;
+    },
     loginRequestFailed: (auth, action) => {
       auth.loading = false;
     },
@@ -38,6 +42,7 @@ const auth = createSlice({
     signout: (auth, action) => {
       auth.token = null;
       auth.data = {};
+      auth.notificationToken = null;
     },
   },
 });
@@ -51,6 +56,7 @@ const {
   registerRequestSuccess,
   registerRequest,
   registerRequestFailed,
+  notificationRequestToken,
   signout,
 } = auth.actions;
 export default auth.reducer;
@@ -58,8 +64,6 @@ export default auth.reducer;
 // Action Creators
 
 // ()=>{} signature function
-
-
 
 export const loginUser = (user) => ({
   type: loginRequestSuccess.type,
@@ -71,14 +75,15 @@ export const setUserData = (user) => ({
   payload: user,
 });
 
+export const setNotificationToken = (token) => ({
+  type: notificationRequestToken.type,
+  payload: token,
+});
 
-export const logout = () => (
-  {
+export const logout = () => ({
   type: signout.type,
   // payload: user,
-}
-);
-
+});
 
 // export const userAuthentication = (user) =>
 //   apiCallBegan({
