@@ -54,8 +54,12 @@ export const getAllTokens = async () => {
 export const getToken = async (userId) => {
   //   let users = [];
   const user = await firestore().collection('users').doc(userId).get();
-  const tokens = user.data().tokens;
-  return tokens;
+  // console.log('User in get Token', user.exists);
+  if (user.exists) {
+    const tokens = user.data().tokens;
+    return tokens;
+  }
+  return [];
   //   return user;
 };
 
@@ -87,8 +91,8 @@ export const sendNotification = (recievers, notification, data) =>
     {headers: {Authorization: `key=${serverKey}`}},
   );
 
-const addNewNotification = (userId, message) =>
-  client.post('notifications/saveNotification', {userId, message});
+const addNewNotification = (userId, message, users) =>
+  client.post('notifications/saveNotification', {userId, message, users});
 
 const getNotifications = (userId, message) =>
   client.post('notifications/getNotifications', {userId});

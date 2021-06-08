@@ -49,6 +49,7 @@ const {width, height} = Dimensions.get('screen');
 export default function FirmUpdateScreen({route, navigation}) {
   const state = useSelector((state) => state);
   const email = state.entities.auth.data.email;
+  const userId = state.entities.auth.data._id;
   const [users, setUsers] = useState([]);
   const [modalVisible3, setModalVisible3] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -68,7 +69,7 @@ export default function FirmUpdateScreen({route, navigation}) {
     const Alltokens = await getToken(userId);
     // const specificTokens = await getAllTokensExceptUser();
     setRecievers(Alltokens);
-    // console.log('All Tokens Except User', specificTokens);
+    console.log('All tokens ', Alltokens);
   };
 
   const onPressUpdateFirmData = async ({title, description}) => {
@@ -143,36 +144,36 @@ export default function FirmUpdateScreen({route, navigation}) {
       return;
     }
     const notification = {
-      body: 'Added in the firm  by  admin',
-      title: `Added in the firm  by  admin`,
+      body: `${selectedUser.name} added in the ${firmData.title} by  admin`,
+      title: `${selectedUser.name} added in the ${firmData.title} by  admin`,
       // image: data.gallaryImages[0].value,
     };
     let dataNotify = {
-      body: `Added in the firm  by  admin`,
-      title: 'Added in the firm  by  admin',
+      body: `${selectedUser.name} added in the ${firmData.title} by  admin`,
+      title: `${selectedUser.name} added in the ${firmData.title} by  admin`,
     };
     const send = await sendNotification(recievers, notification, dataNotify);
-    if (!send.ok) {
-      Alert.alert('Unable to send notification');
-      console.log('Error Message :', send);
+    // if (!send.ok) {
+    //   Alert.alert('Unable to send notification');
+    // }
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let message = `Added ${selectedUser.name} in firm ${firmData.title} by admin`;
+    console.log('Message for notification', message);
+    let users = firmMembers.map(({_id}) => _id);
+    const resultToSave = await notificationsApi.request(userId, message, users);
+    ``;
+    if (!resultToSave.ok) {
+      return Alert.alert('Its not working, notifications in remote firm');
     }
-    for (var i = 0; i < firmMembers.length; i++) {
-      let message = `Added a new member in firm ${firmData.title} by admin`;
-      console.log('Message for notification', message);
-      const resultToSave = await notificationsApi.request(
-        firmMembers[i]._id,
-        message,
-      );
-      if (!resultToSave.ok) {
-        return Alert.alert('Its not working, notifications in remote firm');
-      }
-    }
+    // }
     setMembers(result.data.members);
   };
 
   const onPressRemoveUserFromFirm = async (item) => {
     const memberId = item._id;
-    gettingTokens(memberId);
+    // gettingTokens(memberId);
+    console.log('Recievers in removing users');
     const firmId = firmData._id;
     console.log(
       'Before Sending Request From removing new member Api',
@@ -185,34 +186,34 @@ export default function FirmUpdateScreen({route, navigation}) {
       Alert.alert('Error deleting member');
       return;
     }
-    const notification = {
-      body: 'Removed from firm  by  admin',
-      title: `Removed from firm  by  admin`,
-      // image: data.gallaryImages[0].value,
-    };
-    let dataNotify = {
-      body: `Removed from firm  by  admin`,
-      title: 'Removed from firm',
-    };
-    const send = await sendNotification(recievers, notification, dataNotify);
-    if (!send.ok) {
-      Alert.alert('Unable to send notification');
-      console.log('Error Message :', send);
-    }
-    for (var i = 0; i < firmMembers.length; i++) {
-      let message = `Added a new member in firm ${firmData.title} by admin`;
-      console.log('Message for notification', message);
-      const resultToSave = await notificationsApi.request(
-        firmMembers[i]._id,
-        message,
-      );
-      if (!resultToSave.ok) {
-        return Alert.alert('Its not working, notifications in remote firm');
-      }
-    }
     console.log('Result From deleting the member Api', result.data);
     console.log('Member removed');
     setMembers(result.data);
+    const notification = {
+      body: `${item.name} removed from firm ${firmData.title} by  admin`,
+      title: `${item.name} removed from firm  ${firmData.title} by  admin`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `${item.name} removed from firm  ${firmData.title} by  admin`,
+      title: `${item.name} removed from firm  ${firmData.title} by  admin`,
+    };
+    const send = await sendNotification(recievers, notification, dataNotify);
+    // if (!send.ok) {
+    //   Alert.alert('Unable to send notification');
+    //   console.log('Error Message :', send);
+    // }
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let message = `${item.name} removed from ${firmData.title} by admin`;
+    console.log('Message for notification', message);
+    let users = firmMembers.map(({_id}) => _id);
+    const resultToSave = await notificationsApi.request(userId, message, users);
+    if (!resultToSave.ok) {
+      return Alert.alert('Its not working, notifications in remote firm');
+    }
+    // }
+
     setSelectedUser(null);
   };
 
@@ -224,6 +225,7 @@ export default function FirmUpdateScreen({route, navigation}) {
     });
     console.log('Updated Members', newMembers.length);
     onPressRemoveUserFromFirm(item);
+    gettingTokens(item._id);
   };
 
   return (

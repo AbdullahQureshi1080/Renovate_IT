@@ -185,21 +185,20 @@ export default function FirmManageScreen({navigation, route}) {
       title: 'New Note',
     };
     const send = await sendNotification(recievers, notification, dataNotify);
-    if (!send.ok) {
-      Alert.alert('Unable to send notification');
-      console.log('Error Message :', send);
+    // if (!send.ok) {
+    //   Alert.alert('Unable to send notification');
+    //   console.log('Error Message :', send);
+    // }
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let message = `Added a new note in firm ${firmData.title}`;
+    console.log('Message for notification', message);
+    let users = firmMembers.map(({_id}) => _id);
+    const resultToSave = await notificationsApi.request(userId, message, users);
+    if (!resultToSave.ok) {
+      return Alert.alert('Its not working, notifications in remote firm');
     }
-    for (var i = 0; i < firmMembers.length; i++) {
-      let message = `Added a new note in firm ${firmData.title}`;
-      console.log('Message for notification', message);
-      const resultToSave = await notificationsApi.request(
-        firmMembers[i]._id,
-        message,
-      );
-      if (!resultToSave.ok) {
-        return Alert.alert('Its not working, notifications in remote firm');
-      }
-    }
+    // }
     setText('');
     setImages([]);
     setDocuments([]);

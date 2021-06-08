@@ -114,14 +114,15 @@ function CompleteProjectScreen({navigation, route}) {
       title: 'New project',
     };
     const send = await sendNotification(recievers, notification, dataNotify);
-    if (!send.ok) {
-      Alert.alert('Unable to send notification');
-      console.log('Error Message :', send);
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'AppHome'}],
-      });
-    }
+    // if (!send.ok) {
+    //   Alert.alert('Unable to send notification');
+    //   console.log('Error Message :', send);
+    //   navigation.reset({
+    //     index: 0,
+    //     routes: [{name: 'AppHome'}],
+    //   });
+    // }
+    console.log(' Message from FCM :', send);
     navigation.reset({
       index: 0,
       routes: [{name: 'AppHome'}],

@@ -119,14 +119,15 @@ function CreatePostScreen({navigation, route}) {
       title: 'New post',
     };
     const send = await sendNotification(recievers, notification, data);
-    if (!send.ok) {
-      Alert.alert('Unable to send notification');
-      console.log('Error Message :', send);
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'AppHome'}],
-      });
-    }
+    // if (send.ok) {
+    //   Alert.alert('Unable to send notification');
+    //   console.log('Error Message :', send);
+    //   navigation.reset({
+    //     index: 0,
+    //     routes: [{name: 'AppHome'}],
+    //   });
+    // }
+    console.log(' Message from FCM :', send);
     // console.log('Result from fcm API:', send.results);
     // const notificationResult = await notificationApi.request(
     //   userId,
