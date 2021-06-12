@@ -284,6 +284,9 @@ const unSaveItem = (userId, itemId) =>
   client.post('save/unSave', {userId, itemId});
 const getSavedItems = (userId) => client.post('save/getSavedItems', {userId});
 
+const getUserNotifications = (userId) =>
+  client.post('notifications/getNotifications', {userId});
+
 export default {
   register,
   updateProfessionalProfile,
@@ -321,4 +324,5 @@ export default {
   saveItem,
   unSaveItem,
   getSavedItems,
+  getUserNotifications,
 };

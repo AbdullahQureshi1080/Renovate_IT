@@ -1,6 +1,6 @@
 // Native Imports
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import firebase from 'firebase';
@@ -23,8 +23,19 @@ const ChatScreen = ({navigation, route}) => {
   // console.log('chat Ids from store', chatFromRedux);
   const [chatIds, setChatIds] = useState([]);
   const [chats, setChats] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const chatIdApi = useApi(userAPI.getChatIds);
+  const notificationsApi = useApi(userAPI.getUserNotifications);
+
+  const fetchNotifications = async () => {
+    const result = await notificationsApi.request(user._id);
+    if (!result.ok) {
+      return Alert.alert('Error Retriving notifications');
+    }
+    console.log('notifications array in chat screen', result.data);
+    setNotifications(result.data);
+  };
 
   const getChatIds = async () => {
     const result = await chatIdApi.request(user.email);
@@ -37,6 +48,7 @@ const ChatScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getChatIds();
+    fetchNotifications();
   }, []);
 
   useEffect(() => {
@@ -85,6 +97,21 @@ const ChatScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.screenContainer}>
+      <AppCard
+        title="Notifications"
+        buttonName="View All"
+        component={
+          <ListViewNotifications
+            navigation={navigation}
+            notifications={notifications}
+            // chats={chats}
+            // enterChat={enterChat}
+          />
+        }
+        onPress={() => {
+          navigation.navigate('All Notifications');
+        }}
+      />
       <AppCard
         title="Inbox"
         buttonName="View All"

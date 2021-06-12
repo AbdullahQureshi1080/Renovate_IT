@@ -3,7 +3,7 @@ import {View, Text, FlatList, Dimensions} from 'react-native';
 // import { List } from 'react-native-paper';
 import ProfessionalAvatar from '../ProfessionalAvatar';
 import AppButton from '../AppButton';
-import {Button} from 'react-native-paper';
+import {Button, Divider, Avatar} from 'react-native-paper';
 // const [messageData, setMessageData] = React.useState(messages);
 
 // import firebase from "firebase";
@@ -14,17 +14,29 @@ import AppText from '../AppText';
 // require("firebase/firestore");
 
 export const ListViewNotifications = ({notifications}) => (
-  <View style={{justifyContent: 'center', alignContent: 'center'}}>
+  <View style={{width: '100%'}}>
     {notifications.length > 0 ? (
       notifications.map((item, index) => {
         return (
-          <ProfessionalAvatar
-            key={index}
-            name={item.name}
-            title={item.descrition}
-            style={profileAvatar}
-            size={40}
-          />
+          <>
+            <View
+              style={{
+                marginHorizontal: 15,
+                // flexDirection: 'row',
+                // width: '70%',
+                marginVertical: 2,
+              }}
+            >
+              <View style={{flexDirection: 'row'}}>
+                <Avatar.Image source={{uri: item.userImage}} size={30} />
+                <AppText style={{marginHorizontal: 5, alignSelf: 'center'}}>
+                  {item.userName}
+                </AppText>
+              </View>
+              <AppText>{item.message}</AppText>
+            </View>
+            <Divider />
+          </>
         );
       })
     ) : (
