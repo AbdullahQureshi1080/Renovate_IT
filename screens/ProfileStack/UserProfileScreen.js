@@ -160,20 +160,6 @@ const UserProfileScreen = ({navigation, route}) => {
           placeholdertext={'Update profile to set title'}
         />
       </View>
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginHorizontal: 20,
-        }}
-      >
-        {switchOn ? (
-          <AppText>Switch to app light mode</AppText>
-        ) : (
-          <AppText>Switch to app dark mode</AppText>
-        )}
-        <Switch isSwitchOn={switchOn} onToggleSwitch={onToggleSwitch} />
-      </View> */}
       <View>
         <Tab.Navigator tabBarOptions={TabNavigatorStyle.userProfileTab}>
           <Tab.Screen
@@ -187,7 +173,7 @@ const UserProfileScreen = ({navigation, route}) => {
             initialParams={userProfile}
           />
           <Tab.Screen name="Remote Firm" component={RemoteFirmScreen} />
-          <Tab.Screen name="Saved Items" component={SavedScreen} />
+          <Tab.Screen name="Wish List" component={SavedScreen} />
         </Tab.Navigator>
       </View>
     </ScrollView>

@@ -113,7 +113,7 @@ export default function FirmUpdateScreen({route, navigation}) {
     if (query == '') {
       // Fetch Users for Modal
       fetchUsers();
-      return;
+      // return;
     } else if (query !== '') {
       let searched = allUsers.filter(function (item) {
         return item.email.includes(query.toLowerCase());

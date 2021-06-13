@@ -34,7 +34,8 @@ const ChatScreen = ({navigation, route}) => {
       return Alert.alert('Error Retriving notifications');
     }
     console.log('notifications array in chat screen', result.data);
-    setNotifications(result.data);
+    const notify = result.data.slice(0, 3);
+    setNotifications(notify);
   };
 
   const getChatIds = async () => {

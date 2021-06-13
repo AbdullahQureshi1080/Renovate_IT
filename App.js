@@ -29,7 +29,8 @@ import {
   STORAGE_BUCKET,
 } from './config/config';
 
-import {Alert, LogBox} from 'react-native';
+import {Alert, LogBox, ToastAndroid} from 'react-native';
+// import ToastManager, {Toast} from './app/components/ToastManager';
 
 const store = configureStore();
 
@@ -91,13 +92,21 @@ LogBox.ignoreAllLogs();
 const App = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log('Notification Toast', remoteMessage.data);
+      ToastAndroid.showWithGravity(
+        remoteMessage.data.body,
+        // 'Yo Ho Bro',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     return unsubscribe;
   }, []);
   return (
     <Provider store={store}>
+      {/* <ToastManager /> */}
       <PaperProvider theme={theme}>
         <ContainerNavigation />
       </PaperProvider>

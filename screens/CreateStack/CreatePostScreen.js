@@ -115,7 +115,7 @@ function CreatePostScreen({navigation, route}) {
       image: images[0],
     };
     let data = {
-      body: 'New posts from a user',
+      body: 'New post from a user',
       title: 'New post',
     };
     const send = await sendNotification(recievers, notification, data);
@@ -127,7 +127,7 @@ function CreatePostScreen({navigation, route}) {
     //     routes: [{name: 'AppHome'}],
     //   });
     // }
-    console.log(' Message from FCM :', send);
+    // console.log(' Message from FCM :', send);
     // console.log('Result from fcm API:', send.results);
     // const notificationResult = await notificationApi.request(
     //   userId,
