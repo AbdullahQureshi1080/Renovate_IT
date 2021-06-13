@@ -99,12 +99,14 @@ const userPosts = async (email) => {
   return result.data;
 };
 
-const offerNewBid = (bidderId, postId, message, bidAmount) =>
+const offerNewBid = (bidderId, postId, message, bidAmount,bidCategory,bidTime) =>
   client.post('posts/offerBid', {
     bidderId,
     postId,
     message,
     bidAmount,
+    bidCategory,
+    bidTime
   });
 
 const acceptBid = (bidId, postId) =>

@@ -1,6 +1,6 @@
 // Native Imports
 import * as React from 'react';
-import {Avatar, Card, Paragraph} from 'react-native-paper';
+import {Avatar, Card, Divider, Paragraph} from 'react-native-paper';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 // Styles Imports
@@ -33,6 +33,9 @@ const BidCard = ({data, onPress, styleStatus}) => {
             // style={{width: '25%'}}
           >
             {data.message}
+          </Paragraph>
+          <Paragraph>
+          {data.bidCategory}
           </Paragraph>
         </Card.Content>
       </View>

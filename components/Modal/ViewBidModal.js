@@ -26,8 +26,10 @@ export default function ViewBidModal({
   onPressReject,
   onPressWithdraw,
   isVisible,
+
 }) {
-  console.log('Biddder in modal', bidData);
+  // console.log('Biddder in modal', bidData);
+  const currUID = useSelector(state => state.entities.auth.data._id)
   const image = bidData?.bidderData?.image;
   return (
     <Modal visible={isVisible} presentationStyle="formSheet">
@@ -59,7 +61,7 @@ export default function ViewBidModal({
             </>
           ) : (
             <>
-              <AppButton name="Rescind Bid" onPress={onPressWithdraw} />
+            {bidData && currUID===bidData?.bidderData?._id?<AppButton name="Rescind Bid" onPress={onPressWithdraw} />:<></>}
               <TouchableOpacity
                 style={{
                   justifyContent: 'center',

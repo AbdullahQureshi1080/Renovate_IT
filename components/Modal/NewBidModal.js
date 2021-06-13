@@ -15,6 +15,7 @@ import AppText from '../AppText';
 // import ImageInputList from '../Image/ImageInputList';
 // import DocumentInputList from '../Document/DocumentInputList';
 import AppFormField from '../AppForm/AppFormField';
+import AppFormPicker from '../AppForm/AppFormPicker';
 import AppForm from '../AppForm/AppForm';
 const {width, height} = Dimensions.get('screen');
 
@@ -26,13 +27,15 @@ import SubmitButton from '../AppForm/SubmitButton';
 const validationSchema = Yup.object().shape({
   message: Yup.string().required().min(1).label('Message'),
   amount: Yup.number().required().min(1).max(1000000).label('Amount'),
+  category: Yup.object().required().nullable().label('Category'),
 });
 
-export default function NewBidModal({
-  isVisible,
-  onPressBid,
-  onPressClose,
-}) {
+const categories = [
+  {label: 'Architect', value: 1},
+  {label: 'Builder', value: 2},
+  {label: 'Supplier', value: 3},
+];
+export default function NewBidModal({isVisible, onPressBid, onPressClose}) {
   return (
     <KeyboardAvoidingView style={{flex: 1}}>
       <Modal visible={isVisible} presentationStyle="formSheet">
@@ -48,6 +51,7 @@ export default function NewBidModal({
                 initialValues={{
                   message: '',
                   amount: '',
+                  category: '',
                 }}
                 onSubmit={onPressBid}
                 validationSchema={validationSchema}
@@ -73,7 +77,7 @@ export default function NewBidModal({
                     />
                   </TouchableOpacity>
                   <View style={{alignSelf: 'center'}}>
-                    <SubmitButton name="Bid"/>
+                    <SubmitButton name="Bid" />
                   </View>
                 </View>
                 <View style={{alignSelf: 'center'}}>
@@ -111,13 +115,14 @@ export default function NewBidModal({
                   <AppFormField
                     name="amount"
                     placeholder="Bid in  ..."
-                    // onChangeText={onChangeAmount}
-                    // multiline={true}
-                    // numberOfLines={10}
                     underlineColor="#495464"
                     textColor="#495464"
                     keyboardType="numeric"
-                    // value={text==""?"":value}
+                  />
+                  <AppFormPicker
+                    items={categories}
+                    name="category"
+                    placeholder="category"
                   />
                 </View>
               </AppForm>
