@@ -96,7 +96,7 @@ const App = () => {
       ToastAndroid.showWithGravity(
         remoteMessage.data.body,
         // 'Yo Ho Bro',
-        ToastAndroid.SHORT,
+        ToastAndroid.LONG,
         ToastAndroid.CENTER,
       );
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));

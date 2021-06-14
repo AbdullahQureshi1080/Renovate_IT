@@ -63,8 +63,8 @@ const PostDetailsScreen = ({navigation, route}) => {
   const gettingTokens = async (userId) => {
     const Alltokens = await getToken(userId);
     // const specificTokens = await getAllTokensExceptUser();
-    setRecievers(Alltokens);
-    console.log('All tokens ', Alltokens);
+    setRecievers(...recievers, Alltokens);
+    // console.log('All tokens ', Alltokens);
   };
 
   // ----
@@ -260,7 +260,7 @@ const PostDetailsScreen = ({navigation, route}) => {
   const setCountdown = (timer, setTimer) => {
     if (timer) {
       console.log('GOT TIMER: ', timer);
-      var expirydate = moment(timer).add(4, 'minutes');
+      var expirydate = moment(timer).add(2, 'minutes');
       //Let suppose we have to show the countdown for above date-time
       console.log('EXPIRY: ', expirydate);
       var date = moment();
@@ -288,6 +288,41 @@ const PostDetailsScreen = ({navigation, route}) => {
     }
   };
 
+  const handleAllNotifications = async (users) => {
+    const notification = {
+      body: `New bid by ${user.firstname}`,
+      title: `New bid by ${user.firstname}`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `New bid by ${user.firstname}`,
+      title: `New bid by ${user.firstname}`,
+    };
+
+    console.log(' Recievers :', recievers);
+    const send = await sendNotification(recievers, notification, dataNotify);
+
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let messageNot = `New bid by ${user.firstname}`;
+    console.log('Message for notification', messageNot);
+    // const posterId = allusers.filter((user) => {
+    //   return user.posts.includes(postId);
+    // });
+    // let users = [];
+    const resultToSave = await notificationsApi.request(
+      userId,
+      messageNot,
+      users,
+    );
+    if (!resultToSave.ok) {
+      return Alert.alert('Its not working, notifications');
+    }
+    fetchPostBids();
+    setNewBidVisible(false);
+    setRecievers([]);
+  };
+
   const newBidHandler = async (values) => {
     let bidderId = userId;
     let message = values.message;
@@ -309,37 +344,105 @@ const PostDetailsScreen = ({navigation, route}) => {
       return;
     }
     Alert.alert('New Bid');
-    // const notification = {
-    //   body: `New bid by ${user.firstname}`,
-    //   title: `New bid by ${user.firstname}`,
-    //   // image: data.gallaryImages[0].value,
-    // };
-    // let dataNotify = {
-    //   body: `New bid by ${user.firstname}`,
-    //   title: `New bid by ${user.firstname}`,
-    // };
-    // const send = await sendNotification(recievers, notification, dataNotify);
-    // // if (!send.ok) {
-    // //   Alert.alert('Unable to send notification');
-    // // }
-    // console.log(' Message from FCM :', send);
-    // // for (var i = 0; i < firmMembers.length; i++) {
-    // let messageNot = `New bid by ${user.firstname}`;
-    // console.log('Message for notification', messageNot);
-    // const posterId = allusers.filter((user)=>{
-    //   return user.posts.includes(postId)
-    // })
-    // let users =[]
-    // const resultToSave = await notificationsApi.request(
-    //   userId,
-    //   messageNot,
-    //   users,
-    // );
-    // if (!resultToSave.ok) {
-    //   return Alert.alert('Its not working, notifications in remote firm');
-    // }
-    fetchPostBids();
-    setNewBidVisible(false);
+
+    const usersToNotify = bids.filter((bid) => {
+      return bid.bidCategory == bidCategory;
+    });
+
+    console.log('Users to notify', usersToNotify);
+
+    const userToNotifyIds = usersToNotify.map(({bidderId}) => bidderId);
+
+    const userPostId = allusers.filter((user) => {
+      // let userId = [];
+      let postIds = user.posts.map(({id}) => id);
+      for (var i = 0; i < postIds.length; i++) {
+        if (postIds[i] == postId) {
+          return user._id;
+        }
+      }
+      // return userId;
+    });
+
+    console.log('Poster User Id', userPostId[0]._id);
+
+    const notifyingIds = [...userToNotifyIds, userPostId[0]._id];
+
+    console.log('Users Ids to notify', notifyingIds);
+
+    for (var j = 0; j < notifyingIds.length; j++) {
+      gettingTokens(notifyingIds[j]);
+    }
+
+    handleAllNotifications(notifyingIds);
+  };
+
+  const handleAcceptNotification = async (users) => {
+    const notification = {
+      body: `Bid Accepted in post ${route.params.item.title}`,
+      title: `Bid Accepted in post ${route.params.item.title}`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `Bid Accepted in post ${route.params.item.title}`,
+      title: `Bid Accepted in post ${route.params.item.title}`,
+    };
+
+    console.log(' Recievers :', recievers);
+    const send = await sendNotification(recievers, notification, dataNotify);
+
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let messageNot = `Bid Accepted in post ${route.params.item.title}`;
+    console.log('Message for notification', messageNot);
+    // const posterId = allusers.filter((user) => {
+    //   return user.posts.includes(postId);
+    // });
+    // let users = [];
+    const resultToSave = await notificationsApi.request(
+      userId,
+      messageNot,
+      users,
+    );
+    if (!resultToSave.ok) {
+      console.log('Error from notifications API', resultToSave.data);
+      return Alert.alert('Its not working, notifications');
+    }
+    setRecievers([]);
+  };
+
+  const handleRejectNotification = async (users) => {
+    const notification = {
+      body: `Bid Rejected in post ${route.params.item.title}`,
+      title: `Bid Rejected in post ${route.params.item.title}`,
+      // image: data.gallaryImages[0].value,
+    };
+    let dataNotify = {
+      body: `Bid Rejected in post ${route.params.item.title}`,
+      title: `Bid Rejected in post ${route.params.item.title}`,
+    };
+
+    console.log(' Recievers :', recievers);
+    const send = await sendNotification(recievers, notification, dataNotify);
+
+    console.log(' Message from FCM :', send);
+    // for (var i = 0; i < firmMembers.length; i++) {
+    let messageNot = `Bid Rejected in ${route.params.item.title}`;
+    console.log('Message for notification', messageNot);
+    // const posterId = allusers.filter((user) => {
+    //   return user.posts.includes(postId);
+    // });
+    // let users = [];
+    const resultToSave = await notificationsApi.request(
+      userId,
+      messageNot,
+      users,
+    );
+    if (!resultToSave.ok) {
+      console.log('Error from notifications API', resultToSave.data);
+      return Alert.alert('Its not working, notifications');
+    }
+    setRecievers([]);
   };
 
   const acceptHandler = async (selectedBid) => {
@@ -351,6 +454,12 @@ const PostDetailsScreen = ({navigation, route}) => {
       return;
     }
     Alert.alert('Bid Accepted');
+    let bidData = bids.filter((bid) => {
+      return bid._id == selectedBid;
+    });
+    // console.log("bidData in acc",bidData);
+    gettingTokens(bidData[0].bidderId);
+    handleAcceptNotification([bidData[0].bidderId]);
     fetchPostBids();
     setBidModal(false);
   };
@@ -364,6 +473,12 @@ const PostDetailsScreen = ({navigation, route}) => {
       return;
     }
     Alert.alert('Bid Rejected');
+    let bidData = bids.filter((bid) => {
+      return bid._id == selectedBid;
+    });
+    // console.log("bidData in acc",bidData);
+    gettingTokens(bidData[0].bidderId);
+    handleRejectNotification([bidData[0].bidderId]);
     fetchPostBids();
     setBidModal(false);
   };
@@ -663,8 +778,6 @@ const PostDetailsScreen = ({navigation, route}) => {
                   />
                 </>
               </List.Accordion>
-
-              {/*  Builder*/}
 
               <List.Accordion
                 title="Builders"
