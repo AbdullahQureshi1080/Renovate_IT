@@ -1,6 +1,6 @@
 // Native Imports
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, Alert, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import TabNavigatorStyle from '../../styles/TabNavigatorStyle';
@@ -18,9 +18,18 @@ import dataAPI from '../../api/data';
 import useApi from '../../hooks/useApi';
 import userAPI from '../../api/user';
 
+import {Chip} from 'react-native-paper';
+
 const Tab = createMaterialTopTabNavigator();
 
 const Projects = ({navigation}) => {
+  const [selected, setSelected] = useState(false);
+  const [categoryOne, setCategoryOne] = useState('');
+  const [categoryTwo, setCategoryTwo] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedTwo, setSelectedTwo] = useState(false);
+  const [selectedIndexTwo, setSelectedIndexTwo] = useState(-1);
+  const [selectedColor, setSelectedColor] = useState('#495464');
   const [error, setError] = useState(null);
   const state = useSelector((state) => state);
   const userEmail = state.entities.auth.data.email;
@@ -56,7 +65,7 @@ const Projects = ({navigation}) => {
   // -----------------------------------------------------------------
   const handleSearch = (search) => {
     if (search == '') {
-      setProjects(projects);
+      fetchProjects();
       return;
     }
     const searched = projects.filter(function (item) {
@@ -73,12 +82,176 @@ const Projects = ({navigation}) => {
     }
   };
 
+  const dataSource = [
+    'Interior Design',
+    'Architecture',
+    'Building',
+    'Renovation',
+  ];
+
+  const secondDataSource = ['Interior', 'Kitchen', 'House', 'Room'];
+
+  const handleChip = (category, index) => {
+    if (selected) {
+      setSelected(false);
+      setSelectedIndex(-1);
+      fetchProjects();
+      return;
+    }
+    if (selected && selectedTwo) {
+      combinedSearch();
+    }
+    setCategoryOne(category);
+    setSelectedIndex(index);
+    chipBasedSearch(category);
+  };
+
+  const handleChipTwo = (category, index) => {
+    if (selectedTwo) {
+      setSelectedTwo(false);
+      setSelectedIndexTwo(-1);
+      fetchProjects();
+      return;
+    }
+    if (selected && selectedTwo) {
+      combinedSearch();
+    }
+    setCategoryTwo(category);
+    setSelectedIndexTwo(index);
+    chipBasedSearchTwo(category);
+  };
+
+  const chipBasedSearch = (category) => {
+    setSelected(true);
+    const searched = projects.filter(function (item) {
+      return item.category === category;
+    });
+    console.log('Searched Projects', searched);
+    if (searched.length == 0) {
+      fetchProjects();
+      return;
+    }
+    setProjects(searched);
+  };
+
+  const chipBasedSearchTwo = (category) => {
+    const search = category.toLowerCase();
+    setSelectedTwo(true);
+    const searched = projects.filter(function (item) {
+      return item.title.toLowerCase().includes(search);
+    });
+    console.log('Searched Projects', searched);
+    if (searched.length == 0) {
+      fetchProjects();
+      return;
+    }
+    setProjects(searched);
+  };
+
+  const combinedSearch = () => {
+    const searchedOne = projects.filter(function (item) {
+      return item.category === categoryOne;
+    });
+    console.log('Searched Projects', searchedOne);
+    const searchedTwo = projects.filter(function (item) {
+      return item.title.toLowerCase().includes(categoryTwo);
+    });
+    console.log('Searched Projects', searchedTwo);
+
+    const mergedSearchedProjects = searchedOne.concat(searchedTwo);
+    if (mergedSearchedProjects.length == 0) {
+      fetchProjects();
+      return;
+    }
+    setProjects(mergedSearchedProjects);
+  };
   return (
     <View style={{flex: 1}}>
       <SearchBar
         placeholder="Project search ...."
         onChangeText={handleSearch}
       />
+
+      {/* ------- */}
+
+      <View
+        style={{flexDirection: 'row', marginHorizontal: 15, paddingRight: 30}}
+      >
+        <FlatList
+          horizontal={true}
+          data={dataSource}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => (
+            <View
+              style={{
+                margin: 5,
+                flexWrap: 'wrap',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Chip
+                key={index}
+                selected={selectedIndex === index ? selected : false}
+                selectedColor="white"
+                mode="outlined" //changing display mode, default is flat.
+                height={30} //give desirable height to chip
+                textStyle={{
+                  color: 'white',
+                  fontSize: 13,
+                }} //label properties
+                style={{
+                  backgroundColor:
+                    selectedIndex === index ? selectedColor : '#e8e8e8',
+                }} //display diff color BG
+                onPress={() => handleChip(item, index)}
+              >
+                {item}
+              </Chip>
+            </View>
+          )}
+        />
+      </View>
+
+      <View
+        style={{flexDirection: 'row', marginHorizontal: 15, paddingRight: 30}}
+      >
+        <FlatList
+          horizontal={true}
+          data={secondDataSource}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => (
+            <View
+              style={{
+                margin: 5,
+                flexWrap: 'wrap',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Chip
+                key={index}
+                selected={selectedIndexTwo === index ? selectedTwo : false}
+                selectedColor="white"
+                mode="outlined" //changing display mode, default is flat.
+                height={30} //give desirable height to chip
+                textStyle={{
+                  color: 'white',
+                  fontSize: 13,
+                }} //label properties
+                style={{
+                  backgroundColor:
+                    selectedIndexTwo === index ? selectedColor : '#e8e8e8',
+                }} //display diff color BG
+                onPress={() => handleChipTwo(item, index)}
+              >
+                {item}
+              </Chip>
+            </View>
+          )}
+        />
+      </View>
+
+      {/* -------- */}
+
       <FlatList
         ListEmptyComponent={() => (
           <View
